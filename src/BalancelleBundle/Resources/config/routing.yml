@@ -1,0 +1,3 @@
+balancelle_homepage:
+    path:     /
+    defaults: { _controller: BalancelleBundle:Default:index }

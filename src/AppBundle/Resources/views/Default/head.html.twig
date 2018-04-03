@@ -1,0 +1,159 @@
+    <head>
+        <title>Site de la Balancelle</title>
+        <!-- custom-theme -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="keywords" content="crèche balancelle moirans" />
+        <script type="application/x-javascript"> addEventListener(
+            "load", 
+            function() { setTimeout(hideURLbar, 0); }, 
+            false);
+            function hideURLbar(){ window.scrollTo(0,1); } 
+        </script>
+        <!-- //custom-theme -->
+        {% block stylesheets %}
+            <link 
+                rel="stylesheet" 
+                href="{{ asset('bundles/app/css/bootstrap.css') }}" 
+                type="text/css" 
+                media="screen" 
+            />
+            <link 
+                rel="stylesheet" 
+                href="{{ asset('bundles/app/css/style.css') }}" 
+                type="text/css" 
+                media="screen" 
+            />
+            <link 
+                rel="stylesheet" 
+                href="{{ asset('bundles/app/css/easy-responsive-tabs.css') }}" 
+                type="text/css" 
+                media="screen" 
+            />
+            <link 
+                rel="stylesheet" 
+                href="{{ asset('bundles/app/css/jquery.gallery.css') }}" 
+                type="text/css" 
+                media="screen" 
+            />
+            <link 
+                rel="stylesheet" 
+                href="{{ asset('bundles/app/css/popuo-box.css') }}" 
+                type="text/css" 
+                media="screen" 
+            />
+            <link 
+                rel="stylesheet" 
+                href="{{ asset('bundles/app/css/font-awesome.css') }}" 
+                type="text/css" 
+                media="screen" 
+            />
+            <!-- //font-awesome-icons -->
+            <link 
+                href="//fonts.googleapis.com/css?family=Handlee" 
+                rel="stylesheet">
+            <link 
+                href='//fonts.googleapis.com/css?family=Open+Sans:400,300,
+                    300italic,400italic,600,600italic,700,700italic,800,800italic' 
+                rel='stylesheet' 
+                type='text/css'>
+
+        {% endblock %}
+        {% block javascripts %}
+            <script 
+                type="text/javascript" 
+                src="{{ asset('bundles/app/js/jquery-2.1.4.min.js') }}" >
+            </script>
+            <script 
+                type="text/javascript" 
+                src="{{ asset('bundles/app/js/jquery.vide.min.js') }}" >
+            </script>
+            <script 
+                type="text/javascript" 
+                src="{{ asset('bundles/app/js/jquery.magnific-popup.js') }}" >
+            </script>
+            <script 
+                type="text/javascript" 
+                src="{{ asset('bundles/app/js/classie.js') }}" >
+            </script>
+            <!-- for bootstrap working -->
+            <script 
+                type="text/javascript" 
+                src="{{ asset('bundles/app/js/bootstrap.js') }}" >
+            </script>
+            <!-- //for bootstrap working -->
+            <!-- responsive-tabs -->
+            <script 
+                type="text/javascript" 
+                src="{{ asset('bundles/app/js/easy-responsive-tabs.js') }}" >
+            </script>
+            <script>
+                $(document).ready(function () {
+                    $('#verticalTab').easyResponsiveTabs({
+                        type: 'vertical',
+                        width: 'auto',
+                        fit: true
+                    });
+                });
+            </script>
+            <!-- //responsive-tabs -->
+            <!-- text-effect -->
+            <script 
+                type="text/javascript" 
+                src="{{ asset('bundles/app/js/jquery.transit.js') }}" >
+            </script>
+            <script 
+                type="text/javascript" 
+                src="{{ asset('bundles/app/js/jquery.textFx.js') }}" >
+            </script>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $('.test2').textFx({
+                            type: 'slideIn',
+                            direction: 'right',
+                            iChar: 250,
+                            iAnim: 1000
+                    });
+                });
+            </script>
+            <!-- //text-effect -->
+            <!-- start-smoth-scrolling -->
+            <script 
+                type="text/javascript" 
+                src="{{ asset('bundles/app/js/move-top.js') }}" >
+            </script>
+            <script 
+                type="text/javascript" 
+                src="{{ asset('bundles/app/js/easing.js') }}" >
+            </script>
+            <script type="text/javascript">
+                jQuery(document).ready(function($) {
+                    $(".scroll").click(function(event){		
+                        event.preventDefault();
+                        $('html,body').animate(
+                            {scrollTop:$(this.hash).offset().top},
+                            1000
+                        );
+                    });
+                });
+            </script>
+            <!-- start-smoth-scrolling -->
+            <!-- here stars scrolling icon -->
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    /*
+                    var defaults = {
+                        containerID: 'toTop', // fading element id
+                        containerHoverID: 'toTopHover', // fading element hover id
+                        scrollSpeed: 1200,
+                        easingType: 'linear' 
+                    };
+                    */
+                    $().UItoTop({ easingType: 'easeOutQuart' });
+
+                });
+            </script>
+    <!-- //here ends scrolling icon -->
+        {% endblock %}
+    </head>
+
