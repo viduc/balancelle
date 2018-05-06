@@ -1,146 +1,146 @@
 <!-- footer -->
 <div class="w3_agileits_twitter_post">
     <div class="container">
+        <div class="col-md-6 col-sm-6 col-xs-6">
+        <img
+            src="{{asset('bundles/app/images/logos/balancelle.jpeg')}}"
+            alt=" "
+            class="img-responsive"
+            width="128"
+            height="128"
+            style="float: right"/>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+        <a href="https://www.acepp.asso.fr/ACEPP-38-73">
+            <img
+                src="{{asset('bundles/app/images/logos/label-parental.png')}}"
+                alt=" "
+                class="img-responsive"
+                width="128"
+                height="128"/>
+            </div>
+        </a>
+    </div>
+    <!--div class="container">
         <h4>"Encore une phrase, un lien ou un post twitter ? <a href="#">
                 http://example.com</a> egestas."</h4>
-    </div>
+    </div-->
+     <!--button onclick="test()">test</button--> 
 </div>
 <div class="footer">
-    <div class="col-md-6 wthree_footer_grid_left">
-        <div class="col-md-5 wthree_footer_grid_left1">
-            <h4>A propose de nous</h4>
-            <p>Nous sommes une assosication 1901 qui déchire!! 
-                viens et tu verras la lumière!</p>
+    <div class="col-md-7 wthree_footer_grid_left">
+        <div class="col-md-6 wthree_footer_grid_left1">
+            <h4>A propos de nous</h4>
+            <p>La Balancelle est une association à gestion parentale créée en 1988 
+                et labellisée par l'<a href="https://www.acepp.asso.fr/ACEPP-38-73">ACEPP</a>.
+                Avec ses 3 services d'accueil, elle répond à la fois
+                aux besoins de garde, de rencontre et d'éveil des enfants.
+                Elle repose sur la confiance et la coopération entre parents et professionnels.
+            </p>
         </div>
-        <div class="col-md-4 wthree_footer_grid_left1">
+        <div class="col-md-3 wthree_footer_grid_left1">
             <h4>Navigation</h4>
             <ul>
                 <li>
                     <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
                         <a href="{{ path('app_homepage') }}">Accueil</a>
                 </li>
+                {% if app.request.attributes.get('_route') == 'app_homepage' %}
                 <li>
                     <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
-                        <a href="#about" class="scroll">A propos de nous</a>
+                        <a href="#quisommesnous" class="scroll">La Balancelle</a>
+                </li>
+
+                <li>
+                    <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                    <a href="#structures" class="scroll">Nos services</a>
                 </li>
                 <li>
                     <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
-                    <a href="#programs" class="scroll">Programs</a>
+                    <a href="{{ path('app_trenteans') }}" >Les 30 ans</a>
                 </li>
-                <li>
-                    <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
-                    <a href="#newsletter" class="scroll">Newsletter</a>
-                </li>
-                <li>
+                <!--li>
                     <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
                     <a href="#testimonials" class="scroll">Testimonials</a>
-                </li>
+                </li-->
+                {% endif %}
             </ul>
         </div>
-        <div class="col-md-3 wthree_footer_grid_left1">
-            <h4>Autre</h4>
+        <div class="col-md-3 wthree_footer_grid_left1">    
+            <h4>Partenaires</h4>
             <ul>
                 <li><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
-                    <a href="#">Media</a></li>
+                    <a href="https://www.acepp.asso.fr/ACEPP-38-73">ACEPP</a></li>
                 <li><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
-                    <a href="#">Mobile Apps</a></li>
+                    <a href="http://www.ville-moirans.fr/">Mairie de Moirans</a></li>
                 <li><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
-                    <a href="#">Privacy Policy</a></li>
+                    <a href="http://aiperam.canalblog.com/">AIPE</a></li>
+                <li><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                    <a href="https://www.caf.fr/">CAF</a></li>
             </ul>
         </div>
         <div class="clearfix"> </div>
     </div>
-    <div class="col-md-6 wthree_footer_grid_right">
+    <div class="col-md-5 wthree_footer_grid_right">
         <div class="wthree_footer_grid_right_main">
-            <div class="col-md-5 wthree_footer_grid_right1">
+            <div class="col-md-6 wthree_footer_grid_right1">
                 <h5>Contactez Nous</h5>
                 <ul>
                     <li>
                         <i class="fa fa-envelope-o" aria-hidden="true"></i>
-                        <a href="mailto:info@example.com">info@example.com</a>
+                        <a href="mailto:labalancelle@orange.fr">labalancelle@orange.fr</a>
                     </li>
                     <li>
                         <i class="fa fa-phone" aria-hidden="true"></i>
-                        +(000) 123 311
+                        04 76 35 47 52
                     </li>
                     <li>
                         <i class="fa fa-fax" aria-hidden="true"></i>
-                        +123 421
+                        04 76 07 89 31
+                    </li>
+                    <li>
+                        <i class="fa fa-home" aria-hidden="true"></i>
+                        Immeuble le Gratien<br />
+                        Place des Remparts<br />
+                        38430 Moirans
                     </li>
                 </ul>
             </div>
-            <div class="col-md-7 wthree_footer_grid_right2">
-                <div class="wthree_footer_grid_right2_w3">
-                    <a href="#" data-toggle="modal" data-target="#myModal">
-                        <img src="{{ asset('bundles/app/images/1.jpg') }}"
-                            alt=" " class="img-responsive" />
-                    </a>
-                </div>
-                <div class="wthree_footer_grid_right2_w3">
-                    <a href="#" data-toggle="modal" data-target="#myModal">
-                        <img src="{{ asset('bundles/app/images/12.jpg') }}"
-                            alt=" " class="img-responsive" />
-                    </a>
-                </div>
-                <div class="wthree_footer_grid_right2_w3">
-                    <a href="#" data-toggle="modal" data-target="#myModal">
-                        <img src="{{ asset('bundles/app/images/13.jpg') }}"
-                            alt=" " class="img-responsive" />
-                    </a>
-                </div>
-                <div class="wthree_footer_grid_right2_w3">
-                    <a href="#" data-toggle="modal" data-target="#myModal">
-                        <img src="{{ asset('bundles/app/images/15.jpg') }}"
-                            alt=" " class="img-responsive" />
-                    </a>
-                </div>
-                <div class="wthree_footer_grid_right2_w3">
-                    <a href="#" data-toggle="modal" data-target="#myModal">
-                        <img src="{{ asset('bundles/app/images/22.jpg') }}"
-                            alt=" " class="img-responsive" />
-                    </a>
-                </div>
-                <div class="wthree_footer_grid_right2_w3">
-                    <a href="#" data-toggle="modal" data-target="#myModal">
-                        <img src="{{ asset('bundles/app/images/23.jpg') }}"
-                            alt=" " class="img-responsive" />
-                    </a>
-                </div>
+            <div class="col-md-6 wthree_footer_grid_right2">                           
+                <div class="wthree_footer_grid_right2_w3" id="googleMap" ></div>
+                <script>
+                    function initMap() {
+                        var balancelle = {lat: 45.3270652, lng: 5.5610661};
+                        var map = new google.maps.Map(document.getElementById('googleMap'), {
+                        zoom: 12,
+                        center: balancelle
+                      });
+                        var marker = new google.maps.Marker({
+                            position: balancelle,
+                            map: map
+                        });
+                    }
+                  </script>
+                <script async defer
+                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJNB5GRxbuD8bhFWjQaZLREr7yQ_gPaKY&callback=initMap">
+                </script>            
                 <div class="clearfix"> </div>
             </div>
             <div class="clearfix"> </div>
-        </div>
-        <div class="wthree_footer_grid_right_main1">
-            <ul class="agileinfo_social_icons agileits_footer_social">
-                <li>
-                    <a href="#" class="agileits_facebook">
-                        <i class="fa fa-facebook" aria-hidden="true"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="w3_twitter">
-                        <i class="fa fa-twitter" aria-hidden="true"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="w3l_google">
-                        <i class="fa fa-google-plus" aria-hidden="true"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="w3ls_dribble">
-                        <i class="fa fa-dribbble" aria-hidden="true"></i>
-                    </a>
-                </li>
-            </ul>
         </div>
     </div>
     <div class="clearfix"> </div>
 </div>
 <div class="w3layouts_copy_right">
     <div class="container">
-        <p>© 2017 Nursery. All rights reserved | Design by 
+        <p>© 2018 Sugarbox | Template réalisé par 
             <a href="http://w3layouts.com">W3layouts.</a>
         </p>
     </div>
 </div>
+            
+<!--script>
+function test() {
+    alert($(window).width());
+}
+</script-->

@@ -1,0 +1,72 @@
+{% extends '@App/Default/layout.html.twig' %}
+{% block body %}
+    {% include '@App/Default/modal.html.twig' %}
+<!-- events -->
+<div id="events" class="events">
+    <div class="container">
+        <h3 class="w3_agileits_head">30 ans de La
+            <span class="w3_child">b</span>
+            <span class="w3_child1">a</span>
+            <span class="w3_child2">l</span>
+            <span class="w3_child3">a</span>
+            <span class="w3_child4">n</span>
+            <span class="w3_child3">c</span>
+            <span class="w3_child2">e</span>
+            <span class="w3_child1">l</span>
+            <span class="w3_child">l</span>
+            <span class="w3_child4">e</span>
+        </h3>
+        <p class="w3_agile_elit" style="color:#0B3861">
+            <b>L'association a 30 ans cette année. A l'occasion de cet anniversaire, 
+                nous vous proposons différentes animations.<br />
+             Au programme : une conférence, un pique-nique, un spectacle, 
+             une exposition et un bal pour clôturer l'évènement...</b><br /><br />
+        </p>
+        <div class="agile_banner_bottom_grids">
+            <div class="agile_events_grid">
+                <img
+                    src="{{asset('bundles/app/images/30ans/jean_epstein.jpeg')}}"
+                    alt=" "
+                    class="img-responsive" />
+                <div class="agile_events_grid_pos agile_events_grid_pos1">
+                    <h5><span>26 </span>06 / 2018</h5>
+                    <h4>
+                        <a href="#" data-toggle="modal" data-target="#event_01">
+                            Conférence sur la parentalité: 
+                            "Père... mère... la juste place de chacun" par 
+                            Jean Epstein
+                        </a>
+                    </h4>
+                </div>
+            </div>
+            <div class="agile_events_grid">
+                <img
+                    src="{{ asset('bundles/app/images/30ans/piquenique.jpg') }}"
+                    alt=" "
+                    class="img-responsive" />
+                <div class="agile_events_grid_pos_sub agile_events_grid_pos1">
+                    <h5 class="w3_agileits_event_head">
+                        <span>29 </span> 
+                        06 / 2018
+                    </h5>
+                    <h4><a href="#" data-toggle="modal" data-target="#event_02">
+                            Pique-nique familial et spectacle pour les enfants
+                    </a></h4>
+                </div>
+            </div>
+            <div class="agile_events_grid">
+                <img 
+                    src="{{ asset('bundles/app/images/30ans/bal.jpg') }}" 
+                    alt=" " 
+                    class="img-responsive" />
+                <div class="agile_events_grid_pos agile_events_grid_pos1">
+                    <h5><span>18 </span> 11 / 2018</h5>
+                    <h4><a href="#" data-toggle="modal" data-target="#event_03">
+                            Exposition et bal</a></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- //events -->              
+{% endblock %}

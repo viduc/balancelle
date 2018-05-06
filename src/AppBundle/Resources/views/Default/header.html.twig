@@ -2,19 +2,27 @@
 <div class="w3_agile_header">
     <div class="container">
         <div class="w3_agile_header_left">
-            <p>Association la Balancelle loi 1901</p>
+            <img
+            src="{{asset('bundles/app/images/logos/balancelle.jpeg')}}"
+            alt=" "
+            class="img-responsive"
+            width="48"
+            height="48"/>
+        </div>
+        <div class="w3_agile_header_left">
+            <p>Association loi 1901</p>
         </div>
         <div class="w3_agile_header_right">
             <ul>
-                <li>
+                <!--li>
                     <a 
                         href="#small-dialog"
                         class="play-icon popup-with-zoom-anim">Connexion
                     </a>
-                </li>
+                </li-->
                 <li>
                     <i class="fa fa-phone" aria-hidden="true"></i>
-                    04 76 76 76 76
+                    04 76 35 47 52
                 </li>
             </ul>
         </div>
@@ -50,6 +58,23 @@
                 id="bs-example-navbar-collapse-1">
                 <nav class="menu menu--miranda">
                     <ul class="nav navbar-nav menu__list">
+                        {% if app.request.attributes.get('_route') == 'app_trenteans' %}
+                        <li class="menu__item menu__item--current">
+                            <a 
+                                href="{{ path('app_homepage') }}" 
+                                class="menu__link">
+                                Retour à l'accueil
+                            </a>
+                        </li>
+                        {% endif %}
+                        <!--li class="menu__item">
+                            <a 
+                                href="#events" 
+                                class="scroll menu__link">
+                                Our Events
+                            </a>
+                        </li-->
+                        {% if app.request.attributes.get('_route') == 'app_homepage' %}
                         <li class="menu__item menu__item--current">
                             <a 
                                 href="{{ path('app_homepage') }}" 
@@ -59,39 +84,40 @@
                         </li>
                         <li class="menu__item">
                             <a 
-                                href="#events" 
+                                href="#quisommesnous"
                                 class="scroll menu__link">
-                                Our Events
+                                La Balancelle
                             </a>
                         </li>
                         <li class="menu__item">
                             <a 
-                                href="#programs"
+                                href="#structures"
                                 class="scroll menu__link">
-                                Programs
+                                Nos services
                             </a>
                         </li>
                         <li class="menu__item">
                             <a 
-                                href="#work" 
-                                class="scroll menu__link">
-                                Work
+                                href="{{ path('app_trenteans') }}" 
+                                class="menu__link">
+                                Les 30 ans
                             </a>
                         </li>
-                        <li class="menu__item">
+                        <!--li class="menu__item">
                             <a 
                                 href="#team" 
                                 class="scroll menu__link">
                                 Team
                             </a>
-                        </li>
+                        </li-->
                         <li class="menu__item">
                             <a 
                                 href="#mail" 
                                 class="scroll menu__link">
-                                Nous écrire
+                                Contact
                             </a>
                         </li>
+                        {% endif %}
                     </ul>
                 </nav>
             </div>

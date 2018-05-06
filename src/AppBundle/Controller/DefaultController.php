@@ -15,4 +15,9 @@ class DefaultController extends Controller
     {
         return $this->render('@App/Default/index.html.twig');
     }
+    
+    public function trenteAnsAction()
+    {
+        return $this->render('@App/Default/30ans.html.twig');
+    }
 }

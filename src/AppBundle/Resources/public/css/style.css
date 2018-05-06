@@ -46,6 +46,7 @@ input[type="submit"],a,.agileinfo_social_icons li{
 }
 .w3_agile_header_left{
 	float:left;
+        margin-left: 5px;
 }
 .w3_agile_header_left p{
 	color:#fff;
@@ -476,7 +477,7 @@ input[type="submit"],a,.agileinfo_social_icons li{
 	text-align:right;
 }
 .w3_agile_banner_info p.w3_agileits_banner_para{
-	font-size: 1em;
+    font-size: 2em;
     color: #fff;
     text-transform: uppercase;
     letter-spacing: 4px;
@@ -625,6 +626,7 @@ input[type="submit"],a,.agileinfo_social_icons li{
 }
 .modal-content {
     border-radius: 0;
+    height: auto;
 }
 button.close {
     font-size: 1em;
@@ -685,11 +687,11 @@ span.char26 {
 	color:#65b126;
 }
 .w3_agile_elit{
-	text-align:center;
-	color:#999;
-	line-height:2em;
-	padding-bottom:1em;
-	position:relative;
+    text-align:center;
+    color:#999;
+    line-height:2em;
+    padding-bottom:1em;
+    position:relative;
 }
 .w3_agile_elit:before{
 	content: '';
@@ -697,30 +699,30 @@ span.char26 {
     height: 2px;
     width: 10%;
     position: absolute;
-    bottom: 0%;
+    bottom: 20%;
     left: 45.5%;
 }
 .agile_banner_bottom_grids{
-	margin:3em 0 0;
+	margin:3em 0 0 15em;
 }
 .agile_banner_bottom_grid{
-	border:1px solid #fa3d03;
-	border-right:none;
-	padding:1em;
-	position:relative;
+    border:1px solid #fa3d03;
+    border-right:none;
+    padding:1em;
+    position:relative;
 }
-.agile_banner_bottom_grid:nth-child(4){
+.agile_banner_bottom_grid:nth-child(3){
 	border-right:1px solid #fa3d03;
 }
 .agile_banner_bottom_grid_pos{
-	position: absolute;
+    position: absolute;
     bottom: -5%;
-    left: 25%;
+    left: 15%;
 }
 .agile_banner_bottom_grid_pos h4{
-	font-size: 1.5em;
+    font-size: 1.3em;
     color: #fff;
-    padding: .3em 1.5em;
+    padding: .3em 1.2em;
     background: #14a1ff;
 }
 .agileits_w3layouts1{
@@ -1119,16 +1121,28 @@ span.char26 {
     z-index: -1;
 }
 .agile_events_grid{
-	width:45%;
+	width:55%;
 	margin:0 auto;
 	position:relative;
 }
+.evenement1 img{
+    width: 800px;
+    height: 400px;
+}
+.evenement2 img{
+    width: 800px;
+    height: 400px;
+}
+.evenement3 img{
+    width: 800px;
+    height: 400px;
+}
 .agile_events_grid_pos{
-	position: absolute;
+    position: absolute;
     left: -57%;
     top: 10%;
     width: 70%;
-	border-bottom: 2px solid #fa3d03;
+    border-bottom: 2px solid #fa3d03;
 }
 .agile_events_grid_pos_sub{
 	position: absolute;
@@ -1414,7 +1428,10 @@ span.char26 {
     z-index: 1;
 }
 .agileits_demo{
-	margin:2em 0 0;
+    font-size:0.9em;
+    width: 380px;
+    height: 225px;
+    margin:2em 0 0;
 }
 /*-- //work --*/
 /*-- newsletter --*/
@@ -1662,7 +1679,8 @@ span.char26 {
 /*-- footer --*/
 .w3_agileits_twitter_post{
 	padding: 2em 0;
-    border: 2px solid #14a1ff;
+    border: 0px solid #14a1ff;
+    border-bottom: 2px solid #14a1ff;
 }
 .w3_agileits_twitter_post h4{
 	color: #212121;
@@ -1745,23 +1763,29 @@ span.char26 {
 	border-left: 2px solid #14a1ff;
 }
 .wthree_footer_grid_right1 h5{
-	font-size: 1.3em;
+    font-size: 1.2em;
     color: #212121;
     text-transform: uppercase;
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
     letter-spacing: 2px;
-	border-bottom:2px solid #14a1ff;
-	padding:1em 3em;
+    border-bottom:2px solid #14a1ff;
+    padding:2em 3em;
+    border-right:2px solid #14a1ff;
 }
 .wthree_footer_grid_right1 ul{
-	padding:2em 4em;
+	padding-top:1.8em;
+        padding-bottom: 2em;
+        padding-left: 3em;
+        padding-right: 3em;
+        border-right:2px solid #14a1ff;
 }
 .wthree_footer_grid_right2,.wthree_footer_grid_right1 ul{
-	border-bottom:2px solid #14a1ff;
+	border-bottom:0px solid #14a1ff;
 }
 .wthree_footer_grid_right2{
-	border-left:2px solid #14a1ff;
+	border-left:0px solid #14a1ff;
+        
 }
 .wthree_footer_grid_right1 ul li{
 	list-style-type:none;
@@ -1778,7 +1802,8 @@ span.char26 {
 }
 .wthree_footer_grid_right2_w3{
 	float:left;
-	width:33.33%;
+	width:100%;
+        height:300px;
 }
 .wthree_footer_grid_right_main1{
 	text-align:center;
@@ -1806,6 +1831,62 @@ span.char26 {
 	color:#212121;
 }
 /*-- //footer --*/
+/*-- quissommesnous --*/
+.quisommesnous {
+    margin-top: 50px;
+    margin-bottom: 10px;
+}
+.quisommesnous ul li{
+    list-style-type:none;
+}
+.quisommesnous i{
+    color: #fa3d03;
+    padding-right:0.25em;
+}
+.quisommesnous h4{
+    font-size: 1.5em;
+    letter-spacing: 3px;
+    text-transform: capitalize;
+    line-height: 1.5em;
+    font-weight: 600;
+    text-decoration: none;
+}
+.quisommesnous1 h4{
+    color: #fa3d03;
+}
+.quisommesnous2 h4{
+    color: #14a1ff;
+}
+.quisommesnous3 h4{
+    color: #65b126;
+}
+.quisommesnous1 {
+    height: 400px;
+}
+.quisommesnous2 {
+    height: 400px;
+}
+.quisommesnous3 {
+    height: 400px;
+}
+.quisommesnous1img {
+    height: 400px;
+}
+.quisommesnous2img {
+    height: 400px;
+}
+.quisommesnous3img {
+    height: 400px;
+}
+.quisommesnous_pos{
+    padding: 2em;
+    background: #f5f5f5;
+}
+.quisommesnouscontainer {
+        height: 800px;
+        padding:0em 18em;
+    }
+/*-- //quissommesnous --*/
 /*-- to-top --*/
 #toTop {
 	display: none;
@@ -1833,55 +1914,178 @@ span.char26 {
 }
 /*-- //to-top --*/
 /*-- start-responsive-design --*/
+@media (max-width:1555px){
+    .quisommesnouscontainer {
+        height: 800px;
+        padding:0em 15em;
+    }
+}
+@media (max-width:1475px){
+    .quisommesnouscontainer {
+        height: 800px;
+        padding:0em 12em;
+    }
+}
 @media (max-width:1440px){
 	.newsletter:after {
 		right: 0%;
 	}
 	.wthree_footer_grid_right1 ul {
-		padding: 1.25em 4em;
+		padding: 1.5em 2.5em;
 	}
 	.wthree_footer_grid_right_main1 {
 		padding: 1.5em;
 	}
+    .wthree_footer_grid_right2_w3{
+	float:left;
+	width:100%;
+        height:290px;
+    }
+}
+@media (max-width:1390px){
+    .quisommesnouscontainer {
+        height: 800px;
+        padding:0em 10em;
+    }  
 }
 @media (max-width:1366px){
-	.center-container {
-		padding: 15em 0;
-	}
-	.programs:before {
-		background: url(../images/6.jpg) no-repeat 0px 0px;
-		background-size: 100%;
-		width: 325px;
-		height: 227px;
-	}
-	.wthree_footer_grid_right1 ul {
-		padding: .95em 4em;
-	}
-	.wthree_footer_grid_right_main1 {
-		padding: 2em;
-	}
+    .center-container {
+            padding: 15em 0;
+    }
+    .programs:before {
+            background: url(../images/6.jpg) no-repeat 0px 0px;
+            background-size: 100%;
+            width: 325px;
+            height: 227px;
+    }
+    .wthree_footer_grid_right1 ul {
+            /*padding: .95em 4em;*/
+            padding: 1.5em 2.5em;
+    }
+    .wthree_footer_grid_right_main1 {
+            padding: 2em;
+    }
+    .wthree_footer_grid_right2_w3 {
+	float:left;
+	width:100%;
+        height:295px;
+    }
+}
+@media (max-width:1335px){
+    .quisommesnous ul li{
+        list-style-type:none;
+        font-size: 0.9em;
+    }
+    .quisommesnous3 {
+        padding-right:0.15em;
+        font-size: 0.9em;
+    }
+    .quisommesnouscontainer {
+        height: 800px;
+        padding:0em 10em;
+    }
 }
 @media (max-width:1280px){
-	.w3_navigation_pos {
-		left: 43%;
-	}
-	.newsletter:after {
-		background: url(../images/4.png) no-repeat 0px 0px;
-		background-size: 100%;
-		width: 225px;
-		height: 268px;
-		top: -46%;
-	}
-	.wthree_footer_grid_right1 ul {
-		padding: .55em 2em;
-	}
-	.wthree_footer_grid_left1:nth-child(3) {
-		padding: 0;
-	}
-	.wthree_footer_grid_right_main1 {
-		padding: 2.2em;
-	}
+    .w3_navigation_pos {
+            left: 43%;
+    }
+    .newsletter:after {
+            background: url(../images/4.png) no-repeat 0px 0px;
+            background-size: 100%;
+            width: 225px;
+            height: 268px;
+            top: -46%;
+    }
+    .wthree_footer_grid_right1 ul {
+            padding: 1.5em 1.2em 1.8em;
+    }
+    .wthree_footer_grid_left1:nth-child(3) {
+            padding: 0;
+    }
+    .wthree_footer_grid_right_main1 {
+            padding: 2.2em;
+    }
+    .wthree_footer_grid_right1 h5{
+        padding:2.3em 2em;
+    } 
+    .wthree_footer_grid_right2_w3 {
+	float:left;
+	width:100%;
+        height:305px;
+    }
 }
+@media (max-width:1235px){
+    .quisommesnous h4{
+        font-size: 1.2em;
+        letter-spacing: 3px;
+        text-transform: capitalize;
+        line-height: 1.2em;
+        font-weight: 600;
+        text-decoration: none;
+    }
+    .quisommesnouscontainer {
+        height: 800px;
+        padding:0em 10em;
+    }
+}
+@media (max-width:1210px){
+
+    .wthree_footer_grid_right1 h5{
+        padding:2.3em 1.5em;
+    } 
+    .wthree_footer_grid_right2_w3 {
+	float:left;
+	width:100%;
+        height:330px;
+    }
+    .wthree_footer_grid_right1 ul {
+            padding: 2.6em 1.2em 2.6em;
+    }    
+    
+    /*-- quissommesnous --*/
+    .quisommesnouscontainer {
+        height: 800px;
+        padding:0em 9em;
+    }
+    /*-- //quissommesnous --*/
+}
+@media (max-width:1135px){
+    .quisommesnous ul li {
+        list-style-type:none;
+        font-size: 0.9em;
+    }
+    .quisommesnous3 {
+        padding-right:0.15em;
+        font-size: 0.9em;
+    }
+    .quisommesnous h4{
+        font-size: 1em;
+        letter-spacing: 3px;
+        text-transform: capitalize;
+        line-height: 1em;
+        font-weight: 600;
+        text-decoration: none;
+    }
+    .quisommesnouscontainer {
+        height: 800px;
+        padding:0em 10em;
+    }
+}
+@media (max-width:1100px){
+
+    .wthree_footer_grid_right1 h5{
+        padding:2.3em 1em;
+    } 
+    .wthree_footer_grid_right1 ul {
+            padding: 3.6em 1em 3.6em;
+    }    
+    .wthree_footer_grid_right2_w3 {
+	float:left;
+	width:100%;
+        height:360px;
+    }
+}
+
 @media (max-width:1080px){
 	.menu--miranda .menu__item {
 		margin: 1.5em 1em 1.5em 0;
@@ -1977,10 +2181,9 @@ span.char26 {
 		background: url(../images/5.png) no-repeat 31px 120px;
 		background-color: #fee00c;
 	}
-	.wthree_footer_grid_right1 h5 {
-		font-size: 1.1em;
-		padding: .5em 1em;
-	}
+        .wthree_footer_grid_right1 h5{
+            padding:2.3em 0.7em;
+        } 
 	.wthree_footer_grid_right1 ul li {
 		margin-bottom: .96em;
 	}
@@ -1999,6 +2202,9 @@ span.char26 {
 	.wthree_team_grid_w3_pos ul li:nth-child(2) {
 		margin: 0.2em 0;
 	}
+        .wthree_footer_grid_right1 ul {
+            padding: 3.6em 0.5em 3.6em;
+        }  
 }
 @media (max-width:1024px){
 	.wthree_footer_grid_left {
@@ -2013,6 +2219,14 @@ span.char26 {
 	.wthree_footer_grid_right_main1 {
 		padding: 1.8em;
 	}
+        .wthree_footer_grid_right1 ul {
+            padding: 3em 0.3em 3em;
+        }
+        .wthree_footer_grid_right2_w3 {
+            float:left;
+            width:100%;
+            height:330px;
+        }
 }
 @media (max-width: 991px){
 	.menu--miranda .menu__item {
@@ -2160,11 +2374,41 @@ span.char26 {
 	.wthree_footer_grid_right1 ul li {
 		margin-bottom: 1em;
 	}
+        .wthree_footer_grid_right2_w3 {
+            float:left;
+            width:100%;
+            height:288px;
+        }
+    /*-- quissommesnous --*/
+    .quisommesnouscontainer {
+        height: 1200px;
+        padding:1em 10em;
+    }
+    /*-- //quissommesnous --*/
 }
 @media (max-width: 900px){
 	.wthree_footer_grid_right1 ul {
 		padding: 1.05em 3em;
 	}
+        .wthree_footer_grid_right2_w3 {
+            float:left;
+            width:100%;
+            height:268px;
+        }
+}
+@media (max-width: 865px){
+    /*-- quissommesnous --*/
+    .quisommesnouscontainer {
+        height: 1200px;
+        padding:1em 8em;
+    }
+}
+@media (max-width: 830px){
+    /*-- quissommesnous --*/
+    .quisommesnouscontainer {
+        height: 1200px;
+        padding:1em 5em;
+    }
 }
 @media (max-width: 800px){
 	.banner-bottom, .programs, .team, .stats, .events, .testimonials, .work, .newsletter, .contact {
@@ -2189,6 +2433,11 @@ span.char26 {
 	.wthree_footer_grid_right1 ul {
 		padding: 1.25em 3em;
 	}
+        .wthree_footer_grid_right2_w3 {
+            float:left;
+            width:100%;
+            height:248px;
+        }
 }
 @media (max-width: 768px){
 	.w3_navigation_pos {
@@ -2243,6 +2492,11 @@ span.char26 {
 	.container {
 		width: auto;
 	}
+        .wthree_footer_grid_right2_w3 {
+            float:left;
+            width:100%;
+            height:230px;
+        }
 }
 @media (max-width: 767px){
 	.w3_navigation_pos h1 a {
@@ -2327,6 +2581,11 @@ span.char26 {
 	.wthree_footer_grid_right1 h5 {
 		padding: 0.5em 3em;
 	}
+        .wthree_footer_grid_right2_w3 {
+            float:left;
+            width:100%;
+            height:215px;
+        }
 }
 @media (max-width: 640px){
 	.view h5 {
@@ -2367,6 +2626,11 @@ span.char26 {
 	.wthree_footer_grid_right1 ul li {
 		margin-bottom: .55em;
 	}
+        .wthree_footer_grid_right2_w3 {
+            float:left;
+            width:100%;
+            height:200px;
+        }
 }
 @media (max-width: 600px){
 	.w3_agile_banner_info h2 {
@@ -2419,6 +2683,11 @@ span.char26 {
 	.wthree_footer_grid_right1 ul li {
 		margin-bottom: .24em;
 	}
+        .wthree_footer_grid_right2_w3 {
+            float:left;
+            width:100%;
+            height:190px;
+        }
 }
 @media (max-width: 568px){
 	.view h5 {
@@ -2689,6 +2958,10 @@ span.char26 {
 	.agileits_w3layouts_user i {
 		width: 16%;
 	}
+        .quisommesnouscontainer {
+        height: 1200px;
+        padding:0em 1em;
+    }
 }
 @media (max-width: 384px){
 	.w3_agile_banner_info h2 {
