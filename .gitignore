@@ -3,6 +3,8 @@
 
 # ================================= partie app =================================
 /app/*
+!/app/config
+/app/config/*
 !/app/config/config.yml
 !/app/config/routing.yml
 !/app/config/security.yml
