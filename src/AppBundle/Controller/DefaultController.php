@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Entity\Evenements;
 
 class DefaultController extends Controller
 {
@@ -13,7 +14,13 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        return $this->render('@App/Default/index.html.twig');
+        $repository = $this->getDoctrine()->getRepository(Evenements::class);
+        $evenements = $repository->findAllActiveEvenement();
+        var_dump($evenements);
+        return $this->render(
+            '@App/Default/index.html.twig',
+            array('evenements' => $evenements)
+        );
     }
     
     public function trenteAnsAction()
