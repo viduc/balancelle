@@ -16,7 +16,6 @@ class DefaultController extends Controller
     {
         $repository = $this->getDoctrine()->getRepository(Evenements::class);
         $evenements = $repository->findAllActiveEvenement();
-        var_dump($evenements);
         return $this->render(
             '@App/Default/index.html.twig',
             array('evenements' => $evenements)
