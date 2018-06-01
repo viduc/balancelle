@@ -1,0 +1,58 @@
+{% extends '@App/Admin/evenements_head.html.twig' %}
+{% block action %}
+    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+        <table class="table">
+            <th>Titre</th>
+            <th>Date</th>
+            <th>Actif</th>
+            <th>En ligne</th>    
+        {% for evenement in liste %}
+            <tr>
+                <td><a href="{{ path(
+                    'app_admin_evenements_modify',
+                    {idevenement:evenement.id}
+                ) }}" >
+                    {{ evenement.titre }}
+                </a></td>
+                <td>{{ evenement.date|date('d/m/Y') }}</td>
+                <td>
+                    {% if evenement.active %}
+                        <img src="{{ asset('bundles/app/images/on.png') }}" />
+                    {% else %}
+                        <img src="{{ asset('bundles/app/images/off.png') }}" />
+                    {% endif %}
+                </td>
+                <td>
+                    {% if evenement.active  and 
+                        date() < date(evenement.date)%}
+                        <img src="{{ asset('bundles/app/images/on.png') }}" />
+                    {% else %}
+                        <img src="{{ asset('bundles/app/images/off.png') }}" />
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-center ">
+        <div class="div-square">
+            <a href="{{ path('app_admin_evenements_add') }}" >
+                <i class="fa fa-calendar-plus-o fa-5x"></i>
+                <h4>Nouvel évènement</h4>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+          
+
+
+    
+
+
+
+
+          
+
+
+    
+

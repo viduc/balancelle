@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as AcmeAssert;
 
 /**
  * Evenements
@@ -23,7 +25,7 @@ class Evenements
 
     /**
      * @var \DateTime
-     *
+     * @AcmeAssert\DateDuJourMinimum
      * @ORM\Column(name="date", type="date")
      */
     private $date;
@@ -38,28 +40,31 @@ class Evenements
     /**
      * @var string
      *
-     * @ORM\Column(name="image", type="string", length=255)
+     * @ORM\Column(name="image", type="string", length=255, nullable=true)
+     * @Assert\File(
+     *     mimeTypes = {"image/*"}
+     * )
      */
     private $image;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="heure", type="time")
+     * @ORM\Column(name="heure", type="time", nullable=true)
      */
     private $heure;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="lieu", type="string", length=255)
+     * @ORM\Column(name="lieu", type="string", length=255, nullable=true)
      */
     private $lieu;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="information", type="string", length=255)
+     * @ORM\Column(name="information", type="text", nullable=true)
      */
     private $information;
 

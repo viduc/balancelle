@@ -16,74 +16,30 @@
         </h3>
         <p class="w3_agile_elit"></p>
         <div class="agile_banner_bottom_grids">
+            {% set class = 'agile_events_grid_pos' %}
             {% for evenement in evenements %}
                 <div class="agile_events_grid">
                     <img
-                        src="{{ asset('bundles/app/images/evenements/' ~ evenement.image) }}"
+                        src="{{ asset(evenement.image) }}"
                         alt=" "
-                        class="img-responsive" /> 
-                    <div class="agile_events_grid_pos agile_events_grid_pos1">
+                        class="img-responsive evenement-img" /> 
+                    <div class="{{ class }} agile_events_grid_pos1">
                         <h5>
                             <span>{{ evenement.date|date('d') }}</span> 
-                            {{ evenement.date|date('m-Y') }}</h5>
-                        <h4><a href="#" data-toggle="modal" data-target="#myModal">
+                            {{ evenement.date|date('m-Y') }}
+                        </h5>
+                        <h4><a href="#" data-toggle="modal" data-target="#modal-{{evenement.id}}">
                             {{ evenement.titre }}</a></h4>
                         <p></p>
                     </div>
                 </div>
+                {% if class is same as('agile_events_grid_pos') %}
+                    {% set class = 'agile_events_grid_pos_sub' %}
+                {% else %}
+                    {% set class = 'agile_events_grid_pos' %}
+                {% endif %}
+                <br/>
             {% endfor %}
-            
-            <!--div class="agile_events_grid">
-                <img
-                    src="{{ asset('bundles/app/images/13.jpg') }}"
-                    alt=" "
-                    class="img-responsive" />
-                <div class="agile_events_grid_pos_sub agile_events_grid_pos1">
-                    <h5 class="w3_agileits_event_head"><span>05</span> 12 / 2016</h5>
-                    <h4><a href="#" data-toggle="modal" data-target="#myModal">
-                            consequat dictum sodales</a></h4>
-                    <p>Nunc non maximus augue, sit amet dictum diam. 
-                        Etiam ultrices hendrerit sapien, 
-                            id volutpat tortor viverra et.</p>
-                </div>
-                <div class="agileits_w3layouts_events_grid_social1">
-                    <ul class="agileinfo_social_icons">
-                        <li><a href="#" class="w3_twitter">
-                            <i class="fa fa-twitter" aria-hidden="true"></i>
-                        </a></li>
-                        <li><a href="#" class="w3l_google">
-                            <i class="fa fa-google-plus" aria-hidden="true"></i>
-                        </a></li>
-                        <li><a href="#" class="w3ls_dribble">
-                            <i class="fa fa-dribbble" aria-hidden="true"></i>
-                        </a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="agile_events_grid">
-                <img src="{{ asset('bundles/app/images/15.jpg') }}" alt=" " class="img-responsive" />
-                <div class="agile_events_grid_pos agile_events_grid_pos1">
-                    <h5><span>09</span> 12 / 2016</h5>
-                    <h4><a href="#" data-toggle="modal" data-target="#myModal">
-                            ultrices hendrerit amet</a></h4>
-                    <p>Nunc non maximus augue, sit amet dictum diam. 
-                        Etiam ultrices hendrerit sapien, 
-                            id volutpat tortor viverra et.</p>
-                </div>
-                <div class="agileits_w3layouts_events_grid_social">
-                    <ul class="agileinfo_social_icons">
-                        <li><a href="#" class="w3_twitter">
-                            <i class="fa fa-twitter" aria-hidden="true"></i>
-                        </a></li>
-                        <li><a href="#" class="w3l_google">
-                            <i class="fa fa-google-plus" aria-hidden="true"></i>
-                        </a></li>
-                        <li><a href="#" class="w3ls_dribble">
-                            <i class="fa fa-dribbble" aria-hidden="true"></i>
-                        </a></li>
-                    </ul>
-                </div>
-            </div-->
         </div>
     </div>
 </div>
