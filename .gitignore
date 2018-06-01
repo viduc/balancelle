@@ -10,7 +10,9 @@
 !/app/config/security.yml
 !/app/config/services.yml
 !/app/AppKernel.php
-
+!/app/Resources/
+/app/Resources/*
+!/app/Resources/FOSUserBundle
 # ================================= partie bin =================================
 /bin/
 

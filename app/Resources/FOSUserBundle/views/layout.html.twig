@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+    {% block stylesheets %}
+    <link 
+        rel="stylesheet" 
+        href="{{ asset('bundles/app/css/admin/login.css') }}" 
+        type="text/css" 
+        media="screen" 
+    />
+    {% endblock %}
+{% block javascripts %}
+    <script 
+        type="text/javascript" 
+        src="{{ asset('bundles/app/js/admin/jquery.js') }}" >
+    </script>
+    <script 
+        type="text/javascript" 
+        src="{{ asset('bundles/app/js/jquery-2.1.4.min.js') }}" >
+    </script>
+    <script 
+        type="text/javascript" 
+        src="{{ asset('bundles/app/js/admin/rainbows.js') }}" >
+    </script>
+    <script>
+	$(document).ready(function(){
+ 
+	$("#submit1").hover(
+	function() {
+	$(this).animate({"opacity": "0"}, "slow");
+	},
+	function() {
+	$(this).animate({"opacity": "1"}, "slow");
+	});
+ 	});
+    </script>
+  <!-- CUSTOM SCRIPTS -->
+{% endblock %}
+<body>
+    <div>
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            {{ 'layout.logged_in_as'|trans(
+                {'%username%': app.user.username},
+                'FOSUserBundle'
+            ) }} |
+            <a href="{{ path('fos_user_security_logout') }}">
+                {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+            </a>
+        {# else #}
+            <!--a href="{{ path('fos_user_security_login') }}">
+                {{ 'layout.login'|trans({}, 'FOSUserBundle') }}
+            </a-->
+        {% endif %}
+    </div>
+
+    {% if app.request.hasPreviousSession %}
+        {% for type, messages in app.session.flashbag.all() %}
+            {% for message in messages %}
+                <div class="flash-{{ type }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+
+    <div id="wrapper">
+        {% block fos_user_content %}
+        {% endblock fos_user_content %}
+    </div>
+</body>
+</html>
