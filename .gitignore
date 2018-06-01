@@ -1,6 +1,8 @@
 # ================================= partie web =================================
 /web/*
-
+!/web/evenements
+/web/evenements/*
+!/web/evenements/noimage.png
 # ================================= partie app =================================
 /app/*
 !/app/config
