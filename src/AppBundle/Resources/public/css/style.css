@@ -636,6 +636,11 @@ button.close {
 .w3_modal_body_left {
     padding-left: 0;
 }
+.w3_modal_body_center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
 /*-- //bootstrap-pop-up --*/
 .agileits_w3layouts_header{
 	overflow:hidden;
@@ -1114,7 +1119,7 @@ span.char26 {
     background: url(../images/14.jpg) no-repeat 0px 0px;
     display: block;
     width: 400px;
-    height: 197px;
+    height: 500px;
     position: absolute;
     right: 0%;
     top: 0%;
@@ -1124,6 +1129,10 @@ span.char26 {
 	width:55%;
 	margin:0 auto;
 	position:relative;
+}
+.evenement-img{
+    width: 800px;
+    height: auto;
 }
 .evenement1 img{
     width: 800px;
