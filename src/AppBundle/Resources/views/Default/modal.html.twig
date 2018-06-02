@@ -7,7 +7,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                {{ evenement.date|date('d/m/Y') }} - {{ evenement.heure }} - {{ evenement.lieu }}
+                {{ evenement.date|date('d/m/Y') }} - {{ evenement.heure|date('H:i') }} - {{ evenement.lieu }}
                 <button 
                     type="button" 
                     class="close" 
