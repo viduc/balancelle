@@ -108,13 +108,15 @@
                                 Les 30 ans
                             </a>
                         </li>
-                        <!--li class="menu__item">
+                        {% if evenements|length >0 %}
+                        <li class="menu__item">
                             <a 
-                                href="#team" 
+                                href="#events" 
                                 class="scroll menu__link">
-                                Team
+                                Evènements
                             </a>
-                        </li-->
+                        </li>
+                        {% endif %}
                         <li class="menu__item">
                             <a 
                                 href="#mail" 
