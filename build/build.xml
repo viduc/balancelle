@@ -22,8 +22,8 @@
     </target>
 
     <target name="qa" description="Lance les outils d'analyse">
-        <!--phingcall target="pdepend" />
-        <phingcall target="phpmd" />
+        <phingcall target="pdepend" />
+        <!--phingcall target="phpmd" />
         <phingcall target="phpcpd" />
         <phingcall target="phploc" />
         <phingcall target="phpcs" />
