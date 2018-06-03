@@ -1,0 +1,5 @@
+src/AppBundle/Controller
+src/AppBundle/Entity
+src/AppBundle/Form
+src/AppBundle/Repository
+src/AppBundle/Validator
