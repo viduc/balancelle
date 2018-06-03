@@ -27,8 +27,8 @@
         <phingcall target="phpcpd" />
         <phingcall target="phploc" />
         <phingcall target="phpcs" />
-        <!--phingcall target="phpdox" />
-        <phingcall target="phpunit" />
+        <phingcall target="phpdox" />
+        <!--phingcall target="phpunit" />
         <phingcall target="phpcb" /-->
     </target>
 
