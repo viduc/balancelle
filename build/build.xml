@@ -28,8 +28,8 @@
         <phingcall target="phploc" />
         <phingcall target="phpcs" />
         <phingcall target="phpdox" />
-        <!--phingcall target="phpunit" />
-        <phingcall target="phpcb" /-->
+        <!--phingcall target="phpunit" /-->
+        <phingcall target="phpcb" />
     </target>
 
     <!-- pour pour des statisques sur la qualité du code  (complexité cyclomatiques, profondeur d’héritage, 
