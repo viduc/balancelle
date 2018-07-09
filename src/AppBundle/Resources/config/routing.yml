@@ -1,6 +1,10 @@
 app_homepage:
     path:     /
     defaults: { _controller: AppBundle:Default:index }
+
+app_revuepresse:
+    path:   /revuepresse
+    defaults: { _controller: AppBundle:Default:revuePresse }
     
 app_trenteans:
     path:   /trenteans
@@ -21,3 +25,15 @@ app_admin_evenements_add:
 app_admin_evenements_modify:
     path:     /admin/evenementsModify/{idevenement}
     defaults: { _controller: AppBundle:Admin:evenementsSave }
+    
+app_admin_revuepresse_liste:
+    path:     /admin/revuepresseListe
+    defaults: { _controller: AppBundle:Admin:revuepresseListe }
+    
+app_admin_revuepresse_add:
+    path:     /admin/revuepresseAdd
+    defaults: { _controller: AppBundle:Admin:revuepresseSave }
+
+app_admin_revuepresse_modify:
+    path:     /admin/revuepresseModify/{idrevuepresse}
+    defaults: { _controller: AppBundle:Admin:revuepresseSave }

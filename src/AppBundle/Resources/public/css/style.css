@@ -850,6 +850,27 @@ span.char26 {
 }
 /*-- //hover-effect --*/
 /*-- //banner-bottom --*/
+
+/*-- revuepresses --*/
+.revuepresse{
+	background:#fef9f3;
+	position:relative;
+	z-index: 1;
+}
+.revuepresse:before{
+	content:'';
+	background:url(../images/revuepresse/fond.png) no-repeat center bottom;
+	display:block;
+	width:450px;
+	height:320px;
+	position:absolute;
+	right:0%;
+	bottom:0%;
+	z-index: -1;
+}
+
+/*-- //revuepresses --*/
+
 /*-- programs --*/
 .programs{
 	background:#fef9f3;

@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Evenements;
+use AppBundle\Entity\Revuepresse;
 
 class DefaultController extends Controller
 {
@@ -22,8 +23,18 @@ class DefaultController extends Controller
         );
     }
     
+    public function revuePresseAction()
+    {
+        $repository = $this->getDoctrine()->getRepository(Revuepresse::class);
+        $revuepresses = $repository->findAllActiveRevuepresse();
+        return $this->render(
+            '@App/Default/revuepresse.html.twig',
+            array('revuepresses' => $revuepresses)
+        );
+    }
+    
     public function trenteAnsAction()
     {
         return $this->render('@App/Default/30ans.html.twig');
-    }
+    }    
 }

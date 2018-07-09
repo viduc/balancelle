@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\File;
 use AppBundle\Entity\Evenements;
 use AppBundle\Form\EvenementsType;
+use AppBundle\Entity\Revuepresse;
+use AppBundle\Form\RevuepresseType;
 
 class AdminController extends Controller
 {
@@ -85,6 +87,92 @@ class AdminController extends Controller
             'form' => $form->createView(), 'evenement' => $evenement
         )); 
     }
+
+    /**
+     * Gestion de la revue de presse
+     * @return view
+     */
+    public function revuepresseListeAction()
+    {
+        $repository = $this->getDoctrine()->getRepository(Revuepresse::class);
+
+        $liste = $repository->findAll();
+        return $this->render('@App/Admin/revuepresse_liste.html.twig',
+            array('liste' => $liste));
+    }
+
+    /**
+     * Enregistre une nouvelle revue de presse ou modifie un évènement existant
+     * @param Request $request - null - id de la revue de presse - form
+     * @return view
+     */
+    public function revuepresseSaveAction( Request $request ) {
+        $image = new File('./revuepresse/noimage.png');
+        $scan = new File('./revuepresse/scan/noscan.pdf');
+        if (!$request->attributes->get('idrevuepresse')) {
+            $revuepresse = new Revuepresse();
+        } else {
+            $repository = $this->getDoctrine()->getRepository(Revuepresse::class);
+            $revuepresse = $repository->find(
+                $request->attributes->get('idrevuepresse')
+            );
+            //l'image étant enregistrée sous forme de string, il faut la 
+            //transformer en objet File
+            if ($revuepresse->getImage() !== null) {
+                $image = new File($revuepresse->getImage());
+            }
+            $revuepresse->setImage($image);
+            if ($revuepresse->getScan() !== null) {
+                $scan = new File($revuepresse->getScan());
+            }
+            $revuepresse->setScan($scan);
+        }
+        $form = $this->createForm(RevuepresseType::class, $revuepresse);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /* si on a une image de tramnsmise on la récupère */
+            if ($revuepresse->getImage() !== null) {
+                $file = $revuepresse->getImage();
+                $fileName = $this->generateUniqueFileName().'.';
+                $fileName.= $file->guessExtension();
+                // moves the file to the directory where images are stored
+                move_uploaded_file(
+                    $file, 
+                    './revuepresse/'.$fileName
+                ) or die("Unable to rename.");
+                $revuepresse->setImage(new File('./revuepresse/'.$fileName));
+            } else { //si pas d'image de transmise on enregistre soit la noimage,
+                // soit l'image déjà enregistrée en base si présente
+                $revuepresse->setImage($image);
+            }
+            /* si on a un scan de tramnsmise on la récupère */
+            if ($revuepresse->getScan() !== null) {
+                $file = $revuepresse->getScan();
+                $fileName = $this->generateUniqueFileName().'.';
+                $fileName.= $file->guessExtension();
+                // moves the file to the directory where images are stored
+                move_uploaded_file(
+                    $file, 
+                    './revuepresse/scan/'.$fileName
+                ) or die("Unable to rename.");
+                $revuepresse->setScan(new File('./revuepresse/scan/'.$fileName));
+            } else { //si pas d'image de transmise on enregistre soit la noimage,
+                // soit l'image déjà enregistrée en base si présente
+                $revuepresse->setScan($scan);
+            }
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($revuepresse);
+            $entityManager->flush();
+                $this->addFlash(
+                    'success',
+                    "La revue de presse a été enregistré"
+            );
+        }
+        return $this->render('@App/Admin/revuepresseAdd.html.twig', array(
+            'form' => $form->createView(), 'revuepresse' => $revuepresse
+        )); 
+    }
+
     
     /**
      * @return string

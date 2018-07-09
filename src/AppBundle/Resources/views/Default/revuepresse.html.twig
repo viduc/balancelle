@@ -1,0 +1,52 @@
+{% extends '@App/Default/layout.html.twig' %}
+{% block stylesheets_autre %}
+    {{ parent() }}
+<link 
+        rel="stylesheet" 
+        href="{{ asset('bundles/app/css/thumbnail-list.css') }}" 
+        type="text/css" 
+        media="screen" 
+    />
+{% endblock %}
+{% block body %}
+<!-- revue de presse -->
+<div id="revuepresse" class="revuepresse">
+    <div class="container">
+        <h3 class="w3_agileits_head">Revue de 
+            <span class="w3_child">p</span>
+            <span class="w3_child1">r</span>
+            <span class="w3_child2">e</span>
+            <span class="w3_child3">s</span>
+            <span class="w3_child4">s</span>
+            <span class="w3_child3">e</span>
+        </h3><br />
+        <p class="w3_agile_elit"></p>
+        {% if revuepresses|length >0 %}
+        <div class="agile_banner_bottom_grids">
+            <div class="thumbnail-list">
+                <ul>
+                    {% for revuepresse in revuepresses %}
+                    <li>
+                        <img src="{{asset(revuepresse.image)}}" />
+                        <h3>
+                            <a href="{{ revuepresse.url }}">{{ revuepresse.titre }}</a>
+                            {% if revuepresse.scan != "./revuepresse/scan/noscan.pdf" %}
+                            <a href="{{asset(revuepresse.scan)}}"
+                               style="color:#0B3861">
+                                <i class="fa fa-download" 
+                                    aria-hidden="true"></i>
+                            </a>
+                            {% endif %}
+                        </h3>
+                        <p>{{ revuepresse.information|raw }}</p>
+                        <h5>{{ revuepresse.media }} - {{ revuepresse.date|date('d-m-Y') }}</h5>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}                
+    </div>
+</div>
+<!-- //revue de presse -->
+{% endblock %}

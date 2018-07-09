@@ -1,0 +1,41 @@
+.thumbnail-list >  * {margin: 0; padding: 0;} 
+ 
+.thumbnail-list {
+  margin: 20px;
+}
+ 
+.thumbnail-list > ul {
+  list-style-type: none;
+  width: 500px;
+}
+ 
+.thumbnail-list > ul >  li > h3 {
+  font: bold 20px/1.5 Helvetica, Verdana, sans-serif;
+}
+ 
+.thumbnail-list > ul > li > h5 {
+  font: bold 10px/1 Helvetica, Verdana, sans-serif;
+  color: #4d0000;
+}
+
+.thumbnail-list > ul > li img {
+  float: left;
+  margin: 0 15px 0 0;
+  width: 60px; 
+  height: 60px;
+  object-fit: cover; 
+}
+ 
+.thumbnail-list > ul > li p {
+  font: 200 12px/1.5 Georgia, Times New Roman, serif;
+}
+ 
+.thumbnail-list > ul > li {
+  padding: 10px;
+  overflow: auto;
+}
+ 
+.thumbnail-list > ul > li:hover {
+  background: #eee;
+  /*cursor: pointer;*/
+}
