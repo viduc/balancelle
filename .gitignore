@@ -3,6 +3,12 @@
 !/web/evenements
 /web/evenements/*
 !/web/evenements/noimage.png
+!/web/revuepresse
+/web/revuepresse/*
+!/web/revuepresse/noimage.png
+!/web/revuepresse/scan
+/web/revuepresse/scan/*
+!/web/revuepresse/scan/noscan.pdf
 # ================================= partie app =================================
 /app/*
 !/app/config
