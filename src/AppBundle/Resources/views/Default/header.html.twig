@@ -63,7 +63,9 @@
                 id="bs-example-navbar-collapse-1">
                 <nav class="menu menu--miranda">
                     <ul class="nav navbar-nav menu__list">
-                        {% if app.request.attributes.get('_route') == 'app_trenteans' %}
+                        {% if app.request.attributes.get('_route') == 'app_trenteans' 
+                            or app.request.attributes.get('_route') == 'app_revuepresse'
+                        %}
                         <li class="menu__item menu__item--current">
                             <a 
                                 href="{{ path('app_homepage') }}" 
@@ -80,50 +82,57 @@
                             </a>
                         </li-->
                         {% if app.request.attributes.get('_route') == 'app_homepage' %}
-                        <li class="menu__item menu__item--current">
-                            <a 
-                                href="{{ path('app_homepage') }}" 
-                                class="menu__link">
-                                Accueil
-                            </a>
-                        </li>
-                        <li class="menu__item">
-                            <a 
-                                href="#quisommesnous"
-                                class="scroll menu__link">
-                                La Balancelle
-                            </a>
-                        </li>
-                        <li class="menu__item">
-                            <a 
-                                href="#structures"
-                                class="scroll menu__link">
-                                Nos services
-                            </a>
-                        </li>
-                        <li class="menu__item">
-                            <a 
-                                href="{{ path('app_trenteans') }}" 
-                                class="menu__link">
-                                Les 30 ans
-                            </a>
-                        </li>
-                        {% if evenements|length >0 %}
-                        <li class="menu__item">
-                            <a 
-                                href="#events" 
-                                class="scroll menu__link">
-                                Evènements
-                            </a>
-                        </li>
-                        {% endif %}
-                        <li class="menu__item">
-                            <a 
-                                href="#mail" 
-                                class="scroll menu__link">
-                                Contact
-                            </a>
-                        </li>
+                            <li class="menu__item menu__item--current">
+                                <a 
+                                    href="{{ path('app_homepage') }}" 
+                                    class="menu__link">
+                                    Accueil
+                                </a>
+                            </li>
+                            <li class="menu__item">
+                                <a 
+                                    href="#quisommesnous"
+                                    class="scroll menu__link">
+                                    La Balancelle
+                                </a>
+                            </li>
+                            <li class="menu__item">
+                                <a 
+                                    href="#structures"
+                                    class="scroll menu__link">
+                                    Nos services
+                                </a>
+                            </li>
+                            <li class="menu__item">
+                                <a 
+                                    href="{{ path('app_trenteans') }}" 
+                                    class="menu__link">
+                                    Les 30 ans
+                                </a>
+                            </li>
+                            {% if evenements|length >0 %}
+                            <li class="menu__item">
+                                <a 
+                                    href="#events" 
+                                    class="scroll menu__link">
+                                    Evènements
+                                </a>
+                            </li>
+                            {% endif %}
+                            <li class="menu__item">
+                                <a 
+                                    href="{{ path('app_revuepresse') }}" 
+                                    class="menu__link">
+                                    Revue de presse
+                                </a>
+                            </li>
+                            <li class="menu__item">
+                                <a 
+                                    href="#mail" 
+                                    class="scroll menu__link">
+                                    Contact
+                                </a>
+                            </li>
                         {% endif %}
                     </ul>
                 </nav>
