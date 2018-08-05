@@ -1,0 +1,33 @@
+<ul id="stickymenu" class="solidblockmenu">
+    {% if app.request.attributes.get('_route') == 'app_trenteans' 
+        or app.request.attributes.get('_route') == 'app_revuepresse'
+    %}
+        <li>
+            <a href="{{ path('app_homepage') }}" class="menuLink current">
+                Retour à l'accueil
+            </a>
+        </li>
+    {% endif %}
+    
+    {% if app.request.attributes.get('_route') == 'app_homepage' %}
+        <li>
+            <a href="{{ path('app_homepage') }}" class="menuLink current">
+                Accueil
+            </a>
+        </li>
+        <li><a href="#quisommesnous" class="menuLink" >La Balancelle</a></li>
+        <li><a href="#structures" class="menuLink">Nos services</a></li>
+        <li><a href="{{ path('app_trenteans') }}">Les 30 ans</a></li>
+        {% if evenements|length >0 %}
+            <li><a href="#events">Evènements</a></li>
+        {% endif %}
+        <li><a href="{{ path('app_revuepresse') }}" class="menuLink">
+                Revue de presse
+            </a>
+        </li>
+        <li><a href="#mail" class="menuLink">Contact</a></li>
+    {% endif %}
+</ul>
+
+
+

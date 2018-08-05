@@ -1,0 +1,40 @@
+
+
+.solidblockmenu{
+    margin: 0;
+    padding: 0;
+    float: left;
+    font: bold 14px Arial;
+    width: 100%;
+    overflow: hidden;
+    top: 0;
+    position: sticky;
+    margin-bottom: 1em;
+    border: 1px solid #625e00;
+    background: #212121;
+    border-width: 1px 0;
+    z-index: 10;
+}
+
+
+.solidblockmenu li{
+    display: inline;
+}
+
+.solidblockmenu li a{
+    float: left;
+    color: white;
+    padding: 12px 11px;
+    text-decoration: none;
+    border-right: 1px solid white;
+}
+
+.solidblockmenu li a:visited{
+    color: white;
+}
+
+.solidblockmenu li a:hover, .solidblockmenu li .current{
+    color: white;
+    background: #fa3d03;
+}
+

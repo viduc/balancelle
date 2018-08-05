@@ -50,7 +50,14 @@
             media="screen" 
         />
         <!-- //font-awesome-icons -->
-        
+        <!-- accordion -->
+        <link 
+            rel="stylesheet" 
+            href="{{ asset('bundles/app/css/menu.css') }}" 
+            type="text/css" 
+            media="screen" 
+        />
+        <!-- //menu -->        
         <!-- css pour google map -->
         <link 
             href="//fonts.googleapis.com/css?family=Handlee" 
@@ -158,6 +165,12 @@
             });
         </script>
         <!-- //here ends scrolling icon -->
+        <!-- menu -->
+        <script 
+            type="text/javascript" 
+            src="{{ asset('bundles/app/js/menu.js') }}" >
+        </script>
+        <!-- fin menu -->
     {% endblock %}
     {% block favicon %}
         <link rel="apple-touch-icon" sizes="57x57" 
