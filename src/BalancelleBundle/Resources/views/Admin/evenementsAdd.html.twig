@@ -1,0 +1,161 @@
+{% extends '@Balancelle/Admin/evenements_head.html.twig' %}
+{% block action %}
+    {% block stylesheets %}
+        <link 
+            rel="stylesheet" 
+            href="{{ asset('bundles/app/css/style.css') }}" 
+            type="text/css" 
+            media="screen" 
+        />
+        <link 
+            rel="stylesheet" 
+            href="{{ asset('bundles/balancelle/css/bbcode.default.min.css') }}" 
+            type="text/css" 
+            media="screen" 
+        />
+    {% endblock %}    
+    {% block javascripts %}
+        <script 
+            type="text/javascript" 
+            src="{{ asset('bundles/balancelle/js/sceditor.min.js') }}" >
+        </script>
+        <script 
+            type="text/javascript" 
+            src="{{ asset('bundles/balancelle/js/xhtml.js') }}" >
+        </script>
+        <script 
+            type="text/javascript" 
+            src="{{ asset('bundles/balancelle/js/monocons.js') }}" >
+        </script>
+    {% endblock %}   
+    <hr />
+    
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+    
+    <div class="row">
+        <div class="col-lg-12">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="row">
+            <div class="col-lg-4 form-group">
+                {{ form_label(form.titre, "Titre de l'évènement") }}
+                {{ form_errors(form.titre) }}
+                {{ form_widget(form.titre, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-lg-4 form-group">
+                {{ form_label(form.date, "Date de l'évènement") }}
+                {{ form_errors(form.date) }}
+                {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-lg-4 form-group">
+                {{ form_label(form.heure, "Heure de l'évènement") }}
+                {{ form_errors(form.heure) }}
+                {{ form_widget(form.heure, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+        <div class="row">    
+            <div class="col-lg-6 form-group">
+                {{ form_label(form.lieu, "Lieu de l'évènement") }}
+                {{ form_errors(form.lieu) }}
+                {{ form_widget(form.lieu, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-lg-6 ">
+                {{ form_label(form.image, "Photo de l'évènement") }}
+                {{ form_errors(form.image) }}
+                {{ form_widget(form.image) }}
+            </div>
+        </div>
+        <div class="row">    
+            <div class="col-lg-12 form-group">
+                {{ form_label(form.information, "Information de l'évènement") }}
+                {{ form_errors(form.information) }}
+                {{ form_widget(form.information, {'id': 'bbcode', 'attr': {'class': 'form-control', 'rows': '10'}}) }}
+            </div>
+        </div>    
+        <div class="row">
+            <div class="col-lg-6 form-group form-check">
+                {{ form_errors(form.active) }}
+                {{ form_widget(form.active, {'attr': {'class': 'form-check-input'}}) }}
+                {{ form_label(form.active, "Evènement actif") }}
+            </div>
+            <div class="col-lg-6 form-group">
+                {{ form_widget(form.sauvegarder, {'attr': {'class': 'btn btn-secondary'}}) }}
+            </div>
+            {{ form_end(form) }}
+        </div>        
+    </div>
+  
+    {% if evenement.id %}
+    <div class="col-lg-1">
+    </div>
+    <div class="col-lg-5">
+        <div class="agile_events_grid">
+            <img
+                src="{{ asset(evenement.image.pathName) }}"
+                alt=" "
+                class="img-responsive" /> 
+            <div class="agile_events_grid_pos agile_events_grid_pos1">
+                <h5>
+                    <span>{{ evenement.date|date('d') }}</span> 
+                    {{ evenement.date|date('m-Y') }}</h5>
+                <h4><a href="#" data-toggle="modal" data-target="#eventModal">
+                    {{ evenement.titre }}</a></h4>
+                <p></p>
+            </div>
+        </div>
+    </div>
+                
+    <div 
+    class="modal video-modal fade" 
+    id="eventModal" 
+    tabindex="-1" 
+    role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    {{ evenement.date|date('d/m/Y') }} - {{ evenement.heure|date('H:i') }} - {{ evenement.lieu }}
+                    <button 
+                        type="button" 
+                        class="close" 
+                        data-dismiss="modal" 
+                        aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>						
+                </div>
+                <section>
+                    <div class="modal-body">
+                        <div class="w3_modal_body_left">
+                            <img src="{{asset(evenement.image.pathName)}}" 
+                                 alt=" " 
+                                 class="img-responsive" />
+                        </div>
+                        <div class="w3_modal_body_right">
+                            <h4>{{ evenement.titre }}</h4>
+                            {{ evenement.information }}
+                        </div>
+                        <div class="clearfix"> </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+       
+    <script>
+        var textarea = document.getElementById('bbcode');
+        sceditor.create(textarea, {
+                format: 'xhtml',
+                icons: 'monocons',
+                style: '{{ asset('bundles/balancelle/css/content/default.min.css') }}'
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,14 @@
+user_enregistrement_mail:
+    path: /enregistrement/{token}
+    controller: BalancelleBundle:User:enregistrerMotDePasseUtilisateur
+    defaults: {token:null }
+    methods:  [GET, POST]
+    
+#permet de gérer le redirect du path enregistrement/
+user_enregistrement_mail_redirect:
+    path: /enregistrement/
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
+    defaults:
+        route: fos_user_security_login
+        # make a permanent redirection...
+        permanent: true

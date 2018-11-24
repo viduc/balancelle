@@ -1,3 +1,31 @@
 balancelle_homepage:
     path:     /
     defaults: { _controller: BalancelleBundle:Default:index }
+    
+balancelle_admin_index:
+    path:     /admin
+    defaults: { _controller: BalancelleBundle:Admin:index }
+
+balancelle_admin_evenements_liste:
+    path:     /admin/evenementsListe
+    defaults: { _controller: BalancelleBundle:Admin:evenementsListe }
+    
+balancelle_admin_evenements_add:
+    path:     /admin/evenementsAdd
+    defaults: { _controller: BalancelleBundle:Admin:evenementsSave }
+
+balancelle_admin_evenements_modify:
+    path:     /admin/evenementsModify/{idevenement}
+    defaults: { _controller: BalancelleBundle:Admin:evenementsSave }
+    
+balancelle_admin_revuepresse_liste:
+    path:     /admin/revuepresseListe
+    defaults: { _controller: BalancelleBundle:Admin:revuepresseListe }
+    
+balancelle_admin_revuepresse_add:
+    path:     /admin/revuepresseAdd
+    defaults: { _controller: BalancelleBundle:Admin:revuepresseSave }
+
+balancelle_admin_revuepresse_modify:
+    path:     /admin/revuepresseModify/{idrevuepresse}
+    defaults: { _controller: BalancelleBundle:Admin:revuepresseSave }

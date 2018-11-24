@@ -1,0 +1,17 @@
+{% extends '@Balancelle/Default/layout.html.twig' %}
+{% block title %}AppBundle:Admin:revuepresse{% endblock %}
+{% block body %}
+<div id="page-wrapper">
+    <div id="page-inner">
+        <div class="row">
+            <div class="col-lg-12">
+             <h2>ADMINISTRATION DE LA REVUE DE PRESSE</h2>   
+            </div>
+        </div>              
+        <div class="row pad-top">
+            {% block action %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}

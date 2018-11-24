@@ -8,7 +8,10 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        //return $this->render('BalancelleBundle:Default:index.html.twig');
-        return $this->render('@Balancelle/Default/index.html.twig');
+        $utilisateur = $this->getUser()->getPrenom() . " ";
+        $utilisateur .= $this->getUser()->getNom();
+        return $this->render('@Balancelle/Default/index.html.twig', array(
+            'utilisateur' => $utilisateur
+        ));
     }
 }

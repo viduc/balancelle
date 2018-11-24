@@ -8,3 +8,11 @@ app:
     
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+    
+balancelle_user:
+    resource: "@BalancelleBundle/Resources/config/routing/user.yml"
+    prefix:   /user/admin
+ 
+balancelle_user_enregistrement:
+    resource: "@BalancelleBundle/Resources/config/routing/userEnregistrement.yml"
+    prefix:   /user/enregistrement

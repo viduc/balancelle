@@ -1,0 +1,89 @@
+{% extends '@Balancelle/User/user_layout.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+
+        <h1>Edition d'un utilisateur</h1>
+        <div class="card person-card">
+            <img id="img_sex" class="person-img"
+                src="https://visualpharm.com/assets/217/Life%20Cycle-595b40b75ba036ed117d9ef0.svg">
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-md-8">    
+                {{ form_start(edit_form) }}
+                <div class="card person-card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-md-2">
+                                <select id="input_sex" class="form-control">
+                                    <option value="Mr.">Mr.</option>
+                                    <option value="Mme.">Mme.</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-1">
+                                Prénom:
+                            </div>
+                            <div class="form-group col-md-4">
+                                {{ form_widget(edit_form.prenom, {'attr': {'class': 'form-control',
+                                    'placeholder': "prénom"}}) }}
+                            </div>
+                            <div class="form-group col-md-1">
+                                Nom:
+                            </div>
+                            <div class="form-group col-md-4">
+                                {{ form_widget(edit_form.nom, {'attr': {'class': 'form-control',
+                                    'placeholder': "nom"}}) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-1">
+                                Email:
+                            </div>
+                            <div class="form-group col-md-4">
+                                {{ form_widget(edit_form.email, {'attr': {'class': 'form-control',
+                                    'placeholder': "email"}}) }}
+                            </div>
+                            <div class="form-group col-md-3">
+                                Date de naissance:
+                            </div>
+                            <div class="form-group col-md-4">
+                                {{ form_widget(edit_form.birthday, {'attr': {
+                                    'placeholder': "date de naissance"}}) }}
+                            </div>
+                        </div> 
+                        <div class="row">
+                            <div class="form-group col-md-1">
+                                Valide:
+                            </div>
+                            <div class="form-group col-md-1">
+                                {{ form_widget(edit_form.enabled, {'attr': {'class': 'form-control',
+                                    'placeholder': "actif"}}) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                            </div>
+                            <div class="form-group col-md-2">
+                                {{ form_widget(edit_form) }}
+                                <input type="submit" value="Editer" />
+                                {{ form_end(edit_form) }}
+                            </div>
+                            <div class="form-group col-md-2">
+                                {{ form_start(delete_form) }}
+                                <input type="submit" value="Supprimer">
+                                {{ form_end(delete_form) }}
+                            </div>
+                            <div class="form-group col-md-4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2"></div>    
+        </div>
+    </div>
+</div>
+{% endblock %}

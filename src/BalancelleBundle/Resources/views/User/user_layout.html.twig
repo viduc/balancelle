@@ -1,0 +1,38 @@
+{% extends '@Balancelle/Default/layout.html.twig' %}
+
+{% block body %}
+    <link 
+        rel="stylesheet" 
+        href="{{ asset('bundles/balancelle/css/user.css') }}" 
+        type="text/css" 
+        media="screen" 
+    />
+    <script 
+        type="text/javascript" 
+        src="{{ asset('bundles/balancelle/js/user.js') }}" >
+    </script>
+    <script 
+        type="text/javascript" 
+        src="{{ asset('bundles/balancelle/js/balancelle_datepicker.js') }}" >
+    </script>
+    <div id="page-wrapper" >
+        <div id="page-inner">
+            <div class="row">
+                <div class="col-md-2 text-center pad-top">
+                    <div class="div-square">
+                        <a href="{{ path('user_index') }}" >
+                            <i class="fa fa-list fa-5x"></i>
+                        </a>
+                    </div>
+                </div>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <div class="col-md-2 text-center pad-top">
+                        <div class="div-square">
+                            <a href="{{ path('user_new') }}" >
+                                <i class="fa fa-user-plus fa-5x"></i>
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+{% endblock %}    

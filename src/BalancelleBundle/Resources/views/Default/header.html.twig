@@ -1,0 +1,31 @@
+ <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="adjust-nav">
+        <div class="navbar-header">
+            <button
+                type="button"
+                class="navbar-toggle"
+                data-toggle="collapse"
+                data-target=".sidebar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                <img
+                    src="{{asset('bundles/app/images/logos/balancelle.jpeg')}}" 
+                    width="48px"
+                    heigth="48px"/>
+            </a>
+        </div>
+                    
+        <span class="logout-spn" >
+          <a href="#" style="color:#fff;"><i class="fa fa-sign-out"></i></a>
+        </span>
+        <span class="utilisateur-hearder" >            
+            <a href="#" style="color:#fff;">
+                <i class="fa fa-user-circle"></i>
+                {{ app.user.Prenom }} {{ app.user.Nom }}
+            </a>       
+        </span>
+    </div>
+</div>
