@@ -4,7 +4,6 @@
 namespace BalancelleBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,41 +42,6 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
-        $this->userTypes = new ArrayCollection();
-    }
-
-    /**
-     * Add userType
-     *
-     * @param \BalancelleBundle\Entity\UserType $userType
-     *
-     * @return User
-     */
-    public function addUserType(\BalancelleBundle\Entity\UserType $userType)
-    {
-        $this->userTypes[] = $userType;
-
-        return $this;
-    }
-
-    /**
-     * Remove userType
-     *
-     * @param \BalancelleBundle\Entity\UserType $userType
-     */
-    public function removeUserType(\BalancelleBundle\Entity\UserType $userType)
-    {
-        $this->userTypes->removeElement($userType);
-    }
-
-    /**
-     * Get userTypes
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getUserTypes()
-    {
-        return $this->userTypes;
     }
 
     /**
@@ -150,5 +114,120 @@ class User extends BaseUser
     public function getBirthday()
     {
         return $this->birthday;
+    }
+    
+    /**
+     * Détermine si l'utilisateur a le rôle administrateur
+     * @return boolean
+     */
+    public function isroleAdmin()
+    {
+        return $this->hasRole("ROLE_PARENT");
+    }
+    
+    /**
+     * Enregistre le role administrateur
+     * @param \Boolean $bool
+     * @return User
+     */
+    public function setRoleAdmin($bool) 
+    {
+        return $this;
+    }
+    
+    /**
+     * Détermine si l'utilisateur a le rôle parent
+     * @return \boolean
+     */
+    public function isroleParent()
+    {
+        return $this->hasRole("ROLE_PARENT");
+    }
+    
+    /**
+     * Enregistre le role parent
+     * @param \Boolean $bool
+     * @return User
+     */
+    public function setRoleParent($bool) 
+    {
+        $this->removeRole("ROLE_PARENT");
+        if ($bool) {
+            $this->addRole("ROLE_PARENT");
+        }
+        return $this;
+    }
+    
+    /**
+     * Récupère le role parent
+     * @return \Boolean
+     */
+    public function getRoleParent()
+    {
+        return $this->hasRole("ROLE_PARENT");
+    }
+    
+    /**
+     * Détermine si l'utilisateur a le rôle enfant
+     * @return boolean
+     */
+    public function isroleEnfant()
+    {
+        return $this->hasRole("ROLE_ENFANT");
+    }
+    
+    /**
+     * Enregistre le role enfant
+     * @param \Boolean $bool
+     * @return User
+     */
+    public function setRoleEnfant($bool) 
+    {
+        $this->removeRole("ROLE_ENFANT");
+        if ($bool) {
+            $this->addRole("ROLE_ENFANT");
+        }
+        return $this;
+    }
+    
+    /**
+     * Récupère le role enfant
+     * @return \Boolean
+     */
+    public function getRoleEnfant()
+    {
+        return $this->hasRole("ROLE_ENFANT");
+    }
+    
+    /**
+     * Détermine si l'utilisateur a le rôle professionnel
+     * @return boolean
+     */
+    public function isrolePro()
+    {
+        return $this->hasRole("ROLE_PRO");
+    }
+    
+    /**
+     * Enregistre le role professionnel
+     * @param \Boolean $bool
+     * @return User
+     */
+    public function setRolePro($bool) 
+    {
+        $this->removeRole("ROLE_PRO");
+        if ($bool) {
+            $this->addRole("ROLE_PRO");
+        }
+        return $this;
+    }
+    
+    /**
+     * Récupère le role Pro
+     * @return \Boolean
+     */
+    public function getRolePro()
+    {
+        return $this->hasRole("ROLE_PRO");
     }
 }

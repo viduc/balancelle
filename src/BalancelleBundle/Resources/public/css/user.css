@@ -8,8 +8,8 @@ body {
 
 /* IMG displaying */
 .person-card {
-    margin-top: 5em;
-    padding-top: 5em;
+    margin-top: 1em;
+    padding-top: 1em;
 }
 .person-card .card-title{
     text-align: center;
@@ -17,8 +17,8 @@ body {
 .person-card .person-img{
     width: 10em;
     position: absolute;
-    top: 10em;
-    left: 50%;
+    top: 5em;
+    text-align: center;
     margin-left: 3em;
     border-radius: 100%;
     overflow: hidden;

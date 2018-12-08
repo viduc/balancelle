@@ -9,7 +9,19 @@
     {% block stylesheets %}
         <link 
             rel="stylesheet" 
-            href="{{ asset('bundles/app/css/bootstrap.css') }}" 
+            href="{{ asset('bundles/app/css/bootstrap.min.css') }}" 
+            type="text/css" 
+            media="screen" 
+        />
+        <link 
+            rel="stylesheet" 
+            href="{{ asset('bundles/app/css/bootstrap-theme.min.css') }}" 
+            type="text/css" 
+            media="screen" 
+        />
+        <link 
+            rel="stylesheet" 
+            href="{{ asset('bundles/app/css/awesome-bootstrap-checkbox.css') }}" 
             type="text/css" 
             media="screen" 
         />
@@ -66,7 +78,7 @@
         </script>
         <script 
             type="text/javascript" 
-            src="{{ asset('bundles/app/js/bootstrap.js') }}" >
+            src="{{ asset('bundles/app/js/bootstrap.min.js') }}" >
         </script>
         <script 
             type="text/javascript" 

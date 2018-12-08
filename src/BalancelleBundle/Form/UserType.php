@@ -5,7 +5,7 @@ namespace BalancelleBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-//use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 class UserType extends AbstractType
 {
@@ -42,8 +42,11 @@ class UserType extends AbstractType
                     'format' => 'dd/MM/yyyy'
                 ])
             ->add('email')
-            ->add('enabled')
-            //->add('save', SubmitType::class)
+            ->add('enabled', CheckboxType::Class,['required' => false])
+            ->add('roleAdmin', CheckboxType::Class,['required' => false])
+            ->add('rolePro', CheckboxType::Class,['required' => false])
+            ->add('roleParent', CheckboxType::Class,['required' => false])
+            ->add('roleEnfant', CheckboxType::Class,['required' => false])
         ;
     }
 }

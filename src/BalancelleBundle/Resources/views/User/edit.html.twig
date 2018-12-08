@@ -2,15 +2,13 @@
 
 {% block body %}
     {{ parent() }}
-
         <h1>Edition d'un utilisateur</h1>
-        <div class="card person-card">
-            <img id="img_sex" class="person-img"
-                src="https://visualpharm.com/assets/217/Life%20Cycle-595b40b75ba036ed117d9ef0.svg">
-        </div>
         <div class="row">
-            <div class="col-md-2">
-
+            <div class="col-md-3">
+                <div class="card person-card">
+                    <img id="img_sex" class="person-img"
+                        src="https://visualpharm.com/assets/217/Life%20Cycle-595b40b75ba036ed117d9ef0.svg">
+                </div>
             </div>
             <div class="col-md-8">    
                 {{ form_start(edit_form) }}
@@ -55,12 +53,80 @@
                             </div>
                         </div> 
                         <div class="row">
-                            <div class="form-group col-md-1">
-                                Valide:
+                            <div class="form-group col-md-2 checkbox-intitule">
+                                Administrateur:
                             </div>
-                            <div class="form-group col-md-1">
+                            <div class="col-md-1 checkbox checkbox-primary">
+                                {{ form_widget(
+                                    edit_form.roleAdmin,
+                                    {'attr': {'placeholder': "rôle administrateur"}}
+                                ) }}
+                                <label></label>
+                            </div>
+                            <div class="form-group col-md-2 checkbox-intitule">
+                                Professionnel:
+                            </div>
+                            <div class="col-md-1 checkbox checkbox-primary">
+                                {{ form_widget(
+                                    edit_form.rolePro,
+                                    {'attr': {'placeholder': "rôle professionnel"}}
+                                ) }}<label></label>
+                            </div>
+                            <div class="form-group col-md-2"></div>
+                            <div class="form-group col-md-2 checkbox-intitule">
+                                Compte actif:
+                            </div>
+                            <div class="form-group col-md-1 checkbox checkbox-danger">
                                 {{ form_widget(edit_form.enabled, {'attr': {'class': 'form-control',
-                                    'placeholder': "actif"}}) }}
+                                    'placeholder': "actif"}}) }}<label></label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-2 checkbox-intitule">
+                                Parent:
+                            </div>
+                            <div class="col-md-1 checkbox checkbox-success">
+                                {{ form_widget(
+                                    edit_form.roleParent,
+                                    {'attr': {'placeholder': "rôle parent"}}
+                                ) }}<label></label>
+                            </div>
+                            <div class="form-group col-md-2 checkbox-intitule">
+                                Enfant:
+                            </div>
+                            <div class="col-md-1 checkbox checkbox-success">
+                                {{ form_widget(
+                                    edit_form.roleEnfant,
+                                    {'attr': {'placeholder': "rôle enfant"}}
+                                ) }}<label></label>
+                            </div>
+                        </div>
+                        <div class="row" id="listeEnfants" style="display: none;">
+                            <div class="col-md-12">
+                                <table id="listeUtilisateur" class="row-border stripe">
+                                    <thead>
+                                        <tr>
+                                            <th>Prénom</th>
+                                            <th>Nom</th>
+                                            <th>Date de Naissance</th>
+                                            <th>Parenté</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for enfant in enfants %}
+                                            <tr>
+                                                <td>{{ enfant.prenom }}</td>
+                                                <td>{{ enfant.nom }}</td>
+                                                <td>{{ enfant.birthday|date("d/m/Y") }}</td>
+                                                <td>
+                                                    <div class="col-md-1">
+                                                    
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                         <div class="row">
@@ -82,7 +148,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2"></div>    
+            <div class="col-md-1"></div>    
         </div>
     </div>
 </div>

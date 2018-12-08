@@ -12,6 +12,14 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class UserController extends Controller
 {
+    private $roles = [
+        'ROLE_USER',
+        'ROLE_ADMIN',
+        'ROLE_PARENT',
+        'ROLE_ENFANT',
+        'ROLE_PRO'
+    ];
+    
     /**
      * Lists all user entities.
      *
@@ -35,7 +43,7 @@ class UserController extends Controller
         $userManager = $this->get('fos_user.user_manager');
         $user = $userManager->createUser();
         $user->setEnabled(false);
-        $user->addRole('ROLE_ADMIN');
+        //$user->addRole('ROLE_ADMIN');
         $user->setUsername(uniqid()); // ici il faudra implémenter une méthode de génération de login
         $user->setPlainPassword(md5(uniqid()));
         
@@ -82,8 +90,8 @@ class UserController extends Controller
             $user
         );
         $editForm->handleRequest($request);
-        
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            
             $userManager = $this->container->get('fos_user.user_manager');
             $userManager->updateUser($user);
             return $this->redirectToRoute(
@@ -91,11 +99,17 @@ class UserController extends Controller
                 array('id' => $user->getId())
             );
         }
-        
+
+        $query = $this->getDoctrine()->getEntityManager()
+            ->createQuery(
+                'SELECT u FROM BalancelleBundle:User u WHERE u.roles LIKE :role'
+            )->setParameter('role', '%"ROLE_ENFANT"%');
+        //var_dump($query);
         return $this->render('@Balancelle/User/edit.html.twig', array(
             'user' => $user,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView()
+            'delete_form' => $deleteForm->createView(),
+            'enfants' => $query->execute()
         ));
     }
 
@@ -172,5 +186,16 @@ class UserController extends Controller
         return $this->redirect(
             $this->generateUrl("fos_user_security_login")
         );
+    }
+    
+    private function gestionDesRoles($user, $request)
+    {
+        $user->removeRole("ROLE_USER");
+        if (isset(
+            $request->request->get('balancellebundle_user')['roleUser']
+        )) {
+            $user->addRole("ROLE_USER");
+        }
+        return $user;
     }
 }
