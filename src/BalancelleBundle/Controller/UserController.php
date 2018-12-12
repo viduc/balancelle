@@ -20,6 +20,8 @@ class UserController extends Controller
         'ROLE_PRO'
     ];
     
+    private $view = 'user';
+    
     /**
      * Lists all user entities.
      *
@@ -31,7 +33,7 @@ class UserController extends Controller
         $users = $em->getRepository('BalancelleBundle:User')->findAll();
         
         return $this->render('@Balancelle/User/index.html.twig', array(
-            'users' => $users));
+            'users' => $users, 'view' => $this->view));
     }
 
     /**
@@ -75,6 +77,7 @@ class UserController extends Controller
         return $this->render('@Balancelle/User/new.html.twig', array(
             'user' => $user,
             'form' => $form->createView(),
+            'view' => $this->view
         ));
     }
 
@@ -109,7 +112,8 @@ class UserController extends Controller
             'user' => $user,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-            'enfants' => $query->execute()
+            'enfants' => $query->execute(),
+            'view' => $this->view
         ));
     }
 

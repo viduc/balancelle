@@ -46,7 +46,6 @@ class UserType extends AbstractType
             ->add('roleAdmin', CheckboxType::Class,['required' => false])
             ->add('rolePro', CheckboxType::Class,['required' => false])
             ->add('roleParent', CheckboxType::Class,['required' => false])
-            ->add('roleEnfant', CheckboxType::Class,['required' => false])
         ;
     }
 }

@@ -1,0 +1,84 @@
+{% extends '@Balancelle/User/user_layout.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+        <h2>Liste des enfants</h2>
+        <table id="listeEnfant" class="row-border stripe">
+            <thead>
+                <tr>
+                    <th>Prénom</th>
+                    <th>Nom</th>
+                    <th>Date de Naissance</th>
+                    <th>Commentaire</th>
+                    <th>Actif</th>
+                    <th>Editer</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for enfant in enfants %}
+                <tr>
+                    <td>{{ enfant.prenom }}</td>
+                    <td>{{ enfant.nom }}</td>
+                    <td>{{ enfant.birthday|date('d/m/Y') }}</td>
+                    <td>{{ enfant.commentaire }}</td>
+                    <td>
+                        {% if enfant.active %}
+                            <img src="{{asset('bundles/balancelle/images/on.png')}}" alt="actif" />
+                        {%  else %}
+                            <img src="{{asset('bundles/balancelle/images/off.png')}}" alt="inactif" />
+                        {% endif %}
+                    </td>
+                    <td><a href="{{ path('enfant_edit', { 'id': enfant.id }) }}">éditer</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+    
+    
+    <!---
+    <h1>Enfants list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Prenom</th>
+                <th>Nom</th>
+                <th>Naissance</th>
+                <th>Commentaire</th>
+                <th>Active</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for enfant in enfants %}
+            <tr>
+                <td><a href="{{ path('enfant_show', { 'id': enfant.id }) }}">{{ enfant.id }}</a></td>
+                <td>{{ enfant.prenom }}</td>
+                <td>{{ enfant.nom }}</td>
+                <td>{% if enfant.naissance %}{{ enfant.naissance|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ enfant.commentaire }}</td>
+                <td>{% if enfant.active %}Yes{% else %}No{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('enfant_show', { 'id': enfant.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('enfant_edit', { 'id': enfant.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('enfant_new') }}">Create a new enfant</a>
+        </li>
+    </ul>
+{% endblock %}

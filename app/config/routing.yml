@@ -16,3 +16,7 @@ balancelle_user:
 balancelle_user_enregistrement:
     resource: "@BalancelleBundle/Resources/config/routing/userEnregistrement.yml"
     prefix:   /user/enregistrement
+    
+balancelle_enfant:
+    resource: "@BalancelleBundle/Resources/config/routing/enfant.yml"
+    prefix:   /enfant

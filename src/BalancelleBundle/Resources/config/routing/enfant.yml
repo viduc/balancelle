@@ -1,0 +1,24 @@
+enfant_index:
+    path:     /
+    defaults: { _controller: "BalancelleBundle:Enfant:index" }
+    methods:  GET
+
+enfant_show:
+    path:     /{id}/show
+    defaults: { _controller: "BalancelleBundle:Enfant:show" }
+    methods:  GET
+
+enfant_new:
+    path:     /new
+    defaults: { _controller: "BalancelleBundle:Enfant:new" }
+    methods:  [GET, POST]
+
+enfant_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BalancelleBundle:Enfant:edit" }
+    methods:  [GET, POST]
+
+enfant_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BalancelleBundle:Enfant:delete" }
+    methods:  DELETE

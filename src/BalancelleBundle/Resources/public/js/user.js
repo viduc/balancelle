@@ -15,7 +15,7 @@ $( document ).ready(function() {
         set_who_message();
     });
     
-        $('#listeUtilisateur').dataTable( {
+        $('#listeUtilisateur, #listeEnfant').dataTable( {
         language: {
             processing:     "Traitement en cours...",
             search:         "Rechercher&nbsp;:",

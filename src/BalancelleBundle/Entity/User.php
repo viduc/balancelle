@@ -4,6 +4,7 @@
 namespace BalancelleBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,6 +13,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class User extends BaseUser
 {
+    /**
+     * @ORM\ManyToMany(targetEntity="BalancelleBundle\Entity\Enfant", cascade={"persist"})
+    */
+    private $enfants;
+    
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -42,6 +48,7 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
+        $this->enfants = new ArrayCollection();
     }
 
     /**
@@ -122,7 +129,7 @@ class User extends BaseUser
      */
     public function isroleAdmin()
     {
-        return $this->hasRole("ROLE_PARENT");
+        return $this->hasRole("ROLE_ADMIN");
     }
     
     /**
@@ -132,7 +139,20 @@ class User extends BaseUser
      */
     public function setRoleAdmin($bool) 
     {
+        $this->removeRole("ROLE_ADMIN");
+        if ($bool) {
+            $this->addRole("ROLE_ADMIN");
+        }
         return $this;
+    }
+
+    /**
+     * Récupère le role admin
+     * @return \Boolean
+     */
+    public function getRoleAdmin()
+    {
+        return $this->hasRole("ROLE_ADMIN");
     }
     
     /**
@@ -168,38 +188,6 @@ class User extends BaseUser
     }
     
     /**
-     * Détermine si l'utilisateur a le rôle enfant
-     * @return boolean
-     */
-    public function isroleEnfant()
-    {
-        return $this->hasRole("ROLE_ENFANT");
-    }
-    
-    /**
-     * Enregistre le role enfant
-     * @param \Boolean $bool
-     * @return User
-     */
-    public function setRoleEnfant($bool) 
-    {
-        $this->removeRole("ROLE_ENFANT");
-        if ($bool) {
-            $this->addRole("ROLE_ENFANT");
-        }
-        return $this;
-    }
-    
-    /**
-     * Récupère le role enfant
-     * @return \Boolean
-     */
-    public function getRoleEnfant()
-    {
-        return $this->hasRole("ROLE_ENFANT");
-    }
-    
-    /**
      * Détermine si l'utilisateur a le rôle professionnel
      * @return boolean
      */
@@ -229,5 +217,39 @@ class User extends BaseUser
     public function getRolePro()
     {
         return $this->hasRole("ROLE_PRO");
+    }
+
+    /**
+     * Add enfant
+     *
+     * @param \BalancelleBundle\Entity\Enfant $enfant
+     *
+     * @return User
+     */
+    public function addEnfant(\BalancelleBundle\Entity\Enfant $enfant)
+    {
+        $this->enfants[] = $enfant;
+
+        return $this;
+    }
+
+    /**
+     * Remove enfant
+     *
+     * @param \BalancelleBundle\Entity\Enfant $enfant
+     */
+    public function removeEnfant(\BalancelleBundle\Entity\Enfant $enfant)
+    {
+        $this->enfants->removeElement($enfant);
+    }
+
+    /**
+     * Get enfants
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEnfants()
+    {
+        return $this->enfants;
     }
 }
