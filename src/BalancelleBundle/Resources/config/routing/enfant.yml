@@ -3,11 +3,6 @@ enfant_index:
     defaults: { _controller: "BalancelleBundle:Enfant:index" }
     methods:  GET
 
-enfant_show:
-    path:     /{id}/show
-    defaults: { _controller: "BalancelleBundle:Enfant:show" }
-    methods:  GET
-
 enfant_new:
     path:     /new
     defaults: { _controller: "BalancelleBundle:Enfant:new" }

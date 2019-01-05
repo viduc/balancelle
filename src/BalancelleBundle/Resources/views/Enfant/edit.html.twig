@@ -1,21 +1,21 @@
-{% extends 'base.html.twig' %}
+{% extends '@Balancelle/User/user_layout.html.twig' %}
 
 {% block body %}
-    <h1>Enfant edit</h1>
+    {{ parent() }}
+        <h1>Edition d'un utilisateur</h1>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card person-card">
+                    <img id="img_sex" class="person-img"
+                        src="https://visualpharm.com/assets/217/Life%20Cycle-595b40b75ba036ed117d9ef0.svg">
+                </div>
+            </div>
+            <div class="col-md-8">    
+                {% include "@Balancelle/Enfant/form_enfant.html.twig" %}
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('enfant_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+            </div>
+            <div class="col-md-1"></div>    
+        </div>
+    </div>
+</div>
 {% endblock %}

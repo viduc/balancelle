@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class EnfantController extends Controller
 {
-    private $view = 'user';
+    private $view = 'enfant';
     
     /**
      * Lists all enfant entities.
@@ -44,27 +44,12 @@ class EnfantController extends Controller
             $em->persist($enfant);
             $em->flush();
 
-            return $this->redirectToRoute('enfant_show', array('id' => $enfant->getId()));
+            return $this->redirectToRoute('enfenfant_edit', array('id' => $enfant->getId()));
         }
 
         return $this->render('@Balancelle/Enfant/new.html.twig', array(
             'enfant' => $enfant,
             'form' => $form->createView(),
-            'view' => $this->view
-        ));
-    }
-
-    /**
-     * Finds and displays a enfant entity.
-     *
-     */
-    public function showAction(Enfant $enfant)
-    {
-        $deleteForm = $this->createDeleteForm($enfant);
-
-        return $this->render('enfant/show.html.twig', array(
-            'enfant' => $enfant,
-            'delete_form' => $deleteForm->createView(),
             'view' => $this->view
         ));
     }
@@ -85,9 +70,9 @@ class EnfantController extends Controller
             return $this->redirectToRoute('enfant_edit', array('id' => $enfant->getId()));
         }
 
-        return $this->render('enfant/edit.html.twig', array(
+        return $this->render('@Balancelle/Enfant/edit.html.twig', array(
             'enfant' => $enfant,
-            'edit_form' => $editForm->createView(),
+            'form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
             'view' => $this->view
         ));

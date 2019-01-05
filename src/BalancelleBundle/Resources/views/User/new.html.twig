@@ -11,65 +11,7 @@
                 </div>
             </div>
             <div class="col-md-8">
-                {{ form_start(form) }}
-                <div class="card person-card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="form-group col-md-2">
-                                <select id="input_sex" class="form-control">
-                                    <option value="Mr.">Mr.</option>
-                                    <option value="Mme.">Mme.</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-1">
-                                Prénom:
-                            </div>
-                            <div class="form-group col-md-4">
-                                {{ form_widget(form.prenom, {'attr': {'class': 'form-control',
-                                    'placeholder': "prénom"}}) }}
-                            </div>
-                            <div class="form-group col-md-1">
-                                Nom:
-                            </div>
-                            <div class="form-group col-md-4">
-                                {{ form_widget(form.nom, {'attr': {'class': 'form-control',
-                                    'placeholder': "nom"}}) }}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-1">
-                                Email:
-                            </div>
-                            <div class="form-group col-md-4">
-                                {{ form_widget(form.email, {'attr': {'class': 'form-control',
-                                    'placeholder': "email"}}) }}
-                            </div>
-                            <div class="form-group col-md-3">
-                                Date de naissance:
-                            </div>
-                            <div class="form-group col-md-4">
-                                {{ form_widget(form.birthday, {'placeholder': "date de naissance"}) }}
-                            </div>
-                        </div>
-                        <div class="row" style="visibility:hidden;">
-                            <div class="form-group col-md-1">
-                                {{ form_widget(form.enabled, {'attr': {'class': 'form-control',
-                                    'placeholder': "actif"}}) }}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-5">
-                            </div>
-                            <div class="form-group col-md-2">
-                                {{ form_widget(form) }}
-                                    <input type="submit" value="Créer" />
-                                {{ form_end(form) }}
-                            </div>
-                            <div class="form-group col-md-5">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% include "@Balancelle/User/form_user.html.twig" %}
             </div>
             <div class="col-md-1"></div> 
         </div>

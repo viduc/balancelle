@@ -3,6 +3,7 @@
 namespace BalancelleBundle\Controller;
 
 use BalancelleBundle\Entity\User;
+use BalancelleBundle\Entity\Enfant;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -16,11 +17,10 @@ class UserController extends Controller
         'ROLE_USER',
         'ROLE_ADMIN',
         'ROLE_PARENT',
-        'ROLE_ENFANT',
         'ROLE_PRO'
     ];
     
-    private $view = 'user';
+    private $vue = 'user';
     
     /**
      * Lists all user entities.
@@ -33,7 +33,7 @@ class UserController extends Controller
         $users = $em->getRepository('BalancelleBundle:User')->findAll();
         
         return $this->render('@Balancelle/User/index.html.twig', array(
-            'users' => $users, 'view' => $this->view));
+            'users' => $users, 'view' => $this->vue));
     }
 
     /**
@@ -77,7 +77,7 @@ class UserController extends Controller
         return $this->render('@Balancelle/User/new.html.twig', array(
             'user' => $user,
             'form' => $form->createView(),
-            'view' => $this->view
+            'view' => $this->viue
         ));
     }
 
@@ -102,18 +102,17 @@ class UserController extends Controller
                 array('id' => $user->getId())
             );
         }
-
-        $query = $this->getDoctrine()->getEntityManager()
-            ->createQuery(
-                'SELECT u FROM BalancelleBundle:User u WHERE u.roles LIKE :role'
-            )->setParameter('role', '%"ROLE_ENFANT"%');
-        //var_dump($query);
+        /* Récupération de la liste des enfants */
+        $enfants = $this->getDoctrine()
+            ->getRepository(Enfant::class)
+            ->findAll();
+        
         return $this->render('@Balancelle/User/edit.html.twig', array(
             'user' => $user,
-            'edit_form' => $editForm->createView(),
+            'form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-            'enfants' => $query->execute(),
-            'view' => $this->view
+            'enfants' => $enfants,
+            'view' => $this->vue
         ));
     }
 

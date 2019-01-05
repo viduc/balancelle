@@ -19,7 +19,7 @@
                 <tr>
                     <td>{{ enfant.prenom }}</td>
                     <td>{{ enfant.nom }}</td>
-                    <td>{{ enfant.birthday|date('d/m/Y') }}</td>
+                    <td>{{ enfant.naissance|date('d/m/Y') }}</td>
                     <td>{{ enfant.commentaire }}</td>
                     <td>
                         {% if enfant.active %}
@@ -35,50 +35,4 @@
         </table>
     </div>
 </div>
-    
-    
-    <!---
-    <h1>Enfants list</h1>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Prenom</th>
-                <th>Nom</th>
-                <th>Naissance</th>
-                <th>Commentaire</th>
-                <th>Active</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for enfant in enfants %}
-            <tr>
-                <td><a href="{{ path('enfant_show', { 'id': enfant.id }) }}">{{ enfant.id }}</a></td>
-                <td>{{ enfant.prenom }}</td>
-                <td>{{ enfant.nom }}</td>
-                <td>{% if enfant.naissance %}{{ enfant.naissance|date('Y-m-d') }}{% endif %}</td>
-                <td>{{ enfant.commentaire }}</td>
-                <td>{% if enfant.active %}Yes{% else %}No{% endif %}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('enfant_show', { 'id': enfant.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('enfant_edit', { 'id': enfant.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('enfant_new') }}">Create a new enfant</a>
-        </li>
-    </ul>
 {% endblock %}

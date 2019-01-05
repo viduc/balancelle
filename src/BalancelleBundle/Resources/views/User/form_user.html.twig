@@ -1,5 +1,5 @@
 <!-- formulaire commun à la création et modification d'un utilisateur -->
-{{ form_start(edit_form) }}
+{{ form_start(form) }}
 <div class="card person-card">
     <div class="card-body">
         <div class="row">
@@ -13,14 +13,14 @@
                 Prénom:
             </div>
             <div class="form-group col-md-4">
-                {{ form_widget(edit_form.prenom, {'attr': {'class': 'form-control',
+                {{ form_widget(form.prenom, {'attr': {'class': 'form-control',
                     'placeholder': "prénom"}}) }}
             </div>
             <div class="form-group col-md-1">
                 Nom:
             </div>
             <div class="form-group col-md-4">
-                {{ form_widget(edit_form.nom, {'attr': {'class': 'form-control',
+                {{ form_widget(form.nom, {'attr': {'class': 'form-control',
                     'placeholder': "nom"}}) }}
             </div>
         </div>
@@ -29,14 +29,14 @@
                 Email:
             </div>
             <div class="form-group col-md-4">
-                {{ form_widget(edit_form.email, {'attr': {'class': 'form-control',
+                {{ form_widget(form.email, {'attr': {'class': 'form-control',
                     'placeholder': "email"}}) }}
             </div>
             <div class="form-group col-md-3">
                 Date de naissance:
             </div>
             <div class="form-group col-md-4">
-                {{ form_widget(edit_form.birthday, {'attr': {
+                {{ form_widget(form.birthday, {'attr': {
                     'placeholder': "date de naissance"}}) }}
             </div>
         </div> 
@@ -46,7 +46,7 @@
             </div>
             <div class="col-md-1 checkbox checkbox-primary">
                 {{ form_widget(
-                    edit_form.roleAdmin,
+                    form.roleAdmin,
                     {'attr': {'placeholder': "rôle administrateur"}}
                 ) }}
                 <label></label>
@@ -56,7 +56,7 @@
             </div>
             <div class="col-md-1 checkbox checkbox-primary">
                 {{ form_widget(
-                    edit_form.rolePro,
+                    form.rolePro,
                     {'attr': {'placeholder': "rôle professionnel"}}
                 ) }}<label></label>
             </div>
@@ -65,7 +65,7 @@
                 Compte actif:
             </div>
             <div class="form-group col-md-1 checkbox checkbox-danger">
-                {{ form_widget(edit_form.enabled, {'attr': {'class': 'form-control',
+                {{ form_widget(form.enabled, {'attr': {'class': 'form-control',
                     'placeholder': "actif"}}) }}<label></label>
             </div>
         </div>
@@ -75,7 +75,7 @@
             </div>
             <div class="col-md-1 checkbox checkbox-success">
                 {{ form_widget(
-                    edit_form.roleParent,
+                    form.roleParent,
                     {'attr': {'placeholder': "rôle parent"}}
                 ) }}<label></label>
             </div>
@@ -96,11 +96,9 @@
                             <tr>
                                 <td>{{ enfant.prenom }}</td>
                                 <td>{{ enfant.nom }}</td>
-                                <td>{{ enfant.birthday|date("d/m/Y") }}</td>
+                                <td>{{ enfant.naissance|date("d/m/Y") }}</td>
                                 <td>
-                                    <div class="col-md-1">
-
-                                    </div>
+                                    
                                 </td>
                             </tr>
                         {% endfor %}
@@ -112,14 +110,21 @@
             <div class="form-group col-md-4">
             </div>
             <div class="form-group col-md-2">
-                {{ form_widget(edit_form) }}
+                {{ form_widget(form) }}
                 <input type="submit" value="Editer" />
-                {{ form_end(edit_form) }}
+                {{ form_end(form) }}
             </div>
             <div class="form-group col-md-2">
-                {{ form_start(delete_form) }}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <div class="text-center pad-top">
+                        <a href="{{ path('enfant_new') }}" >
+                            <i class="fa fa-user-plus fa-5x"></i>
+                        </a>
+                    </div>
+                {% endif %}
+                {# form_start(delete_form) }}
                 <input type="submit" value="Supprimer">
-                {{ form_end(delete_form) }}
+                {{ form_end(delete_form) #}
             </div>
             <div class="form-group col-md-4">
             </div>
