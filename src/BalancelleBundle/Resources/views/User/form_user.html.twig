@@ -80,6 +80,27 @@
                 ) }}<label></label>
             </div>
         </div>
+        <div class="row">
+            <div class="form-group col-md-4">
+            </div>
+            <div class="form-group col-md-2">
+                {{ form_widget(form) }}
+                <input type="submit" value="Editer" />
+                {{ form_end(form) }}
+            </div>
+            <div class="form-group col-md-2">
+                <div class="text-center pad-top">
+                    <a href="{{ path('enfant_new') }}" >
+                        <i class="fa fa-user-plus fa-5x"></i>
+                    </a>
+                </div>
+                {# form_start(delete_form) }}
+                <input type="submit" value="Supprimer">
+                {{ form_end(delete_form) #}
+            </div>
+            <div class="form-group col-md-4">
+            </div>
+        </div>
         <div class="row" id="listeEnfants" style="display: none;">
             <div class="col-md-12">
                 <table id="listeUtilisateur" class="row-border stripe">
@@ -98,35 +119,12 @@
                                 <td>{{ enfant.nom }}</td>
                                 <td>{{ enfant.naissance|date("d/m/Y") }}</td>
                                 <td>
-                                    
+                                    <input type="checkbox" id="test" name="balancellebundle_user[test]">
                                 </td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-            </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-md-4">
-            </div>
-            <div class="form-group col-md-2">
-                {{ form_widget(form) }}
-                <input type="submit" value="Editer" />
-                {{ form_end(form) }}
-            </div>
-            <div class="form-group col-md-2">
-                {% if is_granted('ROLE_ADMIN') %}
-                    <div class="text-center pad-top">
-                        <a href="{{ path('enfant_new') }}" >
-                            <i class="fa fa-user-plus fa-5x"></i>
-                        </a>
-                    </div>
-                {% endif %}
-                {# form_start(delete_form) }}
-                <input type="submit" value="Supprimer">
-                {{ form_end(delete_form) #}
-            </div>
-            <div class="form-group col-md-4">
             </div>
         </div>
     </div>

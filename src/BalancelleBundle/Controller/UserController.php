@@ -77,7 +77,7 @@ class UserController extends Controller
         return $this->render('@Balancelle/User/new.html.twig', array(
             'user' => $user,
             'form' => $form->createView(),
-            'view' => $this->viue
+            'view' => $this->vue
         ));
     }
 
@@ -94,7 +94,6 @@ class UserController extends Controller
         );
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            
             $userManager = $this->container->get('fos_user.user_manager');
             $userManager->updateUser($user);
             return $this->redirectToRoute(

@@ -45,6 +45,9 @@ class User extends BaseUser
     */
     protected $birthday=null;
 
+    /**
+     * Constructeur de l'objet
+     */
     public function __construct()
     {
         parent::__construct();
