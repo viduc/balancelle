@@ -10,4 +10,16 @@ namespace BalancelleBundle\Repository;
  */
 class EnfantRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function autocomplete($recherche)
+    {
+        return $this
+            ->createQueryBuilder('a')
+            ->andWhere('a.prenom LIKE :recherche' )
+            ->orWhere('a.nom LIKE :recherche')
+            ->setParameter( 'recherche', "%$recherche%")
+            ->orderBy('a.prenom')
+            ->getQuery()
+            ->execute()
+            ;
+    }
 }

@@ -7,25 +7,25 @@
 
     <!-- //custom-theme -->
     {% block stylesheets %}
-        <link 
+        <link
             rel="stylesheet" 
-            href="{{ asset('bundles/app/css/bootstrap.min.css') }}" 
+            href="{{ asset('bundles/app/css/bootstrap.min.css') }}"
             type="text/css" 
             media="screen" 
         />
-        <link 
+        <link
             rel="stylesheet" 
             href="{{ asset('bundles/app/css/bootstrap-theme.min.css') }}" 
             type="text/css" 
             media="screen" 
         />
-        <link 
+        <link
             rel="stylesheet" 
             href="{{ asset('bundles/app/css/awesome-bootstrap-checkbox.css') }}" 
             type="text/css" 
             media="screen" 
         />
-        <link 
+        <link
             rel="stylesheet" 
             href="{{ asset('bundles/balancelle/css/custom.css') }}" 
             type="text/css" 
@@ -51,19 +51,19 @@
             media="screen" 
         />
         <!-- //jquery ui -->
-        <link 
+        <link
             rel="stylesheet" 
             href="{{ asset('bundles/balancelle/css/jquery-ui.min.css') }}" 
             type="text/css" 
             media="screen" 
         />
-        <link 
+        <link
             rel="stylesheet" 
             href="{{ asset('bundles/balancelle/css/jquery-ui.structure.min.css') }}" 
             type="text/css" 
             media="screen" 
         />
-        <link 
+        <link
             rel="stylesheet" 
             href="{{ asset('bundles/balancelle/css/jquery-ui.theme.min.css') }}" 
             type="text/css" 
@@ -72,9 +72,14 @@
 
     {% endblock %}
     {% block javascripts %}
-        <script 
-            type="text/javascript" 
-            src="{{ asset('bundles/app/js/jquery-2.1.4.min.js') }}" >
+        <!-- //jquery -->
+        <script
+                type="text/javascript"
+                src="{{ asset('bundles/app/js/jquery-2.1.4.min.js') }}" >
+        </script>
+        <script
+                type="text/javascript"
+                src="{{ asset('bundles/balancelle/js/jquery-ui.min.js') }}" >
         </script>
         <script 
             type="text/javascript" 
@@ -89,11 +94,7 @@
             type="text/javascript" 
             src="{{ asset('bundles/balancelle/js/dataTables.min.js') }}" >
         </script>
-        <!-- //jquery -->
-        <script 
-            type="text/javascript" 
-            src="{{ asset('bundles/balancelle/js/jquery-ui.min.js') }}" >
-        </script>
+
       <!-- CUSTOM SCRIPTS -->
     {% endblock %}
     {% block favicon %}

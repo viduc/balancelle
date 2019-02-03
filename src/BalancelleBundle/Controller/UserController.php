@@ -101,11 +101,12 @@ class UserController extends Controller
                 array('id' => $user->getId())
             );
         }
+
         /* Récupération de la liste des enfants */
         $enfants = $this->getDoctrine()
             ->getRepository(Enfant::class)
             ->findAll();
-        
+
         return $this->render('@Balancelle/User/edit.html.twig', array(
             'user' => $user,
             'form' => $editForm->createView(),

@@ -16,6 +16,102 @@
             </div>
             <div class="col-md-1"></div>    
         </div>
+        <div class="row" id="listeEnfants">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-8">
+                <div class="col-md-2">
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="btnAjouterEnfant">
+                        <i class="fa fa-child"></i> Ajouter
+                    </button>
+                </div>
+                <div class="col-md-10">
+                    <table id="tableSimple" class="row-border stripe tableSimple">
+                        <thead>
+                        <tr>
+                            <th>Prénom</th>
+                            <th>Nom</th>
+                            <th>Date de Naissance</th>
+                            <th>Parenté</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for enfant in enfants %}
+                            <tr>
+                                <td>{{ enfant.prenom }}</td>
+                                <td>{{ enfant.nom }}</td>
+                                <td>{{ enfant.naissance|date("d/m/Y") }}</td>
+                                <td>
+                                    <input type="checkbox" id="test" name="balancellebundle_user[test]">
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-1" id="testajax">
+
+            </div>
+        </div>
+
+
+
+
+    {% block modal %}
+        {{  parent() }}
+        <div class="container">
+            <!-- Modal ajout enfant-->
+            <div class="modal fade" id="modalAjoutEnfant" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 style="color:darkred;"><span class="glyphicon glyphicon-search"></span> Rechercher</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="rechercherEnfant" placeholder="entrer un nom" autocomplete="on">
+                            </div>
+                        </div>
+                        <div class="modal-header">
+                            <h4 style="color:darkred;"><span class="glyphicon glyphicon-plus-sign"></span> Créer</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form">
+                                <div class="form-group">
+                                    <label for="prenom">Prénom</label>
+                                    <input type="text" class="form-control" id="prenom" placeholder="Entrer un prénom">
+                                    <label for="nom">Nom</label>
+                                    <input type="text" class="form-control" id="prenom" placeholder="Entrer un nom">
+                                    <label for="birthdate">Date de naissance</label>
+                                    <input type="date" class="form-control" id="birthdate" placeholder="Entrer une date de naissance">
+                                </div>
+                                <button type="button" class="btn btn-default btn-success btn-block">
+                                    <span class="glyphicon glyphicon-ok-circle"></span> Créer
+                                </button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default btn-default pull-left" data-dismiss="modal">
+                                <span class="glyphicon glyphicon-remove"></span> Annuler
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
     </div>
 </div>
+    {% block js %}
+        <script type="text/javascript">
+            var pathEnfantAUtocomplete = "{{ path('enfant_autocomplete') }}";
+        </script>
+    {% endblock %}
 {% endblock %}

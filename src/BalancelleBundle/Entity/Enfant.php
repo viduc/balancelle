@@ -13,6 +13,11 @@ use Doctrine\ORM\Mapping as ORM;
 class Enfant
 {
     /**
+     * @ORM\ManyToOne(targetEntity="BalancelleBundle\Entity\Famille")
+     */
+    private $famille;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
@@ -185,5 +190,28 @@ class Enfant
     {
         return $this->active;
     }
-}
 
+    /**
+     * Set famille
+     *
+     * @param \BalancelleBundle\Entity\Famille $famille
+     *
+     * @return Enfant
+     */
+    public function setFamille(\BalancelleBundle\Entity\Famille $famille = null)
+    {
+        $this->famille = $famille;
+
+        return $this;
+    }
+
+    /**
+     * Get famille
+     *
+     * @return \BalancelleBundle\Entity\Famille
+     */
+    public function getFamille()
+    {
+        return $this->famille;
+    }
+}

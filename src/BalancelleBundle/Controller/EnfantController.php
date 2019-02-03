@@ -5,6 +5,7 @@ namespace BalancelleBundle\Controller;
 use BalancelleBundle\Entity\Enfant;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Enfant controller.
@@ -110,5 +111,19 @@ class EnfantController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    public function autocompleteAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $enfants = $em->getRepository('BalancelleBundle:Enfant')->autocomplete("tot");
+        $tabResponse = [];
+        foreach ($enfants as $enfant) {
+            $tab["prenom"] = ucfirst($enfant->getPrenom());
+            $tab["nom"] = ucfirst($enfant->getNom());
+            $tab["id"] = $enfant->getId();
+            $tabResponse[] = $tab;
+        }
+        return new JsonResponse($tabResponse);
     }
 }

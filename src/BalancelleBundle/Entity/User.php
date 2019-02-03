@@ -14,11 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
 class User extends BaseUser
 {
     /**
-     * @ORM\ManyToMany(targetEntity="BalancelleBundle\Entity\Enfant", cascade={"persist"})
-    */
-    private $enfants;
-    
-    /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -51,7 +46,6 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
-        $this->enfants = new ArrayCollection();
     }
 
     /**
@@ -220,39 +214,5 @@ class User extends BaseUser
     public function getRolePro()
     {
         return $this->hasRole("ROLE_PRO");
-    }
-
-    /**
-     * Add enfant
-     *
-     * @param \BalancelleBundle\Entity\Enfant $enfant
-     *
-     * @return User
-     */
-    public function addEnfant(\BalancelleBundle\Entity\Enfant $enfant)
-    {
-        $this->enfants[] = $enfant;
-
-        return $this;
-    }
-
-    /**
-     * Remove enfant
-     *
-     * @param \BalancelleBundle\Entity\Enfant $enfant
-     */
-    public function removeEnfant(\BalancelleBundle\Entity\Enfant $enfant)
-    {
-        $this->enfants->removeElement($enfant);
-    }
-
-    /**
-     * Get enfants
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEnfants()
-    {
-        return $this->enfants;
     }
 }
