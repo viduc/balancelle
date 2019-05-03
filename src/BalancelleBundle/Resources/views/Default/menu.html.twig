@@ -1,47 +1,50 @@
-<nav class="navbar-default navbar-side" role="navigation">
-    <div class="sidebar-collapse">
-        <ul class="nav" id="main-menu">
-            <li class="active-link">
-                <a href="{{ path('balancelle_admin_index') }}" >
-                    <i class="fa fa-th-list "></i>Accueil
-                </a>
-            </li>
-            <li class="active-link">
-                <a href="{{ path('balancelle_admin_evenements_liste') }}" >
-                    <i class="fa fa-calendar"></i>Evènements 
-                </a>
-            </li>
-            <li class="active-link">
-                <a href="{{ path('balancelle_admin_revuepresse_liste') }}" >
-                    <i class="fa fa-file-text-o"></i>Revue de presse
-                </a>
-            </li>
-            <li class="active-link">
-                <a href="{{ path('user_index') }}" >
-                    <i class="fa fa-users"></i>Utilisateurs
-                </a>
-            </li> 
-            <!--li>
-                <a href="ui.html"><i class="fa fa-table "></i>UI Elements  <span class="badge">Included</span></a>
-            </li>
-            <li>
-                <a href="blank.html"><i class="fa fa-edit "></i>Blank Page  <span class="badge">Included</span></a>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-qrcode "></i>My Link One</a>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-bar-chart-o"></i>My Link Two</a>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-edit "></i>My Link Three </a>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-table "></i>My Link Four</a>
-            </li>
-             <li>
-                <a href="#"><i class="fa fa-edit "></i>My Link Five </a>
-            </li-->
-        </ul>
+<!-- sidebar menu area start -->
+<div class="sidebar-menu">
+    <div class="sidebar-header">
+        <div class="logo">
+            <a href="{{ path('balancelle_homepage') }}">
+                <img
+                    src="{{asset('bundles/app/images/logos/balancelle.jpeg')}}"
+                    width="48px"
+                    heigth="48px" alt="logo">
+            </a>
+        </div>
     </div>
-</nav>
+    <div class="main-menu">
+        <div class="menu-inner">
+            <nav>
+                <ul class="metismenu" id="menu">
+                    {% if famille is defined %}
+                        <li class="active">
+                            <a
+                                href="{{ path('balancelle_homepage') }}"
+                                aria-expanded="true">
+                                <i class="ti-home"></i>
+                                <span>Ma Famille</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="active">
+                            <a
+                                href="{{ path('user_index') }}"
+                                aria-expanded="true">
+                                <i class="fa fa-user"></i>
+                                <span>Utilisateurs</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="{{ path('famille_index') }}"
+                                aria-expanded="true">
+                                <i class="fa fa-group"></i>
+                                <span>Familles</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- sidebar menu area end -->

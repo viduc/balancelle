@@ -1,0 +1,40 @@
+{% extends '@Balancelle/Default/layout.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+    <h1>Liste des calendriers</h1>
+
+    <table id="listeCalendrier" class="row-border stripe">
+        <thead>
+            <tr>
+                <th>Date de début</th>
+                <th>Date de fin</th>
+                <th>Année de début</th>
+                <th>Année de fin</th>
+                <th>Commentaire</th>
+                <th>Active</th>
+                <th>Editer</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for calendrier in calendriers %}
+            <tr>
+                <td>{% if calendrier.dateDebut %}{{ calendrier.dateDebut|date('d-m-Y') }}{% endif %}</td>
+                <td>{% if calendrier.dateFin %}{{ calendrier.dateFin|date('d-m-Y') }}{% endif %}</td>
+                <td>{{ calendrier.anneeDebut }}</td>
+                <td>{{ calendrier.anneeFin }}</td>
+                <td>{{ calendrier.commentaire }}</td>
+                <td>{% if calendrier.active %}
+                        <img src="{{asset('bundles/balancelle/images/on.png')}}" alt="actif" />
+                    {% else %}
+                        <img src="{{asset('bundles/balancelle/images/off.png')}}" alt="inactif" />
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('calendrier_edit', { 'id': calendrier.id }) }}">éditer</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

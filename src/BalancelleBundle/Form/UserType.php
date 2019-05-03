@@ -37,7 +37,7 @@ class UserType extends AbstractType
                 DateType::class,
                 [
                     'widget' => 'single_text',
-                    'attr' => ['class' => 'js-datepicker'],
+                    'attr' => ['class' => 'js-datepicker', 'type' => 'date'],
                     'html5' => false,
                     'format' => 'dd/MM/yyyy'
                 ])

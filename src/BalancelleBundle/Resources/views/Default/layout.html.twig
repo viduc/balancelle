@@ -1,25 +1,108 @@
-<!--
-author: W3layouts
-author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
 <!DOCTYPE html>
-<html lang="fr">
-    {% include '@Balancelle/Default/head.html.twig' %}
-<body>
-    <div id="wrapper">
-    {% include '@Balancelle/Default/header.html.twig' %}
-    {% include '@Balancelle/Default/menu.html.twig' %}
-    {% block body %} 
-        
-    {% endblock %}
-    </div>
-    {% include '@Balancelle/Default/footer.html.twig' %}
-    {% block modal %}
+<html class="no-js" lang="fr">
+    {%  include '@Balancelle/Default/head.html.twig' %}
+    <body>
+        <!--[if lt IE 8]>
+        <p class="browserupgrade">Vous utilisez un navigateur <strong>obsolète</strong>.
+            <a href="http://browsehappy.com/">Mettez à jour votre navigateur</a></p>
+        <![endif]-->
+        <!-- preloader area start -->
+        <div id="preloader">
+            <div class="loader"></div>
+        </div>
+        <div class="page-container">
+            {% include '@Balancelle/Default/menu.html.twig' %}
+            <div class="main-content">
+                {# include '@Balancelle/Default/header.html.twig' #}
+                {# include '@Balancelle/Default/page-title.html.twig' #}
+                {# TODO inclure ici le title du body #}
+                {% block body %}
 
-    {% endblock %}
-</body>
+                {% endblock %}
+            </div>
+        </div>
+    </body>
     {% block script_end %}
+        <!-- //Template SRTdash admin dashboard -->
+        <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/jquery-2.2.4.min.js') }}" >
+        </script>
+        <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/popper.min.js') }}" >
+        </script>
+        <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/bootstrap.min.js') }}" >
+        </script>
+        <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/owl.carousel.min.js') }}" >
+        </script>
+        <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/metisMenu.min.js') }}" >
+        </script>
+        <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/jquery.slimscroll.min.js') }}" >
+        </script>
+        <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/jquery.slicknav.min.js') }}" >
+        </script>
+        <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/modernizr-2.8.3.min.js') }}" >
+        </script>
+        <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/jquery.dataTables.js') }}" >
+        </script>
+        <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/jquery.dataTables.min.js') }}" >
+        </script>
+        <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/jquery-confirm.min.js') }}" >
+        </script>
+        <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/dataTables.bootstrap4.min.js') }}" >
+        </script>
+        <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/dataTables.responsive.min.js') }}" >
+        </script>
+        <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/responsive.bootstrap.min.js') }}" >
+        </script>
+        <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/scripts.js') }}" >
+        </script>
+        <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/plugins.js') }}" >
+        </script>
+        <!-- //Balancelle -->
+        <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/bootstrap-datepicker.min.js') }}" >
+        </script>
+        <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/balancelle.js') }}" >
+        </script>        <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/balancelle_enfants.js') }}" >
+        </script>
+        <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/balancelle_permanences.js') }}" >
+        </script>
     {% endblock %}
 </html>

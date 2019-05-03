@@ -1,39 +1,59 @@
-{% extends '@Balancelle/User/user_layout.html.twig' %}
+{% extends '@Balancelle/Default/layout.html.twig' %}
 
 {% block body %}
     {{ parent() }}
-        <h2>Liste des utilisateurs</h2>
-        <table id="listeUtilisateur" class="row-border stripe">
-            <thead>
-                <tr>
-                    <th>Prénom</th>
-                    <th>Nom</th>
-                    <th>Email</th>
-                    <th>Date de Naissance</th>
-                    <th>Actif</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for user in users %}
-                <tr>
-                    <td>{{ user.prenom }}</td>
-                    <td>{{ user.nom }}</td>
-                    <td><a href="{{ path('user_edit', { 'id': user.id }) }}">{{ user.email }}</a></td>
-                    <td>{{ user.birthday|date('d/m/Y') }}</td>
-                    <td>
-                        {% if user.enabled %}
-                            <img src="{{asset('bundles/balancelle/images/on.png')}}" alt="actif" />
-                        {%  else %}
-                            <img src="{{asset('bundles/balancelle/images/off.png')}}" alt="inactif" />
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+<div class="main-content-inner">
+    <div class="row">
+        <div class="col-2 pt-50">
+            <div class="card">
+                <div class="card-body">
+                        <a href="{{ path('user_new') }}" >
+                            <img src="{{ asset('bundles/balancelle/images/add.svg') }}" alt="ajouter" />
+                        </a>
+
+                </div>
+            </div>
+        </div>
+        <!-- data table start -->
+        <div class="col-10 mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title">Liste des utilisateurs</h4>
+                    <div class="data-tables">
+                        <table id="dataTable" name="dataTable" class="text-center">
+                            <thead class="bg-light text-capitalize">
+                                <tr>
+                                    <th>Prénom</th>
+                                    <th>Nom</th>
+                                    <th>Email</th>
+                                    <th>Date de Naissance</th>
+                                    <th>Actif</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for user in users %}
+                                <tr>
+                                    <td>{{ user.prenom }}</td>
+                                    <td>{{ user.nom }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>{{ user.birthday|date('d/m/Y') }}</td>
+                                    <td>
+                                        {% if user.enabled %}
+                                            <img src="{{asset('bundles/balancelle/images/on.png')}}" alt="actif" />
+                                        {%  else %}
+                                            <img src="{{asset('bundles/balancelle/images/off.png')}}" alt="inactif" />
+                                        {% endif %}
+                                    </td>
+                                    <td><a href="{{ path('user_edit', { 'id': user.id }) }}">Voir</a></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
 {% endblock %}
-
-  

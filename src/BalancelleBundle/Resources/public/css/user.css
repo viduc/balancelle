@@ -102,3 +102,13 @@ input[type=search]:focus {
     padding: 5px 0;
     border-radius: 2px;
 }
+
+
+
+/*li {
+    font-family: Arial, sans-serif;
+    font-size: 100%;
+    color: black;
+    display : list-item;
+    list-style-image : url("../images/child.png");
+}*/

@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Permanence</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ permanence.id }}</td>
+            </tr>
+            <tr>
+                <th>Debut</th>
+                <td>{% if permanence.debut %}{{ permanence.debut|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Fin</th>
+                <td>{% if permanence.fin %}{{ permanence.fin|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ permanence.titre }}</td>
+            </tr>
+            <tr>
+                <th>Commentaire</th>
+                <td>{{ permanence.commentaire }}</td>
+            </tr>
+            <tr>
+                <th>Idparent</th>
+                <td>{{ permanence.idParent }}</td>
+            </tr>
+            <tr>
+                <th>Active</th>
+                <td>{% if permanence.active %}Yes{% else %}No{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('permanence_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('permanence_edit', { 'id': permanence.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

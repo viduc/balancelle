@@ -21,4 +21,4 @@ enfant_delete:
 enfant_autocomplete:
     path:     /autocomplete
     defaults: { _controller: "BalancelleBundle:Enfant:autocomplete" }
-    methods:  [GET, POST]
+    methods:  [POST]

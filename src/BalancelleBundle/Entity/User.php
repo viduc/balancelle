@@ -10,6 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="fos_user")
+ * @ORM\AttributeOverrides({
+ *      @ORM\AttributeOverride(name="email", column=@ORM\Column(type="string", name="email", length=255, unique=false, nullable=true)),
+ *      @ORM\AttributeOverride(name="emailCanonical", column=@ORM\Column(type="string", name="email_canonical", length=255, unique=false, nullable=true))
+ * })
  */
 class User extends BaseUser
 {
@@ -25,14 +29,14 @@ class User extends BaseUser
      *
      * @ORM\Column(name="prenom", type="string", length=255)
      */
-    private $prenom;
+    protected $prenom;
 
     /**
      * @var string
      *
      * @ORM\Column(name="nom", type="string", length=255)
-     */   
-    private $nom;
+     */
+    protected $nom;
     
     /**
     *
@@ -214,5 +218,14 @@ class User extends BaseUser
     public function getRolePro()
     {
         return $this->hasRole("ROLE_PRO");
+    }
+
+    /**
+     * représente l'objet en string
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getPrenom() . ' ' . $this->getNom();
     }
 }

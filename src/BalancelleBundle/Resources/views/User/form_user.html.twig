@@ -1,28 +1,12 @@
 <!-- formulaire commun à la création et modification d'un utilisateur -->
-{{ form_start(form) }}
+
 <div class="card person-card">
     <div class="card-body">
         <div class="row">
             <div class="form-group col-md-2">
-                <select id="input_sex" class="form-control">
-                    <option value="Mr.">Mr.</option>
-                    <option value="Mme.">Mme.</option>
-                </select>
+
             </div>
-            <div class="form-group col-md-1">
-                Prénom:
-            </div>
-            <div class="form-group col-md-4">
-                {{ form_widget(form.prenom, {'attr': {'class': 'form-control',
-                    'placeholder': "prénom"}}) }}
-            </div>
-            <div class="form-group col-md-1">
-                Nom:
-            </div>
-            <div class="form-group col-md-4">
-                {{ form_widget(form.nom, {'attr': {'class': 'form-control',
-                    'placeholder': "nom"}}) }}
-            </div>
+
         </div>
         <div class="row">
             <div class="form-group col-md-1">
@@ -35,10 +19,7 @@
             <div class="form-group col-md-3">
                 Date de naissance:
             </div>
-            <div class="form-group col-md-4">
-                {{ form_widget(form.birthday, {'attr': {
-                    'placeholder': "date de naissance"}}) }}
-            </div>
+
         </div> 
         <div class="row">
             <div class="form-group col-md-2 checkbox-intitule">
@@ -85,18 +66,16 @@
             </div>
             <div class="form-group col-md-2">
                 {{ form_widget(form) }}
-                <input type="submit" value="Editer" />
+                    {% if 'new' in action %}
+                        <input type="submit" value="créer" />
+                    {% endif %}
+                    {% if 'edit' in action %}
+                        <input type="submit" value="enregister" />
+                    {% endif %}
                 {{ form_end(form) }}
             </div>
             <div class="form-group col-md-2">
-                <!--div class="text-center pad-top">
-                    <a href="{{ path('enfant_new') }}" >
-                        <i class="fa fa-user-plus fa-5x"></i>
-                    </a>
-                </div-->
-                {# form_start(delete_form) }}
-                <input type="submit" value="Supprimer">
-                {{ form_end(delete_form) #}
+
             </div>
             <div class="form-group col-md-4">
             </div>

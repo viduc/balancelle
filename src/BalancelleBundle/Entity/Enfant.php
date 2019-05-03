@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Enfant
 {
     /**
-     * @ORM\ManyToOne(targetEntity="BalancelleBundle\Entity\Famille")
+     * @ORM\ManyToOne(targetEntity="BalancelleBundle\Entity\Famille", inversedBy="enfants")
      */
     private $famille;
 

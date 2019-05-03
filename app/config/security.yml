@@ -24,9 +24,9 @@ security:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/balancelle/, role: ROLE_USER }
-        - { path: ^/admin, role: ROLE_ADMIN }
-        - { path: ^/user/admin, role: ROLE_ADMIN }
-        - { path: ^/user/user, role: ROLE_USER }
-        - { path: ^/user/enregistrement, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/enfant, role: ROLE_ADMIN }
+        - { path: ^/balancelle/famille, role: ROLE_USER }
+        - { path: ^/balancelle/, role: ROLE_ADMIN }
+        #- { path: ^/user/admin, role: ROLE_ADMIN }
+        #- { path: ^/user/user, role: ROLE_USER }
+        #- { path: ^/user/enregistrement, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        #- { path: ^/enfant, role: ROLE_ADMIN }

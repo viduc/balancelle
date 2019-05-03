@@ -10,4 +10,15 @@ namespace BalancelleBundle\Repository;
  */
 class FamilleRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByFamille($userId)
+    {
+        return $this
+            ->createQueryBuilder('a')
+            ->where('a.parent1 = :userId' )
+            ->orWhere('a.parent2 = :userId')
+            ->setParameter( 'userId', "$userId")
+            ->andWhere('a.active = true')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

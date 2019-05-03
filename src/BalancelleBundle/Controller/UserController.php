@@ -6,6 +6,7 @@ use BalancelleBundle\Entity\User;
 use BalancelleBundle\Entity\Enfant;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * User controller.
@@ -19,41 +20,40 @@ class UserController extends Controller
         'ROLE_PARENT',
         'ROLE_PRO'
     ];
-    
-    private $vue = 'user';
-    
+
     /**
-     * Lists all user entities.
-     *
+     * Liste tout les utilisateurs
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
 
         $users = $em->getRepository('BalancelleBundle:User')->findAll();
-        
-        return $this->render('@Balancelle/User/index.html.twig', array(
-            'users' => $users, 'view' => $this->vue));
+
+        return $this->render(
+            '@Balancelle/User/index.html.twig',
+            array('users' => $users)
+        );
     }
 
     /**
-     * Creates a new user entity.
-     *
+     * Créé un nouvel utilisateur
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function newAction(Request $request)
     {
         $userManager = $this->get('fos_user.user_manager');
         $user = $userManager->createUser();
         $user->setEnabled(false);
-        //$user->addRole('ROLE_ADMIN');
-        $user->setUsername(uniqid()); // ici il faudra implémenter une méthode de génération de login
-        $user->setPlainPassword(md5(uniqid()));
-        
+        $user->setUsername(uniqid('', true)); // ici il faudra implémenter une méthode de génération de login
+        $user->setPlainPassword(md5(uniqid('', true)));
         $form = $this->createForm('BalancelleBundle\Form\UserType', $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setConfirmationToken(md5(uniqid()));
+            $user->setConfirmationToken(md5(uniqid('', true)));
             $userManager->updateUser($user);
             $message = \Swift_Message::newInstance()
                 ->setSubject('Inscription')
@@ -68,22 +68,26 @@ class UserController extends Controller
                     )
                 );
             $this->get('mailer')->send($message);
+            $succes = "L'utilisateur " . $user->getPrenom() . " ";
+            $succes .= $user->getNom() ." a bien été enregistré";
+            $this->addFlash("success", $succes);
             return $this->redirectToRoute(
                 'user_edit',
                 array('id' => $user->getId())
             );
         }
 
-        return $this->render('@Balancelle/User/new.html.twig', array(
+        return $this->render('@Balancelle/User/edit.html.twig', array(
             'user' => $user,
-            'form' => $form->createView(),
-            'view' => $this->vue
+            'form' => $form->createView()
         ));
     }
 
     /**
-     * Displays a form to edit an existing user entity.
-     *
+     * Edite un utilisateur
+     * @param Request $request
+     * @param User $user
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, User $user)
     {
@@ -96,29 +100,31 @@ class UserController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $userManager = $this->container->get('fos_user.user_manager');
             $userManager->updateUser($user);
+            $succes = "L'utilisateur " . $user->getPrenom() . " ";
+            $succes .= $user->getNom() ." a bien été modifié";
+            $this->addFlash("success", $succes);
             return $this->redirectToRoute(
                 'user_edit',
                 array('id' => $user->getId())
             );
         }
-
-        /* Récupération de la liste des enfants */
-        $enfants = $this->getDoctrine()
-            ->getRepository(Enfant::class)
-            ->findAll();
-
+        $em = $this->getDoctrine()->getManager();
+        $famille = $em->getRepository(
+            'BalancelleBundle:Famille'
+        )->findByFamille($user->getId());
         return $this->render('@Balancelle/User/edit.html.twig', array(
+            'familleUtilisateur' => $famille,
             'user' => $user,
             'form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-            'enfants' => $enfants,
-            'view' => $this->vue
+            'delete_form' => $deleteForm->createView()
         ));
     }
 
     /**
-     * Deletes a user entity.
-     *
+     * Supprime un utilisateur
+     * @param Request $request
+     * @param User $user
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteAction(Request $request, User $user)
     {
@@ -139,7 +145,7 @@ class UserController extends Controller
      *
      * @param User $user The user entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return \Symfony\Component\Form\FormInterface
      */
     private function createDeleteForm(User $user)
     {
@@ -152,12 +158,12 @@ class UserController extends Controller
             ->getForm()
         ;
     }
-    
+
     /**
      * Méthode qui permet à un utilisateur de finaliser son compte
-     * @param type $token
+     * @param type $token - le token
      * @param Request $request
-     * @return type
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function enregistrerMotDePasseUtilisateurAction(
         $token,
@@ -185,12 +191,18 @@ class UserController extends Controller
                     array()
                 );
             }
-        } 
+        }
+
         return $this->redirect(
             $this->generateUrl("fos_user_security_login")
         );
     }
-    
+
+    /**
+     * @param User $user - l'utilisateur
+     * @param Request $request - la requete
+     * @return mixed
+     */
     private function gestionDesRoles($user, $request)
     {
         $user->removeRole("ROLE_USER");
@@ -199,6 +211,40 @@ class UserController extends Controller
         )) {
             $user->addRole("ROLE_USER");
         }
+
         return $user;
+    }
+
+
+    /**
+     * permet de vérifier qu'un mail n'est pas utilisé par un autre utilisateur
+     * @param Request $request - requête ajax
+     * @return JsonResponse (ok si pas utilisé, nok si déjà utilisé)
+     */
+    public function verifiermailAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $mails = $em
+            ->getRepository('BalancelleBundle:User')
+            ->findBy(array('email' => $request->get('email')));
+        if (count($mails)>0) {
+            /* si l'id de l'utilisateur est null on est dans le mode création
+             * donc si le mail est déjà présent en base on renvoie nok */
+            if ($request->get('id') === null) {
+                return new JsonResponse("nok");
+            }
+            /* sinon on vérifie que le mail n'est pas déjà celui de
+             * l'utilisateur courant et si oui on renvoie ok */
+            foreach ($mails as $mail) {
+                if ($mail->getId() === $request->get('id')) {
+                    return new JsonResponse("ok");
+                }
+            }
+            /* si le mail est déjà utilisé pas un autre utilisateur on
+             * renvoie nok */
+            return new JsonResponse("nok");
+        }
+
+        return new JsonResponse('ok');
     }
 }

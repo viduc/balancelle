@@ -1,4 +1,4 @@
-{% extends '@Balancelle/User/user_layout.html.twig' %}
+{% extends '@Balancelle/Default/layout.html.twig' %}
 
 {% block body %}
     {{ parent() }}
@@ -13,8 +13,13 @@
             <div class="col-md-8">
                 {% include "@Balancelle/User/form_user.html.twig" %}
             </div>
-            <div class="col-md-1"></div> 
+            <div class="col-md-1">
+            </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    var pathVerifierMailUser = "{{ path('user_verifier_mail') }}";
+</script>
 {% endblock %}

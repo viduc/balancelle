@@ -1,0 +1,35 @@
+{% extends '@Balancelle/Default/layout.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+    <h2>Liste des structure</h2>
+    <table id="listeStructure" class="row-border stripe">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Commentaire</th>
+            <th>Actif</th>
+            <th>Editer</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for structure in structures %}
+            <tr>
+                <td>{{ structure.nom }}</td>
+                <td>{{ structure.commentaire }}</td>
+                <td>
+                    {% if structure.active %}
+                        <img src="{{asset('bundles/balancelle/images/on.png')}}" alt="actif" />
+                    {%  else %}
+                        <img src="{{asset('bundles/balancelle/images/off.png')}}" alt="inactif" />
+                    {% endif %}
+                </td>
+                <td><a href="{{ path('structure_edit', { 'id': structure.id }) }}">éditer</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    </div>
+{% endblock %}
+

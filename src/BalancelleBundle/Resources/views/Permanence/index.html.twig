@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Permanences list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Debut</th>
+                <th>Fin</th>
+                <th>Titre</th>
+                <th>Commentaire</th>
+                <th>Idparent</th>
+                <th>Active</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for permanence in permanences %}
+            <tr>
+                <td><a href="{{ path('permanence_show', { 'id': permanence.id }) }}">{{ permanence.id }}</a></td>
+                <td>{% if permanence.debut %}{{ permanence.debut|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if permanence.fin %}{{ permanence.fin|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ permanence.titre }}</td>
+                <td>{{ permanence.commentaire }}</td>
+                <td>{{ permanence.idParent }}</td>
+                <td>{% if permanence.active %}Yes{% else %}No{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('permanence_show', { 'id': permanence.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('permanence_edit', { 'id': permanence.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('permanence_new') }}">Create a new permanence</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -8,15 +8,6 @@ app:
     
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
-    
-balancelle_user:
-    resource: "@BalancelleBundle/Resources/config/routing/user.yml"
-    prefix:   /user/admin
- 
-balancelle_user_enregistrement:
-    resource: "@BalancelleBundle/Resources/config/routing/userEnregistrement.yml"
-    prefix:   /user/enregistrement
-    
-balancelle_enfant:
-    resource: "@BalancelleBundle/Resources/config/routing/enfant.yml"
-    prefix:   /enfant
+
+toiba_fullcalendar:
+    resource: "@FullCalendarBundle/Resources/config/routing.yaml"

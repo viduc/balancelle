@@ -3,6 +3,8 @@
 namespace BalancelleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Famille
@@ -19,8 +21,19 @@ class Famille
 
     /**
      * @ORM\OneToOne(targetEntity="BalancelleBundle\Entity\User", cascade={"persist"})
+     * @Assert\Expression("value !== this.getParent1()",message = "les deux parents doivent être différents")
      */
     private $parent2;
+
+    /**
+     * @ORM\OneToMany(targetEntity="BalancelleBundle\Entity\Enfant", cascade={"persist", "remove"}, mappedBy="famille")
+     */
+    private $enfants;
+
+    public function __construct()
+    {
+        $this->enfants = new ArrayCollection();
+    }
 
     /**
      * @var int
@@ -58,6 +71,13 @@ class Famille
      * @ORM\Column(name="active", type="boolean")
      */
     private $active;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="nombre_permanence", type="integer", nullable=true)
+     */
+    private $nombrePermanence;
 
 
     /**
@@ -212,5 +232,63 @@ class Famille
     public function getParent2()
     {
         return $this->parent2;
+    }
+
+    /**
+     * Add enfant
+     *
+     * @param \BalancelleBundle\Entity\Enfant $enfant
+     *
+     * @return Famille
+     */
+    public function addEnfant(\BalancelleBundle\Entity\Enfant $enfant)
+    {
+        $this->enfants[] = $enfant;
+
+        return $this;
+    }
+
+    /**
+     * Remove enfant
+     *
+     * @param \BalancelleBundle\Entity\Enfant $enfant
+     */
+    public function removeEnfant(\BalancelleBundle\Entity\Enfant $enfant)
+    {
+        $this->enfants->removeElement($enfant);
+    }
+
+    /**
+     * Get enfants
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEnfants()
+    {
+        return $this->enfants;
+    }
+
+    /**
+     * Set nombrePermanence.
+     *
+     * @param int $nombrePermanence
+     *
+     * @return Famille
+     */
+    public function setNombrePermanence($nombrePermanence)
+    {
+        $this->nombrePermanence = $nombrePermanence;
+
+        return $this;
+    }
+
+    /**
+     * Get nombrePermanence.
+     *
+     * @return int
+     */
+    public function getNombrePermanence()
+    {
+        return $this->nombrePermanence;
     }
 }

@@ -1,99 +1,143 @@
 <head>
-    <title>Administration du site de la Balancelle</title>
+    <title>Intranet du site de la Balancelle</title>
     <!-- custom-theme -->
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="crèche balancelle moirans" />
 
-    <!-- //custom-theme -->
     {% block stylesheets %}
+        <!-- //Template SRTdash admin dashboard -->
         <link
-            rel="stylesheet" 
-            href="{{ asset('bundles/app/css/bootstrap.min.css') }}"
-            type="text/css" 
-            media="screen" 
-        />
-        <link
-            rel="stylesheet" 
-            href="{{ asset('bundles/app/css/bootstrap-theme.min.css') }}" 
-            type="text/css" 
-            media="screen" 
+            rel="stylesheet"
+            href="{{ asset('bundles/balancelle/css/bootstrap.min.css') }}"
+            type="text/css"
+            media="screen"
         />
         <link
-            rel="stylesheet" 
-            href="{{ asset('bundles/app/css/awesome-bootstrap-checkbox.css') }}" 
-            type="text/css" 
-            media="screen" 
+            rel="stylesheet"
+            href="{{ asset('bundles/balancelle/css/font-awesome.min.css') }}"
+            type="text/css"
+            media="screen"
         />
         <link
-            rel="stylesheet" 
-            href="{{ asset('bundles/balancelle/css/custom.css') }}" 
-            type="text/css" 
-            media="screen" 
-        />
-        <link 
-            rel="stylesheet" 
-            href="{{ asset('bundles/app/css/font-awesome.css') }}" 
-            type="text/css" 
-            media="screen" 
-        />
-        <!-- //font-awesome-icons -->
-        <link 
-            href='http://fonts.googleapis.com/css?family=Open+Sans' 
-            rel='stylesheet' 
-            type='text/css' 
-        />
-        <!-- //dataTable -->
-        <link 
-            rel="stylesheet" 
-            href="{{ asset('bundles/balancelle/css/dataTables.min.css') }}" 
-            type="text/css" 
-            media="screen" 
-        />
-        <!-- //jquery ui -->
-        <link
-            rel="stylesheet" 
-            href="{{ asset('bundles/balancelle/css/jquery-ui.min.css') }}" 
-            type="text/css" 
-            media="screen" 
+            rel="stylesheet"
+            href="{{ asset('bundles/balancelle/css/themify-icons.css') }}"
+            type="text/css"
+            media="screen"
         />
         <link
-            rel="stylesheet" 
-            href="{{ asset('bundles/balancelle/css/jquery-ui.structure.min.css') }}" 
-            type="text/css" 
-            media="screen" 
+            rel="stylesheet"
+            href="{{ asset('bundles/balancelle/css/metisMenu.css') }}"
+            type="text/css"
+            media="screen"
         />
         <link
-            rel="stylesheet" 
-            href="{{ asset('bundles/balancelle/css/jquery-ui.theme.min.css') }}" 
-            type="text/css" 
-            media="screen" 
+            rel="stylesheet"
+            href="{{ asset('bundles/balancelle/css/owl.carousel.min.css') }}"
+            type="text/css"
+            media="screen"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ asset('bundles/balancelle/css/slicknav.min.css') }}"
+            type="text/css"
+            media="screen"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ asset('bundles/balancelle/css/export.css') }}"
+            type="text/css"
+            media="all"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ asset('bundles/balancelle/css/jquery.dataTables.css') }}"
+            type="text/css"
+            media="screen"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ asset('bundles/balancelle/css/jquery/jquery-confirm.min.css') }}"
+            type="text/css"
+            media="screen"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ asset('bundles/balancelle/css/dataTables.bootstrap4.min.css') }}"
+            type="text/css"
+            media="screen"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ asset('bundles/balancelle/css/responsive.bootstrap.min.css') }}"
+            type="text/css"
+            media="screen"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ asset('bundles/balancelle/css/responsive.jqueryui.min.css') }}"
+            type="text/css"
+            media="screen"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ asset('bundles/balancelle/css/typography.css') }}"
+            type="text/css"
+            media="screen"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ asset('bundles/balancelle/css/default-css.css') }}"
+            type="text/css"
+            media="screen"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ asset('bundles/balancelle/css/styles.css') }}"
+            type="text/css"
+            media="screen"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ asset('bundles/balancelle/css/responsive.css') }}"
+            type="text/css"
+            media="screen"
         />
 
+        <!-- //Balancelle -->
+        <link
+            rel="stylesheet"
+            href="{{ asset('bundles/balancelle/css/calendrier.css') }}"
+            type="text/css"
+            media="screen"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ asset('bundles/balancelle/css/progessBarPermanence.css') }}"
+            type="text/css"
+            media="screen"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ asset('bundles/balancelle/css/bootstrap-datepicker.min.css') }}"
+            type="text/css"
+            media="screen"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ asset('bundles/balancelle/css/balancelle.css') }}"
+            type="text/css"
+            media="screen"
+        />
+        <!--link
+            rel="stylesheet"
+            href="{{ asset('bundles/balancelle/css/bbcode.default.min.css') }}"
+            type="text/css"
+            media="screen"
+        /-->>
     {% endblock %}
     {% block javascripts %}
-        <!-- //jquery -->
-        <script
-                type="text/javascript"
-                src="{{ asset('bundles/app/js/jquery-2.1.4.min.js') }}" >
-        </script>
-        <script
-                type="text/javascript"
-                src="{{ asset('bundles/balancelle/js/jquery-ui.min.js') }}" >
-        </script>
-        <script 
-            type="text/javascript" 
-            src="{{ asset('bundles/app/js/bootstrap.min.js') }}" >
-        </script>
-        <script 
-            type="text/javascript" 
-            src="{{ asset('bundles/balancelle/js/custom.js') }}" >
-        </script>
-        <!-- //dataTable -->
-        <script 
-            type="text/javascript" 
-            src="{{ asset('bundles/balancelle/js/dataTables.min.js') }}" >
-        </script>
 
       <!-- CUSTOM SCRIPTS -->
     {% endblock %}

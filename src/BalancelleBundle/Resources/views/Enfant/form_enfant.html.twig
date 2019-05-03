@@ -1,4 +1,5 @@
 <!-- formulaire commun à la création et modification d'un utilisateur -->
+{% set action = app.request.attributes.get("_route") %}
 {{ form_start(form) }}
 <div class="card person-card">
     <div class="card-body">
@@ -52,7 +53,12 @@
             </div>
             <div class="form-group col-md-2">
                 {{ form_widget(form) }}
-                <input type="submit" value="Editer" />
+                {% if 'new' in action %}
+                    <input type="submit" value="créer" />
+                {% endif %}
+                {% if 'edit' in action %}
+                    <input type="submit" value="enregister" />
+                {% endif %}
                 {{ form_end(form) }}
             </div>
             <div class="form-group col-md-2">

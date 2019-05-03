@@ -1,0 +1,36 @@
+{% extends '@Balancelle/Default/layout.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+    <h1> Liste des familles</h1>
+
+    <table id="listeFamille" class="row-border stripe">
+        <thead>
+        <tr>
+            <th>Nom de la famille</th>
+            <th>Date de création</th>
+            <th>Date de modification</th>
+            <th>Active</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for famille in familles %}
+            <tr>
+                <td><a href="{{ path('famille_edit', { 'id': famille.id }) }}">{{ famille.nom }}</a></td>
+                <td>{{ famille.dateCreation|date('d/m/Y')  }}</td>
+                <td>{{ famille.dateCreation|date('d/m/Y') }}</td>
+                <td>
+                    {% if famille.active %}
+                        <img src="{{asset('bundles/balancelle/images/on.png')}}" alt="actif" />
+                    {%  else %}
+                        <img src="{{asset('bundles/balancelle/images/off.png')}}" alt="inactif" />
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    </div>
+</div>
+{% endblock %}

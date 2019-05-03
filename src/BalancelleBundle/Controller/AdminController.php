@@ -25,7 +25,7 @@ class AdminController extends Controller
  
     /**
      * Gestion des évènements
-     * @return view
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function evenementsListeAction()
     {

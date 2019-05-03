@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class EnfantController extends Controller
 {
-    private $view = 'enfant';
     
     /**
      * Lists all enfant entities.
@@ -26,7 +25,7 @@ class EnfantController extends Controller
         $enfants = $em->getRepository('BalancelleBundle:Enfant')->findAll();
 
         return $this->render('@Balancelle/Enfant/index.html.twig', array(
-            'enfants' => $enfants,'view' => $this->view
+            'enfants' => $enfants
         ));
     }
 
@@ -45,13 +44,15 @@ class EnfantController extends Controller
             $em->persist($enfant);
             $em->flush();
 
-            return $this->redirectToRoute('enfenfant_edit', array('id' => $enfant->getId()));
+            return $this->redirectToRoute(
+                'enfant_edit',
+                array('id' => $enfant->getId())
+            );
         }
 
         return $this->render('@Balancelle/Enfant/new.html.twig', array(
             'enfant' => $enfant,
-            'form' => $form->createView(),
-            'view' => $this->view
+            'form' => $form->createView()
         ));
     }
 
@@ -62,20 +63,25 @@ class EnfantController extends Controller
     public function editAction(Request $request, Enfant $enfant)
     {
         $deleteForm = $this->createDeleteForm($enfant);
-        $editForm = $this->createForm('BalancelleBundle\Form\EnfantType', $enfant);
+        $editForm = $this->createForm(
+            'BalancelleBundle\Form\EnfantType',
+            $enfant
+        );
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('enfant_edit', array('id' => $enfant->getId()));
+            return $this->redirectToRoute(
+                'enfant_edit',
+                array('id' => $enfant->getId())
+            );
         }
 
         return $this->render('@Balancelle/Enfant/edit.html.twig', array(
             'enfant' => $enfant,
             'form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-            'view' => $this->view
+            'delete_form' => $deleteForm->createView()
         ));
     }
 
@@ -102,28 +108,41 @@ class EnfantController extends Controller
      *
      * @param Enfant $enfant The enfant entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return \Symfony\Component\Form\FormInterface
      */
     private function createDeleteForm(Enfant $enfant)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('enfant_delete', array('id' => $enfant->getId())))
+            ->setAction($this->generateUrl(
+                'enfant_delete',
+                array('id' => $enfant->getId()
+            )))
             ->setMethod('DELETE')
             ->getForm()
         ;
     }
 
+    /**
+     * Méthode d'autocomplétion pour les enfants
+     * @param Request $request - la requete
+     * @return JsonResponse
+     */
     public function autocompleteAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $enfants = $em->getRepository('BalancelleBundle:Enfant')->autocomplete("tot");
-        $tabResponse = [];
-        foreach ($enfants as $enfant) {
-            $tab["prenom"] = ucfirst($enfant->getPrenom());
-            $tab["nom"] = ucfirst($enfant->getNom());
-            $tab["id"] = $enfant->getId();
-            $tabResponse[] = $tab;
+        if ($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+            $enfants = $em
+                ->getRepository('BalancelleBundle:Enfant')
+                ->autocomplete($request->get('recherche'));
+            $tabResponse = [];
+            foreach ($enfants as $enfant) {
+                $tab["prenom"] = ucfirst($enfant->getPrenom());
+                $tab["nom"] = ucfirst($enfant->getNom());
+                $tab["id"] = $enfant->getId();
+                $tabResponse[] = $tab;
+            }
+            return new JsonResponse($tabResponse);
         }
-        return new JsonResponse($tabResponse);
+
     }
 }

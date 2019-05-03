@@ -22,3 +22,8 @@ user_delete:
     path:     /{id}/delete
     defaults: { _controller: "BalancelleBundle:User:delete" }
     methods:  DELETE
+
+user_verifier_mail:
+    path:     /verifiermail
+    defaults: { _controller: "BalancelleBundle:User:verifiermail" }
+    methods:  [POST]

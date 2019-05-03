@@ -1,3 +1,31 @@
+balancelle_famille:
+    resource: "@BalancelleBundle/Resources/config/routing/famille.yml"
+    prefix:   /famille
+
+balancelle_user:
+    resource: "@BalancelleBundle/Resources/config/routing/user.yml"
+    prefix:   /user/admin
+
+balancelle_user_enregistrement:
+    resource: "@BalancelleBundle/Resources/config/routing/userEnregistrement.yml"
+    prefix:   /user/enregistrement
+
+balancelle_enfant:
+    resource: "@BalancelleBundle/Resources/config/routing/enfant.yml"
+    prefix:   /enfant
+
+balancelle_permanence:
+  resource: "@BalancelleBundle/Resources/config/routing/permanence.yml"
+  prefix:   /permanence
+
+balancelle_structure:
+  resource: "@BalancelleBundle/Resources/config/routing/structure.yml"
+  prefix:   /structure
+
+balancelle_calendrier:
+  resource: "@BalancelleBundle/Resources/config/routing/calendrier.yml"
+  prefix:   /calendrier
+
 balancelle_homepage:
     path:     /
     defaults: { _controller: BalancelleBundle:Default:index }

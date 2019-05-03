@@ -1,4 +1,8 @@
 services:
-#    balancelle.example:
-#        class: BalancelleBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+  _defaults:
+    autowire: true
+
+  BalancelleBundle\EventListener\FullCalendarListener:
+    #arguments: ['@service_container']
+    tags:
+      - { name: 'kernel.event_listener', event: 'fullcalendar.set_data', method: loadEvents }
