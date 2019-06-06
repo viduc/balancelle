@@ -2,39 +2,63 @@
 
 {% block body %}
     {{ parent() }}
-    <h1>Liste des calendriers</h1>
+    <div class="main-content-inner">
+        <div class="row">
+            <div class="col-2 pt-50">
+                <div class="card">
+                    <div class="card-body">
+                        <a href="{{ path('calendrier_new') }}" >
+                            <img src="{{ asset('bundles/balancelle/images/add.svg') }}" alt="ajouter" />
+                        </a>
 
-    <table id="listeCalendrier" class="row-border stripe">
-        <thead>
-            <tr>
-                <th>Date de début</th>
-                <th>Date de fin</th>
-                <th>Année de début</th>
-                <th>Année de fin</th>
-                <th>Commentaire</th>
-                <th>Active</th>
-                <th>Editer</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for calendrier in calendriers %}
-            <tr>
-                <td>{% if calendrier.dateDebut %}{{ calendrier.dateDebut|date('d-m-Y') }}{% endif %}</td>
-                <td>{% if calendrier.dateFin %}{{ calendrier.dateFin|date('d-m-Y') }}{% endif %}</td>
-                <td>{{ calendrier.anneeDebut }}</td>
-                <td>{{ calendrier.anneeFin }}</td>
-                <td>{{ calendrier.commentaire }}</td>
-                <td>{% if calendrier.active %}
-                        <img src="{{asset('bundles/balancelle/images/on.png')}}" alt="actif" />
-                    {% else %}
-                        <img src="{{asset('bundles/balancelle/images/off.png')}}" alt="inactif" />
-                    {% endif %}
-                </td>
-                <td>
-                    <a href="{{ path('calendrier_edit', { 'id': calendrier.id }) }}">éditer</a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                    </div>
+                </div>
+            </div>
+            <!-- data table start -->
+            <div class="col-10 mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="header-title">Liste des calendriers</h4>
+                        <div class="data-tables">
+                            <table id="dataTable" name="dataTable" class="text-center">
+                                <thead class="bg-light text-capitalize">
+                                <tr>
+                                    <th>Date de début</th>
+                                    <th>Date de fin</th>
+                                    <th>Année de début</th>
+                                    <th>Année de fin</th>
+                                    <th>Commentaire</th>
+                                    <th>Structure</th>
+                                    <th>Active</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for calendrier in calendriers %}
+                                    <tr>
+                                        <td>{% if calendrier.dateDebut %}{{ calendrier.dateDebut|date('d-m-Y') }}{% endif %}</td>
+                                        <td>{% if calendrier.dateFin %}{{ calendrier.dateFin|date('d-m-Y') }}{% endif %}</td>
+                                        <td>{{ calendrier.anneeDebut }}</td>
+                                        <td>{{ calendrier.anneeFin }}</td>
+                                        <td>{{ calendrier.commentaire }}</td>
+                                        <td>{{ calendrier.structure }}</td>
+                                        <td>{% if calendrier.active %}
+                                                <img src="{{asset('bundles/balancelle/images/on.png')}}" alt="actif" />
+                                            {% else %}
+                                                <img src="{{asset('bundles/balancelle/images/off.png')}}" alt="inactif" />
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="{{ path('calendrier_edit', { 'id': calendrier.id }) }}">Voir</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -2,7 +2,7 @@ services:
   _defaults:
     autowire: true
 
-  BalancelleBundle\EventListener\FullCalendarListener:
+  BalancelleBundle\EventListener\CalendarListener:
     #arguments: ['@service_container']
     tags:
-      - { name: 'kernel.event_listener', event: 'fullcalendar.set_data', method: loadEvents }
+      - { name: 'kernel.event_listener', event: 'calendar.set_data', method: load }

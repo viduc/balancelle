@@ -5,17 +5,23 @@
 jQuery(document).ready(function() {
 
     $(".js-datepicker").datepicker({
-        dateFormat: "dd/mm/yy", 
-        changeYear: true, 
+        format: 'dd/mm/yyyy',
+        changeYear: true,
         changeMonth: true, 
         yearRange: "-100:",
         onChangeMonthYear: function (year, month) {
-            var $datepicker = jQuery(this);
-            var date = new Date($datepicker.datepicker("getDate"));
-            var lastDayOfMonth = new Date(year, month, 0).getDate();
-            var preservedDay = Math.min(lastDayOfMonth, Math.max(1, date.getDate()));
-            $datepicker.datepicker("setDate", preservedDay + "/" + month  + "/" + year);
-        }
+            let $datepicker = jQuery(this);
+            let date = new Date($datepicker.datepicker("getDate"));
+            let lastDayOfMonth = new Date(year, month, 0).getDate();
+            let preservedDay = Math.min(
+                lastDayOfMonth,
+                Math.max(1,date.getDate())
+            );
+            $datepicker.datepicker(
+                "setDate",
+                preservedDay + "/" + month  + "/" + year
+            );
+        },
     });
 
     /**

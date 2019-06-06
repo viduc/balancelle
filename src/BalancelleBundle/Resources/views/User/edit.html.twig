@@ -7,7 +7,7 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-ml-12 mt-5">
             <div class="card" style="background-color: #bbbbbb">
                 <div class="card-body" >
-                    <h4 class="header-title">Information de l'utilisateur</h4>
+                    <h4 class="header-title">Information sur l'utilisateur</h4>
                     {{ form_start(form) }}
                     <div class="form-row align-items-center" >
                         <div class="form-group col-xl-1 col-lg-1 col-md-2 col-sm-12 my-1">
@@ -39,7 +39,7 @@
                                 'placeholder': "email"}}) }}
                         </div>
                         <div class="form-group col-xl-1 col-lg-1 col-md-2 col-sm-1 my-1">
-                            <label for="compteActif">Compte actif</label>
+                            <label for="compteActif">Actif</label>
                             {{ form_widget(form.enabled, {'attr': {'class': 'form-control',
                                 'placeholder': "actif"}}) }}<label></label>
                         </div>
@@ -48,7 +48,7 @@
             </div></br>
             <div class="card" style="background-color: #bbbbbb">
                 <div class="card-body" >
-                    <h4 class="header-title">Rôles de l'utilisateur</h4>
+                    <h4 class="header-title">Rôles spécifiques de l'utilisateur</h4>
                         <div class="form-row align-items-center">
                             <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
                                 <label for="email">Role administrateur</label>
@@ -62,13 +62,6 @@
                                 {{ form_widget(
                                     form.rolePro,
                                     {'attr': {'class': 'form-control','placeholder': "rôle professionnel"}}
-                                ) }}
-                            </div>
-                            <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
-                                <label for="email">Role parent</label>
-                                {{ form_widget(
-                                    form.roleParent,
-                                    {'attr': {'class': 'form-control','placeholder': "rôle parent"}}
                                 ) }}
                             </div>
                         </div>
@@ -88,11 +81,13 @@
                         {% endif %}
                         {{ form_end(form) }}
                     </div>
+                    {% if delete_form is defined %}
                     <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
                         {{ form_start(delete_form) }}
                         <input type="submit" value="supprimer" class="btn btn-rounded btn-danger mb-3"/>
                         {{ form_end(delete_form) }}
                     </div>
+                    {% endif %}
                     <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
                         {% if familleUtilisateur is defined and familleUtilisateur is not null %}
                             <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">

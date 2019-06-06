@@ -2,34 +2,54 @@
 
 {% block body %}
     {{ parent() }}
-    <h2>Liste des structure</h2>
-    <table id="listeStructure" class="row-border stripe">
-        <thead>
-        <tr>
-            <th>Nom</th>
-            <th>Commentaire</th>
-            <th>Actif</th>
-            <th>Editer</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for structure in structures %}
-            <tr>
-                <td>{{ structure.nom }}</td>
-                <td>{{ structure.commentaire }}</td>
-                <td>
-                    {% if structure.active %}
-                        <img src="{{asset('bundles/balancelle/images/on.png')}}" alt="actif" />
-                    {%  else %}
-                        <img src="{{asset('bundles/balancelle/images/off.png')}}" alt="inactif" />
-                    {% endif %}
-                </td>
-                <td><a href="{{ path('structure_edit', { 'id': structure.id }) }}">éditer</a></td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    </div>
+    <div class="main-content-inner">
+        <div class="row">
+            <div class="col-2 pt-50">
+                <div class="card">
+                    <div class="card-body">
+                        <a href="{{ path('structure_new') }}" >
+                            <img src="{{ asset('bundles/balancelle/images/add.svg') }}" alt="ajouter" />
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            <!-- data table start -->
+            <div class="col-10 mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="header-title">Liste des structures</h4>
+                        <div class="data-tables">
+                            <table id="dataTable" name="dataTable" class="text-center">
+                                <thead class="bg-light text-capitalize">
+                                <tr>
+                                    <th>Nom de la structure</th>
+                                    <th>Commentaire</th>
+                                    <th>Active</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for structure in structures %}
+                                    <tr>
+                                        <td>{{ structure.nom }}</td>
+                                        <td>{{ structure.commentaire  }}</td>
+                                        <td>
+                                            {% if structure.active %}
+                                                <img src="{{asset('bundles/balancelle/images/on.png')}}" alt="actif" />
+                                            {%  else %}
+                                                <img src="{{asset('bundles/balancelle/images/off.png')}}" alt="inactif" />
+                                            {% endif %}
+                                        </td>
+                                        <td><a href="{{ path('structure_edit', { 'id': structure.id }) }}">Voir</a></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
-

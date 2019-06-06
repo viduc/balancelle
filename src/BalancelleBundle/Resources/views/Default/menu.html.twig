@@ -23,6 +23,14 @@
                                 <span>Ma Famille</span>
                             </a>
                         </li>
+                        <li >
+                            <a
+                                href="{{ path('permanence_index') }}"
+                                aria-expanded="true">
+                                <i class="ti-home"></i>
+                                <span>Permanence</span>
+                            </a>
+                        </li>
                     {% endif %}
                     {% if is_granted('ROLE_ADMIN') %}
                         <li class="active">
@@ -39,6 +47,22 @@
                                 aria-expanded="true">
                                 <i class="fa fa-group"></i>
                                 <span>Familles</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="{{ path('structure_index') }}"
+                                aria-expanded="true">
+                                <i class="fa fa-sitemap"></i>
+                                <span>Structures</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="{{ path('calendrier_index') }}"
+                                aria-expanded="true">
+                                <i class="fa fa-calendar-check-o"></i>
+                                <span>Calendriers</span>
                             </a>
                         </li>
                     {% endif %}

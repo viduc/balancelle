@@ -157,38 +157,6 @@ class User extends BaseUser
     }
     
     /**
-     * Détermine si l'utilisateur a le rôle parent
-     * @return \boolean
-     */
-    public function isroleParent()
-    {
-        return $this->hasRole("ROLE_PARENT");
-    }
-    
-    /**
-     * Enregistre le role parent
-     * @param \Boolean $bool
-     * @return User
-     */
-    public function setRoleParent($bool) 
-    {
-        $this->removeRole("ROLE_PARENT");
-        if ($bool) {
-            $this->addRole("ROLE_PARENT");
-        }
-        return $this;
-    }
-    
-    /**
-     * Récupère le role parent
-     * @return \Boolean
-     */
-    public function getRoleParent()
-    {
-        return $this->hasRole("ROLE_PARENT");
-    }
-    
-    /**
      * Détermine si l'utilisateur a le rôle professionnel
      * @return boolean
      */

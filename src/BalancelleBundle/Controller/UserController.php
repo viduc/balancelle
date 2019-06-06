@@ -46,7 +46,7 @@ class UserController extends Controller
     {
         $userManager = $this->get('fos_user.user_manager');
         $user = $userManager->createUser();
-        $user->setEnabled(false);
+        $user->setEnabled(true);
         $user->setUsername(uniqid('', true)); // ici il faudra implémenter une méthode de génération de login
         $user->setPlainPassword(md5(uniqid('', true)));
         $form = $this->createForm('BalancelleBundle\Form\UserType', $user);

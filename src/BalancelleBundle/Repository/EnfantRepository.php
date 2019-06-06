@@ -22,4 +22,16 @@ class EnfantRepository extends \Doctrine\ORM\EntityRepository
             ->execute()
             ;
     }
+
+    public function getEnfantSansFamille()
+    {
+        return $this
+            ->createQueryBuilder('a')
+            ->andWhere('a.famille is NULL' )
+            ->andWhere('a.active = 1' )
+            ->orderBy('a.prenom')
+            ->getQuery()
+            ->execute()
+            ;
+    }
 }

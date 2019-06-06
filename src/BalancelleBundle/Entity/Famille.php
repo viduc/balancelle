@@ -21,7 +21,7 @@ class Famille
 
     /**
      * @ORM\OneToOne(targetEntity="BalancelleBundle\Entity\User", cascade={"persist"})
-     * @Assert\Expression("value !== this.getParent1()",message = "les deux parents doivent être différents")
+     * @Assert\Expression("value !== this.getParent1() or value === null",message = "les deux parents doivent être différents")
      */
     private $parent2;
 
