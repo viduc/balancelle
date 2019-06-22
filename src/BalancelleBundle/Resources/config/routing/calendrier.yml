@@ -1,0 +1,19 @@
+calendrier_index:
+    path:     /
+    defaults: { _controller: "BalancelleBundle:Calendrier:index" }
+    methods:  GET
+
+calendrier_new:
+    path:     /new
+    defaults: { _controller: "BalancelleBundle:Calendrier:new" }
+    methods:  [GET, POST]
+
+calendrier_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BalancelleBundle:Calendrier:edit" }
+    methods:  [GET, POST]
+
+calendrier_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BalancelleBundle:Calendrier:delete" }
+    methods:  DELETE

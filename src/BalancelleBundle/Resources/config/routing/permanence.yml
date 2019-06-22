@@ -1,0 +1,24 @@
+permanence_index:
+    path:     /
+    defaults: { _controller: "BalancelleBundle:Permanence:index" }
+    methods:  GET
+
+permanence_new:
+    path:     /new
+    defaults: { _controller: "BalancelleBundle:Permanence:new" }
+    methods:  [GET, POST]
+
+permanence_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BalancelleBundle:Permanence:edit" }
+    methods:  [GET, POST]
+
+permanence_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BalancelleBundle:Permanence:delete" }
+    methods:  DELETE
+
+permanence_inscription:
+    path:     /{id}/inscription
+    defaults: { _controller: "BalancelleBundle:Permanence:inscription" }
+    methods:  [GET, POST]

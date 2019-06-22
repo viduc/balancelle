@@ -1,0 +1,24 @@
+semaine_index:
+    path:     /
+    defaults: { _controller: "BalancelleBundle:Semaine:index" }
+    methods:  GET
+
+semaine_show:
+    path:     /{id}/show
+    defaults: { _controller: "BalancelleBundle:Semaine:show" }
+    methods:  GET
+
+semaine_new:
+    path:     /new
+    defaults: { _controller: "BalancelleBundle:Semaine:new" }
+    methods:  [GET, POST]
+
+semaine_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BalancelleBundle:Semaine:edit" }
+    methods:  [GET, POST]
+
+semaine_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BalancelleBundle:Semaine:delete" }
+    methods:  DELETE

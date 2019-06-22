@@ -1,0 +1,71 @@
+<div class="container">
+    <!-- Modal ajout enfant-->
+    <div class="modal fade" id="modalAjoutEnfant" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 style="color:darkred;"><span class="glyphicon glyphicon-search"></span> Rechercher</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                {% if listeEnfants|length >0 %}
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="rechercherEnfant" placeholder="entrer un nom" autocomplete="on">
+                        </div>
+                        <div class="col-md-6">
+                            <select id="enfant-select">
+                                <option label=" "></option>
+                                {% for enfant in listeEnfants %}
+                                    <option value={{ enfant.id }}>{{ enfant.prenom }} {{ enfant.nom }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" id="modalEnfantSelectionAffiche"  disabled>
+                            <input type="hidden" id="modalEnfantSelectionId">
+                        </div>
+                        <div class="col-md-2"></div>
+                    </div>
+                    <button type="button" id="btnAjouterEnfantModal" class="btn btn-default btn-success btn-block">
+                        <span class="glyphicon glyphicon-plus-sign"></span> Ajouter
+                    </button>
+                </div>
+                {% endif %}
+                <div class="modal-header">
+                    <h4 style="color:darkred;"><span class="glyphicon glyphicon-plus-sign"></span> Créer</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="form-group">
+                            <label for="prenom">Prénom</label>
+                            <input type="text" id="prenomEnfantModal" class="form-control" id="prenom" placeholder="Entrer un prénom">
+                            <label for="nom">Nom</label>
+                            <input type="text" id="nomEnfantModal" class="form-control" id="prenom" placeholder="Entrer un nom">
+                            <label for="birthdate">Date de naissance</label>
+                            <input type="date" id="dateNaissanceEnfantModal" class="form-control" id="birthdate" placeholder="Entrer une date de naissance">
+                        </div>
+                        <button type="button" id="btnCreerEnfantModal" class="btn btn-default btn-success btn-block">
+                            <span class="glyphicon glyphicon-ok-circle"></span> Créer
+                        </button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-remove"></span> Annuler
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var pathEnfantAUtocomplete = "{{ path('enfant_autocomplete') }}";
+    var pathEnfantAjouter = "{{ path('famille_ajouterEnfant') }}";
+    var pathEnfantCreer = "{{ path('famille_creerEnfant') }}";
+</script>

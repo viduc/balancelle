@@ -1,0 +1,89 @@
+{% extends '@Balancelle/Default/layout.html.twig' %}
+
+{% block body %}
+    {% set action = app.request.attributes.get("_route") %}
+    {{ parent() }}
+    <div class="main-content-inner">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-ml-12">
+            <div class="card" style="background-color: #bbbbbb">
+                <div class="card-body" >
+                    <h4 class="header-title">Information sur le calendrier</h4>
+                    {{ form_start(form) }}
+                    <div class="form-row align-items-center" >
+                        <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-12 my-1">
+                            <label for="nom">Date de début</label>
+                            {{ form_widget(form.dateDebut, {'attr': {
+                                'placeholder': "date de début"}}) }}
+                        </div>
+                        <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-12 my-1">
+                            <label for="nom">Date de fin</label>
+                            {{ form_widget(form.dateFin, {'attr': {
+                                'placeholder': "date de fin"}}) }}
+                        </div>
+                    </div>
+                    <div class="form-row align-items-center" >
+                        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 my-1">
+                            <label for="familleActive">Commentaire</label>
+                            {{ form_widget(form.commentaire, {'attr': {'class': 'form-control',
+                                'placeholder': "Commentaire"}}) }}
+                        </div>
+                    </div>
+                    <div class="form-row align-items-center" >
+                        <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 my-1">
+                            <label for="parent1">Structure</label>
+                            {{ form_widget(form.structure, {'attr': {'class': 'form-control',
+                                'placeholder': "Structure"}}) }}
+                        </div>
+                        <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 my-1">
+                            <label for="parent1">Actif</label>
+                            {{ form_widget(form.active, {'attr': {'class': 'form-control',
+                                'placeholder': "Actif"}}) }}
+                        </div>
+                    </div>
+                    <div class="form-row align-items-center" >
+                        <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 my-1">
+                            <label for="parent1">Nombre de permanence le matin</label>
+                            {{ form_widget(
+                                form.nbrPermanenceMatin,
+                                {'attr': {'class': 'form-control',
+                                    'placeholder': "Nombre de permanence le matin"}}
+                            ) }}
+                        </div>
+                        <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 my-1">
+                            <label for="parent1">Nombre de permanence l'AM</label>
+                            {{ form_widget(
+                                form.nbrPermanenceAM,
+                                {'attr': {'class': 'form-control',
+                                    'placeholder': "Nombre de permanence l'AM"}}
+                            ) }}
+                        </div>
+                    </div>
+
+                    <br>
+                    <div class="form-row align-items-center ml-3">
+                        <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
+                            {{ form_widget(form) }}
+                            {% if 'new' in action %}
+                                <input type="submit" value="créer" class="btn btn-rounded btn-success mb-3"/>
+                            {% endif %}
+                            {% if 'edit' in action %}
+                                <input type="submit" value="enregister" class="btn btn-rounded btn-success mb-3"/>
+                            {% endif %}
+                            {{ form_end(form) }}
+                        </div>
+                        {% if delete_form is defined %}
+                            <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
+                                {{ form_start(delete_form) }}
+                                <input type="submit" value="supprimer" class="btn btn-rounded btn-danger mb-3"/>
+                                {{ form_end(delete_form) }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% for semaine in calendrier.semaines %}
+        {{ dump(semaine) }}
+    {% endfor %}
+{% endblock %}
