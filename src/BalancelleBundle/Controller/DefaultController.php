@@ -3,9 +3,11 @@
 namespace BalancelleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Doctrine\ORM\EntityManagerInterface;
+use BalancelleBundle\Entity\Famille;
 use InfluxDB;
 
-class DefaultController extends Controller
+class DefaultController extends Controller implements FamilleInterface
 {
     public function indexAction()
     {
@@ -22,9 +24,10 @@ class DefaultController extends Controller
                 memory_get_usage()
             ),
         ];
-
         $database->writePoints($points);
+
         return $this->render('@Balancelle/Default/index.html.twig', array(
+            'famille' => $this->get('session')->get('famille')
         ));
     }
 

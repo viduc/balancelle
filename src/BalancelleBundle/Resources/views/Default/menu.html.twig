@@ -14,7 +14,7 @@
         <div class="menu-inner">
             <nav>
                 <ul class="metismenu" id="menu">
-                    {% if famille is defined %}
+                    {% if famille is defined and famille != null%}
                         <li class="active">
                             <a
                                 href="{{ path('famille_tableauDeBord') }}"
