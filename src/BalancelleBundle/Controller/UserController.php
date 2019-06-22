@@ -4,6 +4,7 @@ namespace BalancelleBundle\Controller;
 
 use BalancelleBundle\Entity\User;
 use BalancelleBundle\Entity\Enfant;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -41,19 +42,21 @@ class UserController extends Controller
      * Créé un nouvel utilisateur
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws Exception
      */
     public function newAction(Request $request)
     {
         $userManager = $this->get('fos_user.user_manager');
         $user = $userManager->createUser();
-        $user->setEnabled(true);
-        $user->setUsername(uniqid('', true)); // ici il faudra implémenter une méthode de génération de login
-        $user->setPlainPassword(md5(uniqid('', true)));
+
         $form = $this->createForm('BalancelleBundle\Form\UserType', $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setConfirmationToken(md5(uniqid('', true)));
+            $user->setEnabled(true);
+            $user->setUsername($this->genererLogin($user));
+            $user->setPlainPassword(md5(uniqid('', true)));
             $userManager->updateUser($user);
             $message = \Swift_Message::newInstance()
                 ->setSubject('Inscription')
@@ -63,7 +66,9 @@ class UserController extends Controller
                 ->setBody(
                     $this->renderView(
                         '@Balancelle/User/enregistrement_email.html.twig',
-                        array('token' => $user->getConfirmationToken()),
+                        array(
+                            'token' => $user->getConfirmationToken(),
+                            'login' => $user->getUsername()),
                         'text/html'
                     )
                 );
@@ -81,6 +86,49 @@ class UserController extends Controller
             'user' => $user,
             'form' => $form->createView()
         ));
+    }
+
+    /**
+     * Génère un login unique pour l'utilisateur
+     * @param User $user
+     * @return string
+     * @throws Exception
+     */
+    private function genererLogin(User $user)
+    {
+        $userManager = $this->container->get('fos_user.user_manager');
+        $nom = strtolower($this->enleverCaracteresSpeciaux($user->getNom()));
+        $prenom = strtolower($this->enleverCaracteresSpeciaux($user->getPrenom()));
+        $i = 1;
+        while (true) {
+            if (strlen($prenom) >= $i) {
+                $login = $nom . substr($prenom,0,$i);
+                $i++;
+            } else {
+                $login = $nom . $prenom . random_int(1, 999);
+            }
+            if(!$userManager->findUserByUsername($login)) {
+                return $login;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Supprime les caractères spéciaux d'une chaine
+     * @param String $str
+     * @param string $charset
+     * @return string|string[]|null
+     */
+    function enleverCaracteresSpeciaux( $str, $charset='utf-8' ) {
+
+        $str = htmlentities( $str, ENT_NOQUOTES, $charset );
+
+        $str = preg_replace( '#&([A-za-z])(?:acute|cedil|caron|circ|grave|orn|ring|slash|th|tilde|uml);#', '\1', $str );
+        $str = preg_replace( '#&([A-za-z]{2})(?:lig);#', '\1', $str );
+        $str = preg_replace( '#&[^;]+;#', '', $str );
+
+        return $str;
     }
 
     /**
@@ -174,10 +222,19 @@ class UserController extends Controller
             $user = $userManager->findUserBy(
                 array("confirmationToken" => $token
             ));
-            if ($request->isMethod('POST')
-                && ($request->get("plainPassword") !== null
-                && !empty($request->get("plainPassword")))) {
-                $user->setPlainPassword($request->get("plainPassword"));
+            $form = $this->createForm(
+                'BalancelleBundle\Form\UserPWDType',
+                $user
+            );
+            $form->handleRequest($request);
+            $data = $form->getData();
+            if (
+                $request->isMethod('POST')
+                    && $form->isSubmitted() && $form->isValid()
+                    && ($data->getPlainPassword() !== null
+                    && !empty($data->getPlainPassword()))
+            ) {
+                $user->setPlainPassword($data->getPlainPassword());
                 $user->setEnabled(true);
                 $user->setConfirmationToken(null);
                 $userManager->updateUser($user);
@@ -185,10 +242,12 @@ class UserController extends Controller
                 return $this->redirect(
                     $this->generateUrl("fos_user_security_login")
                 );
-            } elseif ($user !== NULL) {
+            }
+
+            if ($user !== NULL) {
                 return $this->render(
                     '@Balancelle/User/enregistrement_mdp.html.twig',
-                    array()
+                    array('form' => $form->createView())
                 );
             }
         }

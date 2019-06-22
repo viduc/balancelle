@@ -33,6 +33,12 @@
                         </div>
                     </div>
                     <div class="form-row align-items-center">
+                        {% if 'edit' in action %}
+                            <div class="form-group col-xl-2 col-lg-2 col-md-4 col-sm-12 my-1">
+                                <label for="username">Login</label>
+                                <input type="text" disabled value="{{ user.username }}" class="form-control">
+                            </div>
+                        {% endif %}
                         <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12 my-1">
                             <label for="email">Email</label>
                             {{ form_widget(form.email, {'attr': {'class': 'form-control',
@@ -71,16 +77,18 @@
         <div class="card">
             <div class="card-body" >
                 <div class="form-row align-items-center">
-                    <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
                         {{ form_widget(form) }}
                         {% if 'new' in action %}
-                            <input type="submit" value="créer" class="btn btn-rounded btn-success mb-3"/>
+                            <div id="bouton_validation" class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
+                                <input type="submit" value="créer" class="btn btn-rounded btn-success mb-3"/>
+                            </div>
                         {% endif %}
                         {% if 'edit' in action %}
-                            <input type="submit" value="enregister" class="btn btn-rounded btn-success mb-3"/>
+                            <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
+                                <input type="submit" value="enregister" class="btn btn-rounded btn-success mb-3"/>
+                            </div>
                         {% endif %}
                         {{ form_end(form) }}
-                    </div>
                     {% if delete_form is defined %}
                     <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
                         {{ form_start(delete_form) }}

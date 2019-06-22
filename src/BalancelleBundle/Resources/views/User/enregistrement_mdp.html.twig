@@ -1,7 +1,40 @@
+<!DOCTYPE html>
+<html class="no-js" lang="fr">
+{%  include '@Balancelle/Default/head.html.twig' %}
 {% block body %}
-    <form action="" method="POST">
-        <label for="plainPassword">Mot de passe : </label>
-        <input type="password" name="plainPassword"/>
-        <input type="submit" />
-    </form>
+    <div class="login-area login-bg">
+        <div class="container">
+            <div class="login-box ptb--100">
+                {{ form_start(form) }}
+                    <div class="login-form-head">
+                        <h4>Finalisez votre compte</h4>
+                        <p>Enregistrer votre mot de passe</p>
+                    </div>
+                    <div class="login-form-body">
+                        <div class="form-gp">
+                            {{ form_row(form.plainPassword.first) }}
+                            <i class="ti-lock"></i>
+                        </div>
+                        <div class="form-gp">
+                            {{ form_row(form.plainPassword.second) }}
+                            <i class="ti-lock"></i>
+                        </div>
+                        <div class="submit-btn-area">
+                            <button type="submit">Valider <i class="ti-arrow-right"></i></button>
+                        </div>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script_end %}
+    <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/jquery-2.2.4.min.js') }}" >
+    </script>
+    <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/motdepasse.js') }}" >
+    </script>
 {% endblock %}

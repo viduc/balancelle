@@ -35,6 +35,11 @@ jQuery(document).ready(function() {
             userId
         );
     });
+
+    /**
+     * cache le bloc bouton en entrée de page
+     */
+    afficherBoutonValider("cacher");
 });
 
 /**
@@ -53,6 +58,8 @@ function verifierMail(mail, id)
         success: function (result) {
             if (result === "nok") {
                 confirmMail();
+            } else {
+                afficherBoutonValider("voir");
             }
         },
         error: function ( result) {
@@ -77,6 +84,7 @@ function confirmMail()
                 btnClass: 'btn-blue',
                 action: function()
                 {
+                    afficherBoutonValider("voir");
                     return true;
                 }
 
@@ -92,4 +100,13 @@ function confirmMail()
             }
         }
     });
+}
+
+function afficherBoutonValider(action)
+{
+    $('#bouton_validation').hide();
+    if(action === "voir" && $("#balancellebundle_user_email").val()!== "") {
+        $('#bouton_validation').show();
+    }
+
 }
