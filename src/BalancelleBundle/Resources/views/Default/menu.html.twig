@@ -23,14 +23,18 @@
                                 <span>Ma Famille</span>
                             </a>
                         </li>
-                        <li >
-                            <a
-                                href="{{ path('permanence_index') }}"
-                                aria-expanded="true">
-                                <i class="ti-home"></i>
-                                <span>Permanence</span>
-                            </a>
-                        </li>
+                        {% if app.session.get('menuPermanence') is defined %}
+                            {% for menu in app.session.get('menuPermanence') %}
+                                <li >
+                                    <a
+                                        href="{{ path('permanence_index', { 'structure': menu }) }}"
+                                        aria-expanded="true">
+                                        <i class="ti-home"></i>
+                                        <span>Permanence {{ menu }}</span>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% endif %}
                     {% endif %}
                     {% if is_granted('ROLE_ADMIN') %}
                         <li class="active">
@@ -65,6 +69,16 @@
                                 <span>Calendriers</span>
                             </a>
                         </li>
+                        {% for menu in app.session.get('menuPermanence') %}
+                            <li >
+                                <a
+                                    href="{{ path('admin_permanence_index', { 'structure': menu }) }}"
+                                    aria-expanded="true">
+                                    <i class="ti-home"></i>
+                                    <span>Permanence {{ menu }}</span>
+                                </a>
+                            </li>
+                        {% endfor %}
                     {% endif %}
                 </ul>
             </nav>

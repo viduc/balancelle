@@ -1,5 +1,5 @@
 permanence_index:
-    path:     /
+    path:     /{structure}
     defaults: { _controller: "BalancelleBundle:Permanence:index" }
     methods:  GET
 
@@ -22,3 +22,8 @@ permanence_inscription:
     path:     /{id}/inscription
     defaults: { _controller: "BalancelleBundle:Permanence:inscription" }
     methods:  [GET, POST]
+
+admin_permanence_index:
+    path:     /admin/{structure}
+    defaults: { _controller: "BalancelleBundle:Permanence:indexAdmin" }
+    methods:  GET

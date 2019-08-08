@@ -167,6 +167,7 @@ class FamilleController extends Controller implements FamilleInterface
             $succes .= ' a bien été modifiée';
             $this->addFlash('success', $succes);
         }
+        $structures = $this->em->getRepository('BalancelleBundle:Structure')->findBy(['active'=>1]);
         return $this->render('@Balancelle/famille/edit.html.twig', array(
             'familleAdmin' => $famille,
             'form' => $editForm->createView(),
@@ -174,7 +175,8 @@ class FamilleController extends Controller implements FamilleInterface
             'listeEnfants' => $this->em->getRepository(
                 'BalancelleBundle:Enfant'
             )->getEnfantSansFamille(),
-            'delete_form' => $deleteForm->createView()
+            'delete_form' => $deleteForm->createView(),
+            'structures' => $structures
         ));
     }
 
@@ -270,6 +272,9 @@ class FamilleController extends Controller implements FamilleInterface
         $enfant->setFamille($famille);
         $enfant->setCommentaire("Enfant créer via l'interface famille");
         $enfant->setActive(true);
+        $enfant->setStructure(
+            $this->em->getRepository('BalancelleBundle:Structure')->find($request->get('idStructure'))
+        );
         $this->em->persist($enfant);
         $this->em->flush();
         $reponse = "L'enfant ";

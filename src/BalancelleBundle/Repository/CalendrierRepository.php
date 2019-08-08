@@ -10,4 +10,5 @@ namespace BalancelleBundle\Repository;
  */
 class CalendrierRepository extends \Doctrine\ORM\EntityRepository
 {
+
 }

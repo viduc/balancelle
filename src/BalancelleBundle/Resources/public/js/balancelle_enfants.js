@@ -44,6 +44,7 @@ $(document).ready(function(){
         let prenomEnfant = $("#prenomEnfantModal").val();
         let nomEnfant = $("#nomEnfantModal").val();
         let dateNaissanceEnfant = $("#dateNaissanceEnfantModal").val();
+        let idStructure = $("select#structureSelect").val();
         let idFamille = $("#idFamille").val();
         $.ajax({
             url: pathEnfantCreer,
@@ -52,7 +53,8 @@ $(document).ready(function(){
                 prenomEnfant: prenomEnfant,
                 nomEnfant : nomEnfant,
                 dateNaissanceEnfant: dateNaissanceEnfant,
-                idFamille: idFamille
+                idFamille: idFamille,
+                idStructure: idStructure
             },
             success: function (result) {
                 parent.location.reload();

@@ -2,6 +2,10 @@
 
 namespace BalancelleBundle\Repository;
 
+use BalancelleBundle\Entity\Calendrier;
+use BalancelleBundle\Entity\Semaine;
+use BalancelleBundle\Entity\Structure;
+
 /**
  * PermanenceRepository
  *
@@ -14,12 +18,85 @@ class PermanenceRepository extends \Doctrine\ORM\EntityRepository
     {
         return $this
             ->createQueryBuilder('p')
+            ->from(Calendrier::class, 'c')
             ->where('p.famille = :famille')
             ->andWhere('p.fin < :date')
+            ->andWhere('c.active = 1')
             ->setParameter('famille', $famille)
             ->setParameter('date', date("Y-m-d H:i:s"))
             ->orderBy('p.debut', 'ASC')
             ->getQuery()
             ->execute();
+    }
+
+    /**
+     * Récupère toutes les permanences pour une structure entre deux dates
+     * @param $structure - la structure (nomCourt)
+     * @param $debut - date de début de récupération - peut être null
+     * @param $fin - de de fin de récupération - peut être null
+     * @return mixed
+     */
+    public function recupererToutesLesPermanences(
+        $structure,
+        $debut = null,
+        $fin = null
+    ) {
+        $qb = $this
+            ->createQueryBuilder('p')
+            ->from(Calendrier::class, 'c')
+            ->from(Semaine::class, 's')
+            ->from(Structure::class, 'st')
+            ->where('st.nomCourt = :structure')
+            ->andWhere('c.structure = st.id')
+            ->andWhere('s.calendrier = c.id')
+            ->andWhere('p.semaine = s.id')
+            ->andWhere('p.active = :active')
+            ->setParameter('structure', $structure)
+            ->setParameter('active', 1);
+        if($debut !== null) {
+            $qb->andWhere('p.debut > :debut')->setParameter('debut', $debut);
+        }
+        if($fin !== null) {
+            $qb->andWhere('p.fin < :fin')->setParameter('fin', $fin);
+        }
+        return $qb->orderBy('p.debut', 'ASC')
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * Récupère toutes les permanences libres pour une structure entre deux dates
+     * @param $structure - la structure (nomCourt)
+     * @param $debut - date de début de récupération - peut être null
+     * @param $fin - de de fin de récupération - peut être null
+     * @return mixed
+     */
+    public function recupererToutesLesPermanencesLibre(
+        $structure,
+        $debut = null,
+        $fin = null
+    ) {
+        $qb = $this
+            ->createQueryBuilder('p')
+            ->from(Calendrier::class, 'c')
+            ->from(Semaine::class, 's')
+            ->from(Structure::class, 'st')
+            ->where('st.nomCourt = :structure')
+            ->andWhere('c.structure = st.id')
+            ->andWhere('s.calendrier = c.id')
+            ->andWhere('p.semaine = s.id')
+            ->andWhere('p.active = :active')
+            ->andWhere('p.famille is NULL')
+            ->setParameter('structure', $structure)
+            ->setParameter('active', 1);
+        if($debut !== null) {
+            $qb->andWhere('p.debut > :debut')->setParameter('debut', $debut);
+        }
+        if($fin !== null) {
+            $qb->andWhere('p.fin < :fin')->setParameter('fin', $fin);
+        }
+        return $qb->orderBy('p.debut', 'ASC')
+                  ->getQuery()
+                  ->execute();
     }
 }

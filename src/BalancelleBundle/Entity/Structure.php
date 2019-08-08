@@ -20,6 +20,11 @@ class Structure
     private $calendriers;
 
     /**
+     * @ORM\OneToMany(targetEntity="BalancelleBundle\Entity\Enfant", cascade={"persist", "remove"}, mappedBy="enfant")
+     */
+    private $enfants;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
@@ -177,6 +182,7 @@ class Structure
     public function __construct()
     {
         $this->calendriers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->enfants = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -213,5 +219,41 @@ class Structure
     public function getCalendriers()
     {
         return $this->calendriers;
+    }
+
+    /**
+     * Add enfant.
+     *
+     * @param \BalancelleBundle\Entity\Enfant $enfant
+     *
+     * @return Structure
+     */
+    public function addEnfant(\BalancelleBundle\Entity\Enfant $enfant)
+    {
+        $this->enfants[] = $enfant;
+
+        return $this;
+    }
+
+    /**
+     * Remove enfant.
+     *
+     * @param \BalancelleBundle\Entity\Enfant $enfant
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeEnfant(\BalancelleBundle\Entity\Enfant $enfant)
+    {
+        return $this->enfants->removeElement($enfant);
+    }
+
+    /**
+     * Get enfants.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEnfants()
+    {
+        return $this->enfants;
     }
 }

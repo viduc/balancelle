@@ -18,6 +18,11 @@ class Enfant
     private $famille;
 
     /**
+     * @ORM\ManyToOne(targetEntity="BalancelleBundle\Entity\Structure", inversedBy="calendriers")
+     */
+    private $structure;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
@@ -60,7 +65,7 @@ class Enfant
      * @ORM\Column(name="active", type="boolean")
      */
     private $active;
-    
+
     /**
      * Get id
      *
@@ -213,5 +218,29 @@ class Enfant
     public function getFamille()
     {
         return $this->famille;
+    }
+
+    /**
+     * Set structure
+     *
+     * @param \BalancelleBundle\Entity\Structure $structure
+     *
+     * @return Enfant
+     */
+    public function setStructure(\BalancelleBundle\Entity\Structure $structure = null)
+    {
+        $this->structure = $structure;
+
+        return $this;
+    }
+
+    /**
+     * Get structure
+     *
+     * @return \BalancelleBundle\Entity\Structure
+     */
+    public function getStructure()
+    {
+        return $this->structure;
     }
 }

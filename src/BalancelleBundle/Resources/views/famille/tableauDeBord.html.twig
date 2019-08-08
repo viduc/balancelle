@@ -1,6 +1,7 @@
 {% extends '@Balancelle/Default/layout.html.twig' %}
 {% block title %}BalancelleBundle:Famille:tableauDeBord{% endblock %}
 {% block body %}
+
 <h1> Tableau de bord de votre Famille</h1>
     <div class="main-content-inner">
         <div class="card-area">
@@ -35,6 +36,28 @@
                     </div>
                 </div>
                 {% endif %}
+            </div>
+            <div class="row">
+                {% for enfant in famille.enfants %}
+                <div class="col-lg-3 col-md-3 mt-5">
+                    <div class="card card-bordered">
+                        <div class="card-body">
+                            <h5 class="title">Enfant:</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">
+                                {{ enfant.prenom }}
+                                {{ enfant.nom }}
+
+                            </h6>
+                            <p class="card-text">
+                                {{ enfant.naissance|date('d/m/Y') }}
+                            </p>
+                            <h6>
+                                {{ enfant.structure.nom }}
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
             <div class="row">
                 <div class="col-lg-6 col-md-6 mt-5">

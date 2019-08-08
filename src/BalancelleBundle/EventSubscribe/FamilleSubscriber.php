@@ -9,7 +9,9 @@
 namespace BalancelleBundle\EventSubscribe;
 
 use BalancelleBundle\Controller\FamilleInterface;
+use BalancelleBundle\Entity\Calendrier;
 use BalancelleBundle\Entity\Famille;
+use BalancelleBundle\Entity\Structure;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -64,12 +66,19 @@ class FamilleSubscriber implements EventSubscriberInterface
          * If it is a class, it comes in array format
          */
         if (!is_array($controller)) {
+
             return;
         }
 
         if ($controller[0] instanceof FamilleInterface) {
             if (!$this->session->has('famille')) {
                 $this->session->set('famille', $this->getFamille());
+            }
+            if (!$this->session->has('menuPermanence')) {
+                $this->session->set(
+                    'menuPermanence',
+                    $this->menuPermanence($this->session->get('famille'))
+                );
             }
         }
     }
@@ -105,7 +114,7 @@ class FamilleSubscriber implements EventSubscriberInterface
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getFamille()
+    private function getFamille()
     {
         return $this->entityManager->getRepository(Famille::class)
             ->createQueryBuilder('b')
@@ -115,5 +124,51 @@ class FamilleSubscriber implements EventSubscriberInterface
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    /**
+     * Génère le menu pour l'accès aux permanences en fonction de l'appatenance
+     * des enfants aux différentes structures.
+     * @param $famille
+     * @return array
+     */
+    private function menuPermanence($famille)
+    {
+        $menuPerm = [];
+        if($famille !== null) {
+            foreach ($famille->getEnfants() as $enfant ){
+                if(!in_array(
+                    $enfant->getStructure()->getNomCourt(),
+                    $menuPerm,
+                    true
+                )){
+                    if($this->verifieSiStructureAunCalendrier(
+                        $enfant->getStructure()
+                    )) {
+                        $menuPerm[] = $enfant->getStructure()->getNomCourt();
+                    }
+                }
+            }
+        } else {
+            $listeStructures = $this->entityManager->getRepository(
+                Structure::class
+            )->findBy(['active' => 1]);
+            foreach ($listeStructures as $structure) {
+                if($this->verifieSiStructureAunCalendrier($structure)) {
+                    $menuPerm[] = $structure->getNomCourt();
+                }
+            }
+        }
+
+        return $menuPerm;
+    }
+
+
+    private function verifieSiStructureAunCalendrier($structure)
+    {
+        $calendriers = $this->entityManager->getRepository(Calendrier::class)
+            ->findBy(['structure' => $structure, 'active' => 1]);
+
+        return count($calendriers);
     }
 }

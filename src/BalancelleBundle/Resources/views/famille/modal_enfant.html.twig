@@ -48,6 +48,13 @@
                             <input type="text" id="nomEnfantModal" class="form-control" id="prenom" placeholder="Entrer un nom">
                             <label for="birthdate">Date de naissance</label>
                             <input type="date" id="dateNaissanceEnfantModal" class="form-control" id="birthdate" placeholder="Entrer une date de naissance">
+                            <label for="structure">Structure</label>
+                            <select id="structureSelect" class="form-control">
+                                <option label=" "></option>
+                                {% for structure in structures %}
+                                    <option value={{ structure.id }}>{{ structure.nom }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <button type="button" id="btnCreerEnfantModal" class="btn btn-default btn-success btn-block">
                             <span class="glyphicon glyphicon-ok-circle"></span> Créer

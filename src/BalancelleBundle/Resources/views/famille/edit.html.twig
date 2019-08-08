@@ -88,14 +88,16 @@
             <div class="card" style="background-color: #bbbbbb">
                 <div class="card-body" >
                     <h4 class="header-title">Liste des enfants de la famille</h4>
-                    <div class="form-row align-items-center ml-3">
+                    <div class="form-row align-items-center ml-4">
                         <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 my-1">
+
                             <table id="dataTable" name="dataTable" class="text-center">
                                 <thead class="bg-light text-capitalize">
                                 <tr>
                                     <th>Nom</th>
                                     <th>Prénom</th>
                                     <th>Date de naissance</th>
+                                    <th>Structure</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -105,6 +107,7 @@
                                         <td>{{ enfant.nom }}</td>
                                         <td>{{ enfant.prenom }}</td>
                                         <td>{{ enfant.naissance|date('d/m/Y') }}</td>
+                                        <td>{{ enfant.structure }}</td>
                                         <td>
                                             <a href="{{ path('famille_edit', { 'id': familleAdmin.id }) }}">Voir</a>
                                             <a href="{{ path('famille_supprimerEnfant', { 'idEnfant': enfant.id, 'idFamille': familleAdmin.id}) }}">Supprimer</a>

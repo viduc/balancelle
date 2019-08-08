@@ -9,7 +9,10 @@
 namespace BalancelleBundle\EventListener;
 
 //use BalancelleBundle\Entity\Famille;
+use BalancelleBundle\Entity\Calendrier;
 use BalancelleBundle\Entity\Permanence;
+use BalancelleBundle\Entity\Semaine;
+use BalancelleBundle\Entity\Structure;
 use DateTime;
 use Exception;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -42,7 +45,15 @@ class CalendarListener
      */
     //private $security;
 
+    /**
+     * @var mixed
+     */
     private $famille;
+
+    /**
+     * @var String
+     */
+    private $structure;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -54,6 +65,7 @@ class CalendarListener
         $this->em = $em;
         //$this->security = $security;
         $this->famille = $container->get('session')->get('famille');
+        $this->structure = $container->get('session')->get('structure');
     }
 
     public function load(CalendarEvent $calendar)
@@ -62,11 +74,21 @@ class CalendarListener
         $endDate = $calendar->getEnd();
         $filters = $calendar->getFilters();
 
+        $structureId = $this->em->getRepository(Structure::class)->findOneBy(
+            ['nomCourt' => $this->structure]
+        );
+
         $permanences = $this->em->getRepository(Permanence::class)
             ->createQueryBuilder('b')
+            ->from(Calendrier::class, 'c')
+            ->from(Semaine::class, 's')
             ->andWhere('b.debut BETWEEN :startDate and :endDate')
+            ->andWhere('c.structure = :structureId')
+            ->andWhere('s.calendrier = c.id')
+            ->andWhere('b.semaine = s.id')
             ->setParameter('startDate', $startDate->format('Y-m-d H:i:s'))
             ->setParameter('endDate', $endDate->format('Y-m-d H:i:s'))
+            ->setParameter('structureId', $structureId)
             ->getQuery()->getResult();
 
         foreach($permanences as $permanence) {
@@ -86,12 +108,13 @@ class CalendarListener
     )
     {
         $permanenceEvent =new Event(
-            $permanence->getDebut()->format('H:i') . ' '
-            . $permanence->getTitre(),
+            $permanence->getDebut()->format('H:i') . ' ' . $permanence->getTitre(),
             $permanence->getDebut(),
             $permanence->getFin()
         );
-        $permanencePassee = new DateTime() > new DateTime($permanence->getDebut()->format('Y-m-d'));
+        $permanencePassee = new DateTime() > new DateTime(
+            $permanence->getDebut()->format('Y-m-d')
+        );
 
         $backgroundColor = '#427fb0'; //couleur perm effectuée de la famille
         $borderColor = 'red';

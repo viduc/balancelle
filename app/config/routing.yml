@@ -12,3 +12,6 @@ fos_user:
 # config/routes/calendar.yaml
 calendar:
     resource: "@CalendarBundle/Resources/config/routing.yaml"
+
+logout:
+    path: /logout
