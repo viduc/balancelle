@@ -136,9 +136,13 @@ class EnfantController extends Controller
                 ->autocomplete($request->get('recherche'));
             $tabResponse = [];
             foreach ($enfants as $enfant) {
-                $tab["prenom"] = ucfirst($enfant->getPrenom());
-                $tab["nom"] = ucfirst($enfant->getNom());
-                $tab["id"] = $enfant->getId();
+                //$tab["prenom"] = ucfirst($enfant->getPrenom());
+                //$tab["nom"] = ucfirst($enfant->getNom());
+                //$tab["id"] = $enfant->getId();
+
+                $tab['label'] = ucfirst($enfant->getPrenom()) . ' ';
+                $tab['label'] .= ucfirst($enfant->getNom());
+                $tab['value'] = $enfant->getId();
                 $tabResponse[] = $tab;
             }
             return new JsonResponse($tabResponse);

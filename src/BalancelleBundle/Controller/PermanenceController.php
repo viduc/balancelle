@@ -2,21 +2,17 @@
 
 namespace BalancelleBundle\Controller;
 
-/*use BalancelleBundle\Entity\Permanence;
-use phpDocumentor\Reflection\Types\Integer;*/
-
-use BalancelleBundle\Entity\Calendrier;
 use BalancelleBundle\Entity\Permanence;
-use BalancelleBundle\Entity\Semaine;
 use BalancelleBundle\Entity\Structure;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Permanence controller.
  *
  */
-class PermanenceController extends Controller
+class PermanenceController extends Controller implements FamilleInterface
 {
     /** ------------------------------ FAMILLE ----------------------------- **/
     /**
@@ -56,27 +52,34 @@ class PermanenceController extends Controller
         );
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $permanence->setFamille($famille);
+            if($famille !== null) {
+                $permanence->setFamille($famille);
+            }
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute(
                 'permanence_index',
-                array('id' => $permanence->getId())
+                array('structure' => $this->get('session')->get('structure'))
             );
         }
+
+        $listeFamilles = $em
+            ->getRepository('BalancelleBundle:Famille')
+            ->findBy(['active' => 1]);
 
         return $this->render(
             '@Balancelle/Permanence/inscription.html.twig',
             array(
                 'permanence' => $permanence,
                 'inscription_form' => $editForm->createView(),
-                'famille' => $famille
+                'famille' => $famille,
+                'listeFamilles' => $listeFamilles
             )
         );
     }
 
     /** ------------------------------- ADMIN ------------------------------ **/
 
-    public function indexAdminAction($structure)
+    public function tableauDeBordAction()
     {
         $em = $this->getDoctrine()->getManager();
         $familles = $em
@@ -113,6 +116,47 @@ class PermanenceController extends Controller
         );
     }
 
+    /**
+     * Index de l'admin
+     * @param Structure $structure - la structure visionnée
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function indexAdminAction($structure)
+    {
+        $this->get('session')->set('structure', $structure);
+
+        return $this->render(
+            '@Balancelle/Permanence/permanence.html.twig',
+            array('famille' => null)
+        );
+    }
+
+    /**
+     * Ajoute une famille à une permanence
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function ajouterFamilleAction(Request $request)
+    {
+        $reponse = "La famille n'a pas été incrite à la permanence";
+        $type = 'error';
+        $em = $this->getDoctrine()->getManager();
+        $famille = $em
+            ->getRepository('BalancelleBundle:Famille')
+            ->find($request->get('idFamille'));
+        $permanence = $em
+            ->getRepository('BalancelleBundle:Permanence')
+            ->find($request->get('idPermanence'));
+        if ($famille && $permanence) {
+            $permanence->setFamille($famille);
+            $em->flush();
+            $reponse = 'La famille a bien été incrite à la permanence';
+            $type = 'success';
+        }
+
+        $this->addFlash($type,$reponse);
+        return new JsonResponse($reponse);
+    }
     /**
      * Récupère les dates d'une semaine (du lundi au samedi) en fonction du
      * numéro de semaine et de l'année.

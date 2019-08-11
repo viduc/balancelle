@@ -344,4 +344,27 @@ class FamilleController extends Controller implements FamilleInterface
         }
         return $parent;
     }
+
+    /**
+     * Méthode d'autocomplétion pour les familles
+     * @param Request $request - la requete
+     * @return JsonResponse
+     */
+    public function autocompleteAction(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+            $familles = $em
+                ->getRepository('BalancelleBundle:Famille')
+                ->autocomplete($request->get('recherche'));
+            $tabResponse = [];
+            foreach ($familles as $famille) {
+                $tab["label"] = ucfirst($famille->getNom());
+                $tab["value"] = $famille->getId();
+                $tabResponse[] = $tab;
+            }
+            return new JsonResponse($tabResponse);
+        }
+
+    }
 }

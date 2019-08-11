@@ -1,5 +1,5 @@
 permanence_index:
-    path:     /{structure}
+    path:     /planning/{structure}
     defaults: { _controller: "BalancelleBundle:Permanence:index" }
     methods:  GET
 
@@ -24,6 +24,16 @@ permanence_inscription:
     methods:  [GET, POST]
 
 admin_permanence_index:
-    path:     /admin/{structure}
+    path:     /admin
+    defaults: { _controller: "BalancelleBundle:Permanence:tableauDeBord" }
+    methods:  GET
+
+admin_permanence_structure:
+    path:     /admin/structure/{structure}
     defaults: { _controller: "BalancelleBundle:Permanence:indexAdmin" }
     methods:  GET
+
+admin_permanence_ajouterFamille:
+    path:     /admin/ajouterFamille
+    defaults: { _controller: "BalancelleBundle:Permanence:ajouterFamille" }
+    methods:  [POST]

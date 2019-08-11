@@ -42,42 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
     calendar.render();
 });
 
-/*
-$(function () {
-    $('#calendar-holder').fullCalendar({
-        locale: 'fr',
-        header: {
-            left: 'prev, next, today',
-            center: 'title',
-            right: 'month, basicWeek, basicDay'
-        },
-        businessHours: {
-        start: '08:00',
-            end: '18:00',
-            dow: [1, 2, 3, 4, 5]
-        },
-        lazyFetching: true,
-        navLinks: true,
-        selectable: true,
-        editable: false,
-        eventDurationEditable: false,
-        displayEventTime: false,
-        eventSources: [
-            {
-                url: loadEvent,
-                type: 'POST',
-                data: {
-                    filters: {}
-                },
-                error: function () {
-                    alert('There was an error while fetching FullCalendar!');
-                }
-            }
-        ]
-    });
-
-});*/
-
 window.onload = function() {
     progessBar();
     console.log(pourcentagePermanenceFaite);
@@ -105,3 +69,63 @@ function progessBar()
         'background-color': color
     })
 }
+
+$(document).ready(function(){
+    /* ajout de l'autocomplétion sur le bouton ajout */
+    $("#btnAjouterFamille").click(function(){
+        $("#modalAjoutFamille").appendTo("body").modal('show');
+    });
+
+    /* gestion de l'autocomplétion sur l'input rechercheFamille */
+    $(document).on("click", "#rechercherFamille", function() {
+        $(this).autocomplete({
+            source: function(requete, reponse){
+                $.ajax({
+                    url: pathFamilleAUtocomplete,
+                    method: "post",
+                    dataType : 'json',
+                    data: {recherche: $('#rechercherFamille').val()},
+                    success: function (result) {
+                        reponse($.map(result, function (objet) {
+                            return {label : objet.label, value : objet.value};
+                        }));
+                    }
+                });
+            },
+            minLength : 3,
+            select : function(event, ui){ // lors de la sélection d'une proposition
+                event.preventDefault();
+                $("#rechercherFamille").val( ui.item.label );
+                $("#modalFamilleSelectionAffiche").val( ui.item.label ); // on ajoute la description de l'objet dans un bloc
+                $("#modalFamilleSelectionId").val(ui.item.value);
+            },
+            focus: function(event, ui) {
+                event.preventDefault();
+                $("#rechercherFamille").val(ui.item.label);
+            }
+        });
+    });
+
+    /* ajout de l'action sur le bouton ajouter de la fenêtre modal famille */
+    $("#btnAjouterFamilleModal").click(function(){
+        let idFamille = $("#modalFamilleSelectionId").val();console.log(idFamille);
+        //let idPermanence = $("#idPermanence").val();
+        if (idFamille) {
+            $.ajax({
+                url: pathFamilleAjouter,
+                method: "post",
+                data: {idFamille: idFamille, idPermanence: idPermanence},
+                success: function (result) {
+                    parent.location.reload();
+                }
+            });
+        }
+    });
+
+    /* ajout de l'action sur le select enfant de la fenêtre modal enfant */
+    $("#famille-select").change(function(){
+        $("#modalFamilleSelectionAffiche").val($( "select#famille-select option:selected" ).text());
+        $("#modalFamilleSelectionId").val($( "select#famille-select").val());
+    });
+
+});

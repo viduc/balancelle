@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Structure controller.
  *
  */
-class StructureController extends Controller
+class StructureController extends Controller implements FamilleInterface
 {
     private $view = 'structure';
 

@@ -3,8 +3,6 @@
 namespace BalancelleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Doctrine\ORM\EntityManagerInterface;
-use BalancelleBundle\Entity\Famille;
 use InfluxDB;
 
 class DefaultController extends Controller implements FamilleInterface

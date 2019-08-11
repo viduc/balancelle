@@ -9,7 +9,7 @@
                 <div class="card-body" >
                     {{ form_start(inscription_form) }}
                     <div class="form-row align-items-center" >
-                        <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12 my-1">
+                        <div class="form-group col-xl-5 col-lg-5 col-md-5 col-sm-12 my-1">
                             <label for="nom">Permanence:</label>
                             {{ form_widget(
                                 inscription_form.titre,
@@ -30,11 +30,27 @@
                                 {'attr': {'placeholder': "date de fin"}}
                             ) }}
                         </div>
-                        <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-12 mt-5">
+                        <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-12 mt-5">
                             <button type="submit" class="btn btn-success pull-left" >
-                                <span class="glyphicon glyphicon-ok-sign"></span> S'inscrire
+                                <span class="glyphicon glyphicon-ok-sign"></span>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    Modifier
+                                {% else %}
+                                    S'inscrire
+                                {% endif %}
                             </button>
                         </div>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-12 mt-5">
+                                <button
+                                        type="button"
+                                        class="btn btn-primary"
+                                        id="btnAjouterFamille">
+                                    <i class="fa fa-child"></i> Inscrire famille
+                                </button>
+                            </div>
+                            {% include "@Balancelle/Permanence/Admin/modal_ajout_famille.html.twig" %}
+                        {% endif %}
                     </div>
                     <div class="form-row align-items-center" >
                         <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 my-1">
@@ -49,4 +65,5 @@
             </div>
         </div>
     </div>
+
 {% endblock %}

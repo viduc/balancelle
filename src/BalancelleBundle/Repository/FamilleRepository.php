@@ -21,4 +21,16 @@ class FamilleRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function autocomplete($recherche)
+    {
+        return $this
+            ->createQueryBuilder('a')
+            ->andWhere('a.nom LIKE :recherche' )
+            ->setParameter( 'recherche', "%$recherche%")
+            ->orderBy('a.nom')
+            ->getQuery()
+            ->execute()
+            ;
+    }
 }

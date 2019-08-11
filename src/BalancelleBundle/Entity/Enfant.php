@@ -18,7 +18,7 @@ class Enfant
     private $famille;
 
     /**
-     * @ORM\ManyToOne(targetEntity="BalancelleBundle\Entity\Structure", inversedBy="calendriers")
+     * @ORM\ManyToOne(targetEntity="BalancelleBundle\Entity\Structure", inversedBy="enfants")
      */
     private $structure;
 

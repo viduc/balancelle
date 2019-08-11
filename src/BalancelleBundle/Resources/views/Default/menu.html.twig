@@ -69,16 +69,30 @@
                                 <span>Calendriers</span>
                             </a>
                         </li>
-                        {% for menu in app.session.get('menuPermanence') %}
-                            <li >
-                                <a
-                                    href="{{ path('admin_permanence_index', { 'structure': menu }) }}"
-                                    aria-expanded="true">
-                                    <i class="ti-home"></i>
-                                    <span>Permanence {{ menu }}</span>
-                                </a>
-                            </li>
-                        {% endfor %}
+                        <li class="active">
+                            <a href="javascript:void(0)" aria-expanded="true"><i class="ti-agenda"></i><span>Permanences</span></a>
+                            <ul class="collapse">
+                                <li class="active">
+                                    <a
+                                        href="{{ path('admin_permanence_index') }}"
+                                        aria-expanded="true">
+                                        <i class="ti-dashboard"></i>
+                                        <span>Dashbord</span>
+                                    </a>
+                                </li>
+                                {% for menu in app.session.get('menuPermanence') %}
+                                    <li >
+                                        <a
+                                            href="{{ path('admin_permanence_structure', { 'structure': menu }) }}"
+                                            aria-expanded="true">
+                                            <i class="ti-layout-list-thumb-alt"></i>
+                                            <span>Permanence {{ menu }}</span>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+
                     {% endif %}
                 </ul>
             </nav>

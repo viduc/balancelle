@@ -3,7 +3,6 @@
 namespace BalancelleBundle\Controller;
 
 use BalancelleBundle\Entity\User;
-use BalancelleBundle\Entity\Enfant;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,7 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  * User controller.
  *
  */
-class UserController extends Controller
+class UserController extends Controller implements FamilleInterface
 {
     private $roles = [
         'ROLE_USER',

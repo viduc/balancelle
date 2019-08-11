@@ -20,7 +20,7 @@ class Structure
     private $calendriers;
 
     /**
-     * @ORM\OneToMany(targetEntity="BalancelleBundle\Entity\Enfant", cascade={"persist", "remove"}, mappedBy="enfant")
+     * @ORM\OneToMany(targetEntity="BalancelleBundle\Entity\Enfant", cascade={"persist", "remove"}, mappedBy="structure")
      */
     private $enfants;
 

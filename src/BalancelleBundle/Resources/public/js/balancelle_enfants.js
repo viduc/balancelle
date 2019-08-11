@@ -14,12 +14,26 @@ $(document).ready(function(){
                     data: {recherche: $('#rechercherEnfant').val()},
                     success: function (result) {
                         reponse($.map(result, function (objet) {
-                            return objet.prenom + ' ' + objet.nom;
+                            //return objet.prenom + ' ' + objet.nom;
+                            return {
+                                label : objet.label,
+                                value : objet.value
+                            };
                         }));
                     }
                 });
             },
-            minLength : 3
+            minLength : 3,
+            select : function(event, ui){ // lors de la sélection d'une proposition
+                event.preventDefault();
+                $("#rechercherEnfant").val( ui.item.label );
+                $("#modalEnfantSelectionAffiche").val( ui.item.label ); // on ajoute la description de l'objet dans un bloc
+                $("#modalEnfantSelectionId").val(ui.item.value);
+            },
+            focus: function(event, ui) {
+                event.preventDefault();
+                $("#rechercherEnfant").val(ui.item.label);
+            }
         });
     });
 

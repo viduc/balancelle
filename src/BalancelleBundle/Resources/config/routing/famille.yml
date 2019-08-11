@@ -40,3 +40,8 @@ famille_tableauDeBord:
 famille_erreurFamille:
     path:     /erreurFamille/
     defaults: { _controller: "BalancelleBundle:Famille:erreurFamille" }
+
+famille_autocomplete:
+    path:     /autocomplete
+    defaults: { _controller: "BalancelleBundle:Famille:autocomplete" }
+    methods:  [POST]

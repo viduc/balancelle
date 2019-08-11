@@ -20,7 +20,7 @@ class Permanence
     private $famille;
 
     /**
-     * @ORM\ManyToOne(targetEntity="BalancelleBundle\Entity\Semaine")
+     * @ORM\ManyToOne(targetEntity="BalancelleBundle\Entity\Semaine", inversedBy="permanences")
      * @ORM\JoinColumn(nullable=true)
      */
     private $semaine;
