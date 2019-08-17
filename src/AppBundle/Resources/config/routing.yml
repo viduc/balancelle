@@ -5,7 +5,3 @@ app_homepage:
 app_revuepresse:
     path:   /rp
     defaults: { _controller: AppBundle:Default:revuePresse }
-    
-app_trenteans:
-    path:   /trenteans
-    defaults: { _controller: AppBundle:Default:trenteAns }
