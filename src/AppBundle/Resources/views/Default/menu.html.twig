@@ -1,5 +1,5 @@
 <ul id="stickymenu" class="solidblockmenu">
-    {% app.request.attributes.get('_route') == 'app_revuepresse' %}
+    {% if  app.request.attributes.get('_route') == 'app_revuepresse' %}
         <li>
             <a href="{{ path('app_homepage') }}" class="menuLink current">
                 Retour à l'accueil
