@@ -3,13 +3,13 @@
 namespace BalancelleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use InfluxDB;
+//use InfluxDB;
 
 class DefaultController extends Controller implements FamilleInterface
 {
     public function indexAction()
     {
-        $t = microtime(true);
+    /*    $t = microtime(true);
         $client = new InfluxDB\Client('localhost');
         $database = $client->selectDB('bench');
         try {
@@ -29,7 +29,7 @@ class DefaultController extends Controller implements FamilleInterface
             $database->writePoints($points);
         } catch (InfluxDB\Exception $e) {//TODO gérer l'erreur ici
         }
-
+*/
         return $this->render('@Balancelle/Default/index.html.twig', array(
             'famille' => $this->get('session')->get('famille')
         ));
