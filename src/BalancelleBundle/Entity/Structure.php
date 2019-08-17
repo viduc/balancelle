@@ -2,6 +2,8 @@
 
 namespace BalancelleBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -61,6 +63,42 @@ class Structure
      */
     private $active;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="heure_debut_permanence_matin", type="string", length=255, nullable=true)
+     */
+    private $heureDebutPermanenceMatin;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="heure_fin_permanence_matin", type="string", length=255, nullable=true)
+     */
+    private $heureFinPermanenceMatin;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="heure_debut_permanence_am", type="string", length=255, nullable=true)
+     */
+    private $heureDebutPermanenceAM;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="heure_fin_permanence_am", type="string", length=255, nullable=true)
+     */
+    private $heureFinPermanenceAM;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->calendriers = new ArrayCollection();
+        $this->enfants = new ArrayCollection();
+    }
 
     /**
      * Get id.
@@ -174,25 +212,17 @@ class Structure
      */
     public function __toString()
     {
-        return $this->getNomCourt() . " - " . $this->getNom();
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->calendriers = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->enfants = new \Doctrine\Common\Collections\ArrayCollection();
+        return $this->getNomCourt() . ' - ' . $this->getNom();
     }
 
     /**
      * Add calendrier.
      *
-     * @param \BalancelleBundle\Entity\Calendrier $calendrier
+     * @param Calendrier $calendrier
      *
      * @return Structure
      */
-    public function addCalendrier(\BalancelleBundle\Entity\Calendrier $calendrier)
+    public function addCalendrier(Calendrier $calendrier)
     {
         $this->calendriers[] = $calendrier;
 
@@ -202,11 +232,11 @@ class Structure
     /**
      * Remove calendrier.
      *
-     * @param \BalancelleBundle\Entity\Calendrier $calendrier
+     * @param Calendrier $calendrier
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeCalendrier(\BalancelleBundle\Entity\Calendrier $calendrier)
+    public function removeCalendrier(Calendrier $calendrier)
     {
         return $this->calendriers->removeElement($calendrier);
     }
@@ -214,7 +244,7 @@ class Structure
     /**
      * Get calendriers.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getCalendriers()
     {
@@ -224,11 +254,11 @@ class Structure
     /**
      * Add enfant.
      *
-     * @param \BalancelleBundle\Entity\Enfant $enfant
+     * @param Enfant $enfant
      *
      * @return Structure
      */
-    public function addEnfant(\BalancelleBundle\Entity\Enfant $enfant)
+    public function addEnfant(Enfant $enfant)
     {
         $this->enfants[] = $enfant;
 
@@ -238,11 +268,11 @@ class Structure
     /**
      * Remove enfant.
      *
-     * @param \BalancelleBundle\Entity\Enfant $enfant
+     * @param Enfant $enfant
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeEnfant(\BalancelleBundle\Entity\Enfant $enfant)
+    public function removeEnfant(Enfant $enfant)
     {
         return $this->enfants->removeElement($enfant);
     }
@@ -250,10 +280,106 @@ class Structure
     /**
      * Get enfants.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getEnfants()
     {
         return $this->enfants;
+    }
+
+    /**
+     * Set heureDebutPermanenceMatin.
+     *
+     * @param string|null $heureDebutPermanenceMatin
+     *
+     * @return Structure
+     */
+    public function setHeureDebutPermanenceMatin($heureDebutPermanenceMatin = null)
+    {
+        $this->heureDebutPermanenceMatin = $heureDebutPermanenceMatin;
+
+        return $this;
+    }
+
+    /**
+     * Get heureDebutPermanenceMatin.
+     *
+     * @return string|null
+     */
+    public function getHeureDebutPermanenceMatin()
+    {
+        return $this->heureDebutPermanenceMatin;
+    }
+
+    /**
+     * Set heureFinPermanenceMatin.
+     *
+     * @param string|null $heureFinPermanenceMatin
+     *
+     * @return Structure
+     */
+    public function setHeureFinPermanenceMatin($heureFinPermanenceMatin = null)
+    {
+        $this->heureFinPermanenceMatin = $heureFinPermanenceMatin;
+
+        return $this;
+    }
+
+    /**
+     * Get heureFinPermanenceMatin.
+     *
+     * @return string|null
+     */
+    public function getHeureFinPermanenceMatin()
+    {
+        return $this->heureFinPermanenceMatin;
+    }
+
+    /**
+     * Set heureDebutPermanenceAM.
+     *
+     * @param string|null $heureDebutPermanenceAM
+     *
+     * @return Structure
+     */
+    public function setHeureDebutPermanenceAM($heureDebutPermanenceAM = null)
+    {
+        $this->heureDebutPermanenceAM = $heureDebutPermanenceAM;
+
+        return $this;
+    }
+
+    /**
+     * Get heureDebutPermanenceAM.
+     *
+     * @return string|null
+     */
+    public function getHeureDebutPermanenceAM()
+    {
+        return $this->heureDebutPermanenceAM;
+    }
+
+    /**
+     * Set heureFinPermanenceAM.
+     *
+     * @param string|null $heureFinPermanenceAM
+     *
+     * @return Structure
+     */
+    public function setHeureFinPermanenceAM($heureFinPermanenceAM = null)
+    {
+        $this->heureFinPermanenceAM = $heureFinPermanenceAM;
+
+        return $this;
+    }
+
+    /**
+     * Get heureFinPermanenceAM.
+     *
+     * @return string|null
+     */
+    public function getHeureFinPermanenceAM()
+    {
+        return $this->heureFinPermanenceAM;
     }
 }

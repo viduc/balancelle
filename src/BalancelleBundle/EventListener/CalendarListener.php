@@ -63,7 +63,7 @@ class CalendarListener
     ) {
         $this->router = $router;
         $this->em = $em;
-        //$this->security = $security;
+        $this->security = $security;
         $this->famille = $container->get('session')->get('famille');
         $this->structure = $container->get('session')->get('structure');
     }
@@ -86,15 +86,26 @@ class CalendarListener
             ->andWhere('c.structure = :structureId')
             ->andWhere('s.calendrier = c.id')
             ->andWhere('b.semaine = s.id')
+            ->andWhere('c.active = 1')
             ->setParameter('startDate', $startDate->format('Y-m-d H:i:s'))
             ->setParameter('endDate', $endDate->format('Y-m-d H:i:s'))
             ->setParameter('structureId', $structureId)
             ->getQuery()->getResult();
 
-        foreach($permanences as $permanence) {
-            $permanenceEvent = $this->formatPermanence($permanence);
-            $calendar->addEvent($permanenceEvent);
+        foreach ($permanences as $permanence) {
+            try {
+                $permanenceEvent = $this->formatPermanence($permanence);
+                $calendar->addEvent($permanenceEvent);
+            } catch (Exception $e) {
+            }
+
         }
+        if ($this->security->isGranted('ROLE_ADMIN')) {
+            $calendrier = $this->em->getRepository(Calendrier::class)
+                                   ->findBy(['structure' => $structureId, 'active' => 1]);
+            $this->genererPermanenceAjouter($calendrier,$calendar);
+        }
+
     }
 
     /**
@@ -103,12 +114,12 @@ class CalendarListener
      * @return Event
      * @throws Exception
      */
-    private function formatPermanence(
-        Permanence $permanence
-    )
+    private function formatPermanence(Permanence $permanence)
     {
+        $titre = $permanence->getDebut()->format('H:i');
+        $titre .= ' ' . $permanence->getTitre();
         $permanenceEvent =new Event(
-            $permanence->getDebut()->format('H:i') . ' ' . $permanence->getTitre(),
+            $titre,
             $permanence->getDebut(),
             $permanence->getFin()
         );
@@ -120,18 +131,22 @@ class CalendarListener
         $borderColor = 'red';
         $url = null;
         $titre = $permanence->getDebut()->format('H:i');
-        if($permanence->getFamille() !== null) {
+        if ($permanence->getFamille() !== null) {
             if (
                 $this->famille &&
                 ($permanence->getFamille()->getId() === $this->famille->getId())
             ) {
-                if($permanencePassee) {
+                if ($permanencePassee) {
                     $backgroundColor = '#ae2305';
                     $borderColor = 'blue';
                     $titre .= ' Permanence réalisée';
                 } else {
                     $titre .= ' Permanence a réaliser';
                 }
+                $url = $this->router->generate(
+                    'permanence_inscription',
+                    array('id' => $permanence->getId())
+                );
             } else {
                 $backgroundColor = '#252dd3';
                 $borderColor = 'yellow';
@@ -142,7 +157,7 @@ class CalendarListener
             $backgroundColor = $permanence->getCouleur();
             $borderColor = 'blue';
 
-            if($permanencePassee) {
+            if ($permanencePassee) {
                 $backgroundColor = '#7c7c70';
                 $borderColor = 'black';
                 $titre .= ' Permanence terminée';
@@ -162,10 +177,74 @@ class CalendarListener
             ]
         );
         $permanenceEvent->setTitle($titre);
+        if ($this->security->isGranted('ROLE_ADMIN')) {
+            $url = $this->router->generate(
+                'permanence_inscription',
+                array('id' => $permanence->getId())
+            );
+        }
         if ($url !== null) {
             $permanenceEvent->addOption('url', $url);
         }
 
         return $permanenceEvent;
+    }
+
+    /**
+     * Génère le bouton pour ajouter une permanence à chaque jour des calendriers
+     * @param Array $calendrier
+     * @param CalendarEvent $calendar
+     * @throws Exception
+     */
+    private function genererPermanenceAjouter(
+        $calendriers,
+        CalendarEvent $calendar
+    ) {
+        foreach ($calendriers as $calendrier) {
+            $semaines = $this->em->getRepository(Semaine::class)
+                                 ->findBy(['calendrier' => $calendrier]);
+            foreach ($semaines as $semaine) {
+                if ($semaine->getDateDebut() !== null) {
+                    $date = explode('-', $semaine->getDateDebut()->format('Y-m-d'));
+                    for ($i = 0; $i < 5; $i++) {
+                        $dtoDebut = new DateTime();
+                        $dtoFin = new DateTime();
+                        $dtoDebut->setISODate(
+                            $date[0],
+                            $semaine->getNumero()
+                        );
+                        $dtoFin->setISODate(
+                            $date[0],
+                            $semaine->getNumero()
+                        );
+                        $debut = $dtoDebut;
+                        $fin = $dtoFin;
+                        $debut->modify('+' . $i . ' days');
+                        $fin->modify('+' . $i . ' days');
+                        $permanenceEvent = new Event(
+                            'Ajouter une permanence',
+                            $debut,
+                            $fin
+                        );
+                        $permanenceEvent->setOptions(
+                            [
+                                'backgroundColor' => '#dc6c0f',
+                                'borderColor' => '#2748da'
+                            ]
+                        );
+                        $url = $this->router->generate(
+                            'admin_permanence_creer',
+                            array(
+                                'semaineId' => $semaine->getId(),
+                                'date' => $dtoDebut->format('Y-m-d')
+                            )
+                        );
+                        $permanenceEvent->addOption('url', $url);
+                        $calendar->addEvent($permanenceEvent);
+                    }
+                }
+            }
+        }
+
     }
 }

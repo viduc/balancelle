@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Validator\Constraints as AcmeAssert;
@@ -13,7 +14,7 @@ use AppBundle\Validator\Constraints as AcmeAssert;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EvenementsRepository")
  */
 class Evenements
-{  
+{
     /**
      * @var int
      *
@@ -24,7 +25,7 @@ class Evenements
     private $id;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      * @AcmeAssert\DateDuJourMinimum
      * @ORM\Column(name="date", type="date")
      */
@@ -48,7 +49,7 @@ class Evenements
     private $image;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="heure", type="time", nullable=true)
      */
@@ -88,7 +89,7 @@ class Evenements
     /**
      * Set date
      *
-     * @param \DateTime $date
+     * @param DateTime $date
      *
      * @return Evenements
      */
@@ -102,7 +103,7 @@ class Evenements
     /**
      * Get date
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDate()
     {
@@ -156,13 +157,13 @@ class Evenements
     {
         return $this->image;
     }
-    
+
     /**
      * Set heure
      *
-     * @param \DateTime $heure
+     * @param DateTime $heure
      *
-     * @return Evenements_Modal
+     * @return Evenements
      */
     public function setHeure($heure)
     {
@@ -174,7 +175,7 @@ class Evenements
     /**
      * Get heure
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getHeure()
     {
@@ -186,7 +187,7 @@ class Evenements
      *
      * @param string $lieu
      *
-     * @return Evenements_Modal
+     * @return Evenements
      */
     public function setLieu($lieu)
     {
@@ -210,7 +211,7 @@ class Evenements
      *
      * @param string $information
      *
-     * @return Evenements_Modal
+     * @return Evenements
      */
     public function setInformation($information)
     {
@@ -228,13 +229,13 @@ class Evenements
     {
         return $this->information;
     }
-    
+
     /**
      * Set active
      *
      * @param string $active
      *
-     * @return Evenements_Modal
+     * @return Evenements
      */
     public function setActive($active)
     {
@@ -251,5 +252,5 @@ class Evenements
     public function getActive()
     {
         return $this->active;
-    } 
+    }
 }

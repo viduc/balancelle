@@ -9,12 +9,13 @@ use AppBundle\Entity\Evenements;
 use AppBundle\Form\EvenementsType;
 use AppBundle\Entity\Revuepresse;
 use AppBundle\Form\RevuepresseType;
+use Symfony\Component\HttpFoundation\Response;
 
 class AdminController extends Controller
 {
     /**
      * Index de la partie admin
-     * @return view
+     * @return Response
      */
     public function indexAction()
     {
@@ -25,23 +26,26 @@ class AdminController extends Controller
  
     /**
      * Gestion des évènements
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function evenementsListeAction()
     {
         $repository = $this->getDoctrine()->getRepository(Evenements::class);
 
         $liste = $repository->findAll();
-        return $this->render('@Balancelle/Admin/evenements_liste.html.twig',
-            array('liste' => $liste));
+        return $this->render(
+            '@Balancelle/Admin/evenements_liste.html.twig',
+            array('liste' => $liste)
+        );
     }
 
     /**
      * Enregistre un nouvel évènement ou modifie un évènement existant
      * @param Request $request - null - id de l'évènement - form
-     * @return view
+     * @return Response
      */
-    public function evenementsSaveAction( Request $request ) {
+    public function evenementsSaveAction(Request $request)
+    {
         $image = new File('./evenements/noimage.png');
         if (!$request->attributes->get('idevenement')) {
             $evenement = new Evenements();
@@ -50,12 +54,12 @@ class AdminController extends Controller
             $evenement = $repository->find(
                 $request->attributes->get('idevenement')
             );
-            //l'image étant enregistrée sous forme de string, il faut la 
+            //l'image étant enregistrée sous forme de string, il faut la
             //transformer en objet File
             if ($evenement->getImage() !== null) {
                 $image = new File($evenement->getImage());
             }
-            $evenement->setImage($image); 
+            $evenement->setImage($image);
         }
         $form = $this->createForm(EvenementsType::class, $evenement);
         $form->handleRequest($request);
@@ -67,9 +71,9 @@ class AdminController extends Controller
                 $fileName.= $file->guessExtension();
                 // moves the file to the directory where images are stored
                 move_uploaded_file(
-                    $file, 
+                    $file,
                     './evenements/'.$fileName
-                ) or die("Unable to rename.");
+                ) or die('Unable to rename.');
                 $evenement->setImage(new File('./evenements/'.$fileName));
             } else { //si pas d'image de transmise on enregistre soit la noimage,
                 // soit l'image déjà enregistrée en base si présente
@@ -83,30 +87,34 @@ class AdminController extends Controller
                     "L'évènement a été enregistré"
             );
         }
-        return $this->render('@Balancelle/Admin/evenementsAdd.html.twig', array(
-            'form' => $form->createView(), 'evenement' => $evenement
-        )); 
+        return $this->render(
+            '@Balancelle/Admin/evenementsAdd.html.twig',
+            array('form' => $form->createView(), 'evenement' => $evenement)
+        );
     }
 
     /**
      * Gestion de la revue de presse
-     * @return view
+     * @return Response
      */
     public function revuepresseListeAction()
     {
         $repository = $this->getDoctrine()->getRepository(Revuepresse::class);
 
         $liste = $repository->findAll();
-        return $this->render('@Balancelle/Admin/revuepresse_liste.html.twig',
-            array('liste' => $liste));
+        return $this->render(
+            '@Balancelle/Admin/revuepresse_liste.html.twig',
+            array('liste' => $liste)
+        );
     }
 
     /**
      * Enregistre une nouvelle revue de presse ou modifie un évènement existant
      * @param Request $request - null - id de la revue de presse - form
-     * @return view
+     * @return Response
      */
-    public function revuepresseSaveAction( Request $request ) {
+    public function revuepresseSaveAction(Request $request)
+    {
         $image = new File('./revuepresse/noimage.png');
         $scan = new File('./revuepresse/scan/noscan.pdf');
         if (!$request->attributes->get('idrevuepresse')) {
@@ -116,7 +124,7 @@ class AdminController extends Controller
             $revuepresse = $repository->find(
                 $request->attributes->get('idrevuepresse')
             );
-            //l'image étant enregistrée sous forme de string, il faut la 
+            //l'image étant enregistrée sous forme de string, il faut la
             //transformer en objet File
             if ($revuepresse->getImage() !== null) {
                 $image = new File($revuepresse->getImage());
@@ -137,9 +145,9 @@ class AdminController extends Controller
                 $fileName.= $file->guessExtension();
                 // moves the file to the directory where images are stored
                 move_uploaded_file(
-                    $file, 
+                    $file,
                     './revuepresse/'.$fileName
-                ) or die("Unable to rename.");
+                ) or die('Unable to rename.');
                 $revuepresse->setImage(new File('./revuepresse/'.$fileName));
             } else { //si pas d'image de transmise on enregistre soit la noimage,
                 // soit l'image déjà enregistrée en base si présente
@@ -152,9 +160,9 @@ class AdminController extends Controller
                 $fileName.= $file->guessExtension();
                 // moves the file to the directory where images are stored
                 move_uploaded_file(
-                    $file, 
+                    $file,
                     './revuepresse/scan/'.$fileName
-                ) or die("Unable to rename.");
+                ) or die('Unable to rename.');
                 $revuepresse->setScan(new File('./revuepresse/scan/'.$fileName));
             } else { //si pas d'image de transmise on enregistre soit la noimage,
                 // soit l'image déjà enregistrée en base si présente
@@ -165,12 +173,13 @@ class AdminController extends Controller
             $entityManager->flush();
                 $this->addFlash(
                     'success',
-                    "La revue de presse a été enregistré"
+                    'La revue de presse a été enregistré'
             );
         }
-        return $this->render('@Balancelle/Admin/revuepresseAdd.html.twig', array(
-            'form' => $form->createView(), 'revuepresse' => $revuepresse
-        )); 
+        return $this->render(
+            '@Balancelle/Admin/revuepresseAdd.html.twig',
+            array('form' => $form->createView(), 'revuepresse' => $revuepresse)
+        );
     }
 
     
@@ -181,6 +190,6 @@ class AdminController extends Controller
     {
         // md5() reduces the similarity of the file names generated by
         // uniqid(), which is based on timestamps
-        return md5(uniqid());
+        return md5(uniqid('', true));
     }
 }

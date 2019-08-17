@@ -9,44 +9,57 @@
                 <div class="card-body" >
                     {{ form_start(inscription_form) }}
                     <div class="form-row align-items-center" >
-                        <div class="form-group col-xl-5 col-lg-5 col-md-5 col-sm-12 my-1">
+                        <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-12 my-1">
                             <label for="nom">Permanence:</label>
                             {{ form_widget(
                                 inscription_form.titre,
                                 {'attr': {'class': 'form-control','placeholder': "permanence"}}
                             ) }}
                         </div>
-                        <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-12 my-1">
+                        <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-6 my-1">
                             <label for="nom">Date de début</label>
                             {{ form_widget(
                                 inscription_form.debut,
                                 {'attr': {'placeholder': "date de début"}}
                             ) }}
                         </div>
-                        <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-12 my-1">
+                        <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-6 my-1">
                             <label for="nom">Date de fin</label>
                             {{ form_widget(
                                 inscription_form.fin,
                                 {'attr': {'placeholder': "date de fin"}}
                             ) }}
                         </div>
-                        <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-12 mt-5">
-                            <button type="submit" class="btn btn-success pull-left" >
-                                <span class="glyphicon glyphicon-ok-sign"></span>
-                                {% if is_granted('ROLE_ADMIN') %}
-                                    Modifier
-                                {% else %}
-                                    S'inscrire
-                                {% endif %}
-                            </button>
-                        </div>
                         {% if is_granted('ROLE_ADMIN') %}
-                            <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-12 mt-5">
+                            <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-4 mt-5">
+                                <button type="submit" class="btn btn-success pull-left" >
+                                    <span class="glyphicon glyphicon-ok-sign"></span>
+                                    Modifier
+                                </button>
+                            </div>
+                        {% elseif inscriptionPossible %}
+                            <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-4 mt-5">
+                                <button type="submit" class="btn btn-success pull-left" >
+                                    <span class="glyphicon glyphicon-ok-sign"></span>
+                                    S'inscrire
+                                </button>
+                            </div>
+                        {% endif %}
+                        {% if is_granted('ROLE_ADMIN') and inscriptionPossible %}
+                            <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-4 mt-5">
                                 <button
                                         type="button"
                                         class="btn btn-primary"
                                         id="btnAjouterFamille">
                                     <i class="fa fa-child"></i> Inscrire famille
+                                </button>
+                            </div>
+                            <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-4 mt-5">
+                                <button
+                                        type="button"
+                                        class="btn btn-danger"
+                                        id="btnSupprimerPermanence">
+                                    <i class="fa fa-trash"></i>
                                 </button>
                             </div>
                             {% include "@Balancelle/Permanence/Admin/modal_ajout_famille.html.twig" %}
@@ -63,7 +76,97 @@
                     </div>
                 </div>
             </div>
+
+            {% if is_granted('ROLE_ADMIN') and famille != null %}
+                </br>
+                <div class="card" style="background-color: #bbbbbb">
+                    <div class="card-body" >
+                        <h5>Famille inscrite à la permanence: {{ famille.nom }}</h5>
+                        <div class="row">
+                            <div class="col-lg-3 col-md-3 mt-5">
+                                <div class="card card-bordered">
+                                    <div class="card-body">
+                                        <h5 class="title">Nom de la famille:</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">
+                                            {{ famille.nom }}
+                                            <a href="{{ path('famille_edit', { 'id': famille.id }) }}">
+                                                <i class="ti-eye"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=" form-group col-lg-3 col-md-3 mt-5">
+                                <button
+                                        type="button"
+                                        class="btn btn-warning"
+                                        id="btnSupprimerFamille">
+                                    <i class="fa fa-ban"></i> Désinscrire la famille
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3 col-md-3 mt-5">
+                                <div class="card card-bordered">
+                                    <div class="card-body">
+                                        <h5 class="title">Parent 1:</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">
+                                            {{ famille.parent1.prenom }}
+                                            {{ famille.parent1.nom }}
+                                        </h6>
+                                        <p class="card-text">
+                                            {{ famille.parent1.email }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if famille.parent2 %}
+                                <div class="col-lg-3 col-md-3 mt-5">
+                                    <div class="card card-bordered">
+                                        <div class="card-body">
+                                            <h5 class="title">Parent 2:</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted">
+                                                {{ famille.parent2.prenom }}
+                                                {{ famille.parent2.nom }}
+                                            </h6>
+                                            <p class="card-text">
+                                                {{ famille.parent2.email }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="row">
+                            {% for enfant in famille.enfants %}
+                                <div class="col-lg-3 col-md-3 mt-5">
+                                    <div class="card card-bordered">
+                                        <div class="card-body">
+                                            <h5 class="title">Enfant:</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted">
+                                                {{ enfant.prenom }}
+                                                {{ enfant.nom }}
+
+                                            </h6>
+                                            <p class="card-text">
+                                                {{ enfant.naissance|date('d/m/Y') }}
+                                            </p>
+                                            <h6>
+                                                {{ enfant.structure.nom }}
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+
         </div>
     </div>
-
+<script type="text/javascript">
+    var idPermanence = "{{  permanence.id }}";
+    var pathFamilleDesinscrire = "{{  path('admin_permanence_desinscrireFamille') }}";
+    var pathPermanenceSuppression = "{{  path('admin_permanence_suppression') }}";
+</script>
 {% endblock %}

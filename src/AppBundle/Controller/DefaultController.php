@@ -28,9 +28,4 @@ class DefaultController extends Controller
             array('revuepresses' => $revuepresses)
         );
     }
-    
-    public function trenteAnsAction()
-    {
-        return $this->render('@App/Default/30ans.html.twig');
-    }    
 }

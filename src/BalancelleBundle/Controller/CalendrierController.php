@@ -10,7 +10,11 @@ use DateTime;
 use Exception;
 use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use BalancelleBundle\Form\CalendrierType;
 
 /**
  * Calendrier controller.
@@ -20,7 +24,7 @@ class CalendrierController extends Controller
 {
     /**
      * Liste tout les calendriers
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function indexAction()
     {
@@ -36,13 +40,13 @@ class CalendrierController extends Controller
     /**
      * Créer un calendrier
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function newAction(Request $request)
     {
         $calendrier = new Calendrier();
         $form = $this->createForm(
-            'BalancelleBundle\Form\CalendrierType',
+            CalendrierType::class,
             $calendrier
         );
         $form->handleRequest($request);
@@ -57,11 +61,14 @@ class CalendrierController extends Controller
             $succes .= ' a bien été enregistré';
             $this->addFlash('success', $succes);
 
-            $this->genererLesSemaines(
-                $calendrier,
-                $calendrier->getDateDebut(),
-                $calendrier->getDateFin()
-            );
+            try {
+                $this->genererLesSemaines(
+                    $calendrier//,
+                    //$calendrier->getDateDebut(),
+                    //$calendrier->getDateFin()
+                );
+            } catch (Exception $e) { //TODO gérer l'erreur ici
+            }
             return $this->redirectToRoute(
                 'calendrier_edit',
                 array('id' => $calendrier->getId())
@@ -81,20 +88,20 @@ class CalendrierController extends Controller
      * Modification d'un calendrier
      * @param Request $request
      * @param Calendrier $calendrier
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, Calendrier $calendrier)
     {
         $deleteForm = $this->createDeleteForm($calendrier);
         $editForm = $this->createForm(
-            'BalancelleBundle\Form\CalendrierType',
+            CalendrierType::class,
             $calendrier
         );
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $calendrier->setAnneeDebut($calendrier->getDateDebut()->format("Y"));
-            $calendrier->setAnneeFin($calendrier->getDateFin()->format("Y"));
+            $calendrier->setAnneeDebut($calendrier->getDateDebut()->format('Y'));
+            $calendrier->setAnneeFin($calendrier->getDateFin()->format('Y'));
             $this->getDoctrine()->getManager()->flush();
             $succes = 'Le calendrier ';
             $succes .= ' a bien été modifié';
@@ -117,7 +124,9 @@ class CalendrierController extends Controller
 
     /**
      * Deletes a structure entity.
-     *
+     * @param Request $request
+     * @param Calendrier $calendrier
+     * @return RedirectResponse
      */
     public function deleteAction(Request $request, Calendrier $calendrier)
     {
@@ -139,9 +148,8 @@ class CalendrierController extends Controller
     /**
      * Creates a form to delete a structure entity.
      *
-     * @param Structure $structure The structure entity
-     *
-     * @return \Symfony\Component\Form\FormInterface
+     * @param Calendrier $calendrier
+     * @return FormInterface
      */
     private function createDeleteForm(Calendrier $calendrier)
     {
@@ -164,54 +172,32 @@ class CalendrierController extends Controller
      * @throws Exception
      */
     private function genererLesSemaines(
-        Calendrier $calendrier,
+        Calendrier $calendrier/*,
         $dateDebut,
-        $dateFin
+        $dateFin*/
     ) {
         $em = $this->getDoctrine()->getManager();
         $numPremiereSemaine = date(
             'W',
-            strtotime($dateDebut->format('Y-m-d'))
+            strtotime($calendrier->getDateDebut()->format('Y-m-d'))
         );
         $numDerniereSemaine = date(
             'W',
-            strtotime($dateFin->format('Y-m-d'))
+            strtotime($calendrier->getDateFin()->format('Y-m-d'))
         );
 
-        for ($i=$numPremiereSemaine; $i<=52; $i++){
-            $dates = $this->getStartAndEndDate($i, $dateDebut->format('Y'));
-            $semaine = new Semaine();
-            $semaine->setNumero($i);
-            $semaine->setAnnee($dateDebut->format('Y'));
-            $semaine->setDateDebut($dates['week_start']);
-            $semaine->setDateFin($dates['week_end']);
-            $semaine->setCommentaire('Generée par calendrier');
-            $semaine->setNbrPermanenceMatin(
-                $calendrier->getNbrPermanenceMatin()
-            );
-            $semaine->setNbrPermanenceAM(
-                $calendrier->getNbrPermanenceAM()
-            );
-            $semaine->setCalendrier($calendrier);
-            $em->persist($semaine);
-            $this->genererLesPermanences($calendrier, $semaine, true);
+        if ($calendrier->getAnneeDebut() === $calendrier->getAnneeFin()) {
+            for ($i=$numPremiereSemaine; $i<=$numDerniereSemaine; $i++) {
+                $this->creerSemaine($i, $calendrier, true);
+            }
+        } else {
+            for ($i=$numPremiereSemaine; $i<=52; $i++) {
+                $this->creerSemaine($i, $calendrier, true);
+            }
+            for ($i=1; $i<=$numDerniereSemaine; $i++) {
+                $this->creerSemaine($i, $calendrier, false);
+            }
         }
-
-        for ($i=1; $i<=$numDerniereSemaine; $i++){
-            $semaine = new Semaine();
-            $semaine->setNumero($i);
-            $semaine->setAnnee($dateDebut->format("Y"));
-            $semaine->setCommentaire('Generée par calendrier');
-            $semaine->setNbrPermanenceMatin(
-                $calendrier->getNbrPermanenceMatin()
-            );
-            $semaine->setNbrPermanenceAM(
-                $calendrier->getNbrPermanenceAM()
-            );
-            $semaine->setCalendrier($calendrier);
-            $em->persist($semaine);
-        }
-
         $em->flush();
         $succes = 'Les semaines du calendrier  ';
         $succes .= ' ont bien été enregistrées';
@@ -223,19 +209,32 @@ class CalendrierController extends Controller
     }
 
     /**
-     * Permet de générer les dates de début et de fin d'une semaine en fonction
-     * de son numéro et de l'année
-     * @param int $week - le numéro de la semaine
-     * @param int $year - l'année
-     * @return array
+     * Créer une semaine et génère les permanences
+     * @param int $numSemaine
+     * @param Calendrier $calendrier
      * @throws Exception
      */
-    function getStartAndEndDate($week, $year) {
-        $debut = new DateTime();
-        $fin = new DateTime();
-        $ret['week_start'] = $debut->setISODate($year, $week);
-        $ret['week_end'] = $fin->setISODate($year, $week, 7);
-        return $ret;
+    private function creerSemaine($numSemaine, Calendrier $calendrier, $debut)
+    {
+        $dates = $this->getStartAndEndDate(
+            $numSemaine, $calendrier->getDateDebut()->format('Y')
+        );
+        $semaine = new Semaine();
+        $semaine->setNumero($numSemaine);
+        $semaine->setAnnee($calendrier->getDateDebut()->format('Y'));
+        $semaine->setDateDebut($dates['week_start']);
+        $semaine->setDateFin($dates['week_end']);
+        $semaine->setCommentaire('Generée par calendrier');
+        $semaine->setNbrPermanenceMatin(
+            $calendrier->getNbrPermanenceMatin()
+        );
+        $semaine->setNbrPermanenceAM(
+            $calendrier->getNbrPermanenceAM()
+        );
+        $semaine->setCalendrier($calendrier);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($semaine);
+        $this->genererLesPermanences($calendrier, $semaine, $debut);
     }
 
     /**
@@ -284,34 +283,58 @@ class CalendrierController extends Controller
                     '+1 days'
                 );
             }
-            /* génération des permanences du matin */
-            for ($j=0; $j<$calendrier->getNbrPermanenceMatin(); $j++) {
-                $permanence = new Permanence();
-                $permanence->setTitre('Permanence matin');
-                $permanence->setCommentaire('Ici commentaire');
-                $permanence->setActive(true);
-                $permanence->setDebut($dtoDebut->setTime(8, 30));
-                $permanence->setFin($dtoFin->setTime(11, 30));
-                $permanence->setSemaine($semaine);
-                $permanence->setCouleur("#567c3f");
-                $em->persist($permanence);
-                $em->flush();
-            }
+            $datePerm = $dtoDebut->format('Y-m-d');
+            if (
+                $datePerm <= $calendrier->getDateFin()->format('Y-m-d') &&
+                $datePerm >= $calendrier->getDateDebut()->format('Y-m-d')
+            ) {
+                /* génération des permanences du matin */
+                for ($j = 0; $j < $calendrier->getNbrPermanenceMatin(); $j++) {
+                    $permanence = new Permanence();
+                    $permanence->setTitre('Permanence matin');
+                    $permanence->setCommentaire('Ici commentaire');
+                    $permanence->setActive(true);
+                    $permanence->setDebut($dtoDebut->setTime(8, 30));
+                    $permanence->setFin($dtoFin->setTime(11, 30));
+                    $permanence->setSemaine($semaine);
+                    $permanence->setCouleur('#567c3f');
+                    $em->persist($permanence);
+                    $em->flush();
+                }
 
-            /* génération des permanences de l'am */
-            for ($j=0; $j<$calendrier->getNbrPermanenceAM(); $j++) {
-                $permanence = new Permanence();
-                $permanence->setTitre('Permanence AM');
-                $permanence->setCommentaire('Ici commentaire');
-                $permanence->setActive(true);
-                $permanence->setDebut($dtoDebut->setTime(14, 00));
-                $permanence->setFin($dtoFin->setTime(17, 30));
-                $permanence->setSemaine($semaine);
-                $permanence->setCouleur("#635178");
-                $em->persist($permanence);
-                $em->flush();
+                /* génération des permanences de l'am */
+                for ($j = 0; $j < $calendrier->getNbrPermanenceAM(); $j++) {
+                    $permanence = new Permanence();
+                    $permanence->setTitre('Permanence AM');
+                    $permanence->setCommentaire('Ici commentaire');
+                    $permanence->setActive(true);
+                    $permanence->setDebut($dtoDebut->setTime(14, 00));
+                    $permanence->setFin($dtoFin->setTime(17, 30));
+                    $permanence->setSemaine($semaine);
+                    $permanence->setCouleur('#635178');
+                    $em->persist($permanence);
+                    $em->flush();
+                }
             }
         }
         return true;
+    }
+
+
+    /**
+     * Permet de générer les dates de début et de fin d'une semaine en fonction
+     * de son numéro et de l'année
+     * @param int $week - le numéro de la semaine
+     * @param int $year - l'année
+     * @return array
+     * @throws Exception
+     */
+    private function getStartAndEndDate($week, $year)
+    {
+        $debut = new DateTime();
+        $fin = new DateTime();
+        $ret['week_start'] = $debut->setISODate($year, $week);
+        $ret['week_end'] = $fin->setISODate($year, $week, 7);
+        return $ret;
     }
 }

@@ -3,6 +3,8 @@
 namespace BalancelleBundle\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -264,17 +266,17 @@ class Semaine
      */
     public function __construct()
     {
-        $this->permanences = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->permanences = new ArrayCollection();
     }
 
     /**
      * Set calendrier.
      *
-     * @param \BalancelleBundle\Entity\Calendrier|null $calendrier
+     * @param Calendrier|null $calendrier
      *
      * @return Semaine
      */
-    public function setCalendrier(\BalancelleBundle\Entity\Calendrier $calendrier = null)
+    public function setCalendrier(Calendrier $calendrier = null)
     {
         $this->calendrier = $calendrier;
 
@@ -284,7 +286,7 @@ class Semaine
     /**
      * Get calendrier.
      *
-     * @return \BalancelleBundle\Entity\Calendrier|null
+     * @return Calendrier|null
      */
     public function getCalendrier()
     {
@@ -294,11 +296,11 @@ class Semaine
     /**
      * Add permanence.
      *
-     * @param \BalancelleBundle\Entity\Permanence $permanence
+     * @param Permanence $permanence
      *
      * @return Semaine
      */
-    public function addPermanence(\BalancelleBundle\Entity\Permanence $permanence)
+    public function addPermanence(Permanence $permanence)
     {
         $this->permanences[] = $permanence;
 
@@ -308,11 +310,11 @@ class Semaine
     /**
      * Remove permanence.
      *
-     * @param \BalancelleBundle\Entity\Permanence $permanence
+     * @param Permanence $permanence
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removePermanence(\BalancelleBundle\Entity\Permanence $permanence)
+    public function removePermanence(Permanence $permanence)
     {
         return $this->permanences->removeElement($permanence);
     }
@@ -320,7 +322,7 @@ class Semaine
     /**
      * Get permanences.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getPermanences()
     {

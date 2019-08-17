@@ -4,7 +4,11 @@ namespace BalancelleBundle\Controller;
 
 use BalancelleBundle\Entity\Structure;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use BalancelleBundle\Form\StructureType;
 
 /**
  * Structure controller.
@@ -16,7 +20,7 @@ class StructureController extends Controller implements FamilleInterface
 
     /**
      * Liste toutes les structures
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function indexAction()
     {
@@ -32,13 +36,13 @@ class StructureController extends Controller implements FamilleInterface
     /**
      * Créé une structure
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function newAction(Request $request)
     {
         $structure = new Structure();
         $form = $this->createForm(
-            'BalancelleBundle\Form\StructureType',
+            StructureType::class,
             $structure
         );
         $form->handleRequest($request);
@@ -47,7 +51,7 @@ class StructureController extends Controller implements FamilleInterface
             $em = $this->getDoctrine()->getManager();
             $em->persist($structure);
             $em->flush();
-            $succes = 'La structure ' . $structure->getnom() . " ";
+            $succes = 'La structure ' . $structure->getnom() . ' ';
             $succes .= ' a bien été enregistrée';
             $this->addFlash('success', $succes);
 
@@ -68,19 +72,22 @@ class StructureController extends Controller implements FamilleInterface
 
     /**
      * Displays a form to edit an existing structure entity.
-     *
+     * @param Request $request
+     * @param Structure $structure
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, Structure $structure)
     {
         $deleteForm = $this->createDeleteForm($structure);
         $form = $this->createForm(
-            'BalancelleBundle\Form\StructureType',
-            $structure);
+            StructureType::class,
+            $structure
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            $succes = 'La structure ' . $structure->getnom() . " ";
+            $succes = 'La structure ' . $structure->getnom() . ' ';
             $succes .= ' a bien été modifiée';
             $this->addFlash('success', $succes);
             return $this->redirectToRoute(
@@ -89,7 +96,8 @@ class StructureController extends Controller implements FamilleInterface
             );
         }
 
-        return $this->render('@Balancelle/Structure/edit.html.twig',
+        return $this->render(
+            '@Balancelle/Structure/edit.html.twig',
             array(
                 'structure' => $structure,
                 'form' => $form->createView(),
@@ -100,7 +108,9 @@ class StructureController extends Controller implements FamilleInterface
 
     /**
      * Deletes a structure entity.
-     *
+     * @param Request $request
+     * @param Structure $structure
+     * @return RedirectResponse
      */
     public function deleteAction(Request $request, Structure $structure)
     {
@@ -124,7 +134,7 @@ class StructureController extends Controller implements FamilleInterface
      *
      * @param Structure $structure The structure entity
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     private function createDeleteForm(Structure $structure)
     {

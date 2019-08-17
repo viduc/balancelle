@@ -2,9 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use AppBundle\Validator\Constraints as AcmeAssert;
 
 /**
  * Evenements
@@ -13,7 +13,7 @@ use AppBundle\Validator\Constraints as AcmeAssert;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\RevuepresseRepository")
  */
 class Revuepresse
-{  
+{
     /**
      * @var int
      *
@@ -24,7 +24,7 @@ class Revuepresse
     private $id;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      * @ORM\Column(name="date", type="date")
      */
     private $date;
@@ -54,7 +54,7 @@ class Revuepresse
      *     mimeTypes = {"application/pdf"}
      * )
      */
-    private $scan;    
+    private $scan;
     
     /**
      * @var string
@@ -68,7 +68,7 @@ class Revuepresse
      *
      * @ORM\Column(name="url", type="string", length=255, nullable=true)
      */
-    private $url;    
+    private $url;
     
     /**
      * @var string
@@ -104,7 +104,7 @@ class Revuepresse
     /**
      * Set date
      *
-     * @param \DateTime $date
+     * @param DateTime $date
      *
      * @return Revuepresse
      */
@@ -118,7 +118,7 @@ class Revuepresse
     /**
      * Get date
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDate()
     {
@@ -315,5 +315,5 @@ class Revuepresse
     public function getActive()
     {
         return $this->active;
-    } 
+    }
 }

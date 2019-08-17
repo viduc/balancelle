@@ -24,7 +24,12 @@
                         </div>
                 </div>
         </div>
+        {% include "@Balancelle/Permanence/Admin/modal_ajout_permanence.html.twig" %}
         <script type="text/javascript">
                 var load = "{{  path('fc_load_events') }}";
+                var isAdmin = false;
+                {% if is_granted('ROLE_ADMIN') %}
+                        isAdmin = true
+                {% endif %}
         </script>
 {% endblock %}

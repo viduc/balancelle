@@ -3,8 +3,9 @@
 namespace BalancelleBundle\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Calendrier
@@ -247,11 +248,11 @@ class Calendrier
     /**
      * Set structure.
      *
-     * @param \BalancelleBundle\Entity\Structure|null $structure
+     * @param Structure|null $structure
      *
      * @return Calendrier
      */
-    public function setStructure(\BalancelleBundle\Entity\Structure $structure = null)
+    public function setStructure(Structure $structure = null)
     {
         $this->structure = $structure;
 
@@ -261,7 +262,7 @@ class Calendrier
     /**
      * Get structure.
      *
-     * @return \BalancelleBundle\Entity\Structure|null
+     * @return Structure|null
      */
     public function getStructure()
     {
@@ -272,17 +273,17 @@ class Calendrier
      */
     public function __construct()
     {
-        $this->semaines = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->semaines = new ArrayCollection();
     }
 
     /**
      * Add semaine.
      *
-     * @param \BalancelleBundle\Entity\Semaine $semaine
+     * @param Semaine $semaine
      *
      * @return Calendrier
      */
-    public function addSemaine(\BalancelleBundle\Entity\Semaine $semaine)
+    public function addSemaine(Semaine $semaine)
     {
         $this->semaines[] = $semaine;
 
@@ -292,11 +293,11 @@ class Calendrier
     /**
      * Remove semaine.
      *
-     * @param \BalancelleBundle\Entity\Semaine $semaine
+     * @param Semaine $semaine
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeSemaine(\BalancelleBundle\Entity\Semaine $semaine)
+    public function removeSemaine(Semaine $semaine)
     {
         return $this->semaines->removeElement($semaine);
     }
@@ -304,7 +305,7 @@ class Calendrier
     /**
      * Get semaines.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getSemaines()
     {

@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use BalancelleBundle\Entity\Calendrier;
 
 class CalendrierType extends AbstractType
 {
@@ -38,7 +39,7 @@ class CalendrierType extends AbstractType
                     'format' => 'dd/MM/yyyy'
                 ]
             )
-            ->add('commentaire',TextareaType::class, [])
+            ->add('commentaire', TextareaType::class, [])
             ->add('active')
             ->add('structure')
             ->add('nbrPermanenceMatin', ChoiceType::class, [
@@ -63,7 +64,7 @@ class CalendrierType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'BalancelleBundle\Entity\Calendrier'
+            'data_class' => Calendrier::class
         ));
     }
 

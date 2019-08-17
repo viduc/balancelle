@@ -209,11 +209,11 @@ class Permanence
     /**
      * Set famille.
      *
-     * @param \BalancelleBundle\Entity\Famille|null $famille
+     * @param Famille|null $famille
      *
      * @return Permanence
      */
-    public function setFamille(\BalancelleBundle\Entity\Famille $famille = null)
+    public function setFamille(Famille $famille = null)
     {
         $this->famille = $famille;
 
@@ -223,7 +223,7 @@ class Permanence
     /**
      * Get famille.
      *
-     * @return \BalancelleBundle\Entity\Famille|null
+     * @return Famille|null
      */
     public function getFamille()
     {
@@ -233,11 +233,11 @@ class Permanence
     /**
      * Set semaine.
      *
-     * @param \BalancelleBundle\Entity\Semaine|null $semaine
+     * @param Semaine|null $semaine
      *
      * @return Permanence
      */
-    public function setSemaine(\BalancelleBundle\Entity\Semaine $semaine = null)
+    public function setSemaine(Semaine $semaine = null)
     {
         $this->semaine = $semaine;
 
@@ -247,7 +247,7 @@ class Permanence
     /**
      * Get semaine.
      *
-     * @return \BalancelleBundle\Entity\Semaine|null
+     * @return Semaine|null
      */
     public function getSemaine()
     {

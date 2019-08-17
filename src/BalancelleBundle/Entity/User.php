@@ -3,8 +3,8 @@
 
 namespace BalancelleBundle\Entity;
 
+use DateTime;
 use FOS\UserBundle\Model\User as BaseUser;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,14 +43,6 @@ class User extends BaseUser
     * @ORM\Column(name="birthday", type="date", nullable=true)
     */
     protected $birthday=null;
-
-    /**
-     * Constructeur de l'objet
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     /**
      * Set prenom
@@ -103,7 +95,7 @@ class User extends BaseUser
     /**
      * Set birthday
      *
-     * @param \DateTime $birthday
+     * @param DateTime $birthday
      *
      * @return User
      */
@@ -117,7 +109,7 @@ class User extends BaseUser
     /**
      * Get birthday
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getBirthday()
     {
@@ -126,66 +118,66 @@ class User extends BaseUser
     
     /**
      * Détermine si l'utilisateur a le rôle administrateur
-     * @return boolean
+     * @return Boolean
      */
     public function isroleAdmin()
     {
-        return $this->hasRole("ROLE_ADMIN");
+        return $this->hasRole('ROLE_ADMIN');
     }
     
     /**
      * Enregistre le role administrateur
-     * @param \Boolean $bool
+     * @param Boolean $bool
      * @return User
      */
-    public function setRoleAdmin($bool) 
+    public function setRoleAdmin($bool)
     {
-        $this->removeRole("ROLE_ADMIN");
+        $this->removeRole('ROLE_ADMIN');
         if ($bool) {
-            $this->addRole("ROLE_ADMIN");
+            $this->addRole('ROLE_ADMIN');
         }
         return $this;
     }
 
     /**
      * Récupère le role admin
-     * @return \Boolean
+     * @return Boolean
      */
     public function getRoleAdmin()
     {
-        return $this->hasRole("ROLE_ADMIN");
+        return $this->hasRole('ROLE_ADMIN');
     }
     
     /**
      * Détermine si l'utilisateur a le rôle professionnel
-     * @return boolean
+     * @return Boolean
      */
     public function isrolePro()
     {
-        return $this->hasRole("ROLE_PRO");
+        return $this->hasRole('ROLE_PRO');
     }
     
     /**
      * Enregistre le role professionnel
-     * @param \Boolean $bool
+     * @param Boolean $bool
      * @return User
      */
-    public function setRolePro($bool) 
+    public function setRolePro($bool)
     {
-        $this->removeRole("ROLE_PRO");
+        $this->removeRole('ROLE_PRO');
         if ($bool) {
-            $this->addRole("ROLE_PRO");
+            $this->addRole('ROLE_PRO');
         }
         return $this;
     }
     
     /**
      * Récupère le role Pro
-     * @return \Boolean
+     * @return Boolean
      */
     public function getRolePro()
     {
-        return $this->hasRole("ROLE_PRO");
+        return $this->hasRole('ROLE_PRO');
     }
 
     /**

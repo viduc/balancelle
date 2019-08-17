@@ -7,6 +7,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use BalancelleBundle\Entity\User;
+
 class UserType extends AbstractType
 {
     /**
@@ -15,7 +17,7 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'BalancelleBundle\Entity\User'
+            'data_class' => User::class
         ));
     }
 
@@ -40,11 +42,12 @@ class UserType extends AbstractType
                     'attr' => ['class' => 'js-datepicker', 'type' => 'date'],
                     'html5' => false,
                     'format' => 'dd/MM/yyyy'
-                ])
+                ]
+            )
             ->add('email')
-            ->add('enabled', CheckboxType::Class,['required' => false])
-            ->add('roleAdmin', CheckboxType::Class,['required' => false])
-            ->add('rolePro', CheckboxType::Class,['required' => false])
+            ->add('enabled', CheckboxType::class, ['required' => false])
+            ->add('roleAdmin', CheckboxType::class, ['required' => false])
+            ->add('rolePro', CheckboxType::class, ['required' => false])
         ;
     }
 }

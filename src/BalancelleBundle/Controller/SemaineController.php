@@ -4,7 +4,11 @@ namespace BalancelleBundle\Controller;
 
 use BalancelleBundle\Entity\Semaine;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use BalancelleBundle\Form\SemaineType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Semaine controller.
@@ -29,12 +33,13 @@ class SemaineController extends Controller
 
     /**
      * Creates a new semaine entity.
-     *
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
     public function newAction(Request $request)
     {
         $semaine = new Semaine();
-        $form = $this->createForm('BalancelleBundle\Form\SemaineType', $semaine);
+        $form = $this->createForm(SemaineType::class, $semaine);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -53,7 +58,8 @@ class SemaineController extends Controller
 
     /**
      * Finds and displays a semaine entity.
-     *
+     * @param Semaine $semaine
+     * @return Response
      */
     public function showAction(Semaine $semaine)
     {
@@ -67,12 +73,14 @@ class SemaineController extends Controller
 
     /**
      * Displays a form to edit an existing semaine entity.
-     *
+     * @param Request $request
+     * @param Semaine $semaine
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, Semaine $semaine)
     {
         $deleteForm = $this->createDeleteForm($semaine);
-        $editForm = $this->createForm('BalancelleBundle\Form\SemaineType', $semaine);
+        $editForm = $this->createForm(SemaineType::class, $semaine);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -90,7 +98,9 @@ class SemaineController extends Controller
 
     /**
      * Deletes a semaine entity.
-     *
+     * @param Request $request
+     * @param Semaine $semaine
+     * @return RedirectResponse
      */
     public function deleteAction(Request $request, Semaine $semaine)
     {
@@ -111,7 +121,7 @@ class SemaineController extends Controller
      *
      * @param Semaine $semaine The semaine entity
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     private function createDeleteForm(Semaine $semaine)
     {

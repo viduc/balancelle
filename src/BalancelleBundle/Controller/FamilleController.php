@@ -5,11 +5,16 @@ namespace BalancelleBundle\Controller;
 use BalancelleBundle\Entity\Enfant;
 use BalancelleBundle\Entity\Famille;
 use BalancelleBundle\Entity\Permanence;
+use DateTime;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
+use BalancelleBundle\Form\FamilleType;
 
 /**
  * Famille controller.
@@ -71,7 +76,7 @@ class FamilleController extends Controller implements FamilleInterface
 
     public function erreurFamilleAction()
     {
-        $this->addFlash("error", "Vous n'êtes pas inscrit dans une famille");
+        $this->addFlash('error', "Vous n'êtes pas inscrit dans une famille");
         return $this->render(
             '@Balancelle/famille/erreur_famille.html.twig',
             array()
@@ -87,8 +92,8 @@ class FamilleController extends Controller implements FamilleInterface
     private function formaterListePermanence($permanenceInscrit, $permFaite)
     {
         $retour = [];
-        foreach($permanenceInscrit as $perm) {
-            $perm->realise = in_array($perm, $permFaite);
+        foreach ($permanenceInscrit as $perm) {
+            $perm->realise = in_array($perm, $permFaite, true);
             $retour[] = $perm;
         }
 
@@ -97,7 +102,7 @@ class FamilleController extends Controller implements FamilleInterface
 
     /**
      * Liste toutes les familles
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function indexAction()
     {
@@ -114,23 +119,23 @@ class FamilleController extends Controller implements FamilleInterface
     /**
      * Créé une famille
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
+     * @return RedirectResponse|Response
+     * @throws Exception
      */
     public function newAction(Request $request)
     {
         $famille = new Famille();
-        $form = $this->createForm('BalancelleBundle\Form\FamilleType', $famille);
+        $form = $this->createForm(FamilleType::class, $famille);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $famille->setDateCreation(new \DateTime());
-            $famille->setDateModification(new \DateTime());
+            $famille->setDateCreation(new DateTime());
+            $famille->setDateModification(new DateTime());
             $this->em->persist($famille);
             $this->em->flush();
-            $succes = "La famille " . $famille->getNom() . " ";
-            $succes .= " a bien été enregistrée";
-            $this->addFlash("success", $succes);
+            $succes = 'La famille ' . $famille->getNom() . ' ';
+            $succes .= ' a bien été enregistrée';
+            $this->addFlash('success', $succes);
 
             return $this->redirectToRoute(
                 'famille_edit',
@@ -151,12 +156,12 @@ class FamilleController extends Controller implements FamilleInterface
      * Edite une famille
      * @param Request $request
      * @param Famille $famille
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, Famille $famille)
     {
         $editForm = $this->createForm(
-            'BalancelleBundle\Form\FamilleType',
+            FamilleType::class,
             $famille
         );
         $deleteForm = $this->createDeleteForm($famille);
@@ -184,7 +189,7 @@ class FamilleController extends Controller implements FamilleInterface
      * Supprime une famille
      * @param Request $request - la requete
      * @param Famille $famille - la famille
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function deleteAction(Request $request, Famille $famille)
     {
@@ -207,7 +212,7 @@ class FamilleController extends Controller implements FamilleInterface
      *
      * @param Famille $famille The famille entity
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     private function createDeleteForm(Famille $famille)
     {
@@ -243,11 +248,11 @@ class FamilleController extends Controller implements FamilleInterface
             $this->em->flush();
             $type = 'success';
             $reponse = "L'enfant ";
-            $reponse .= $enfant->getPrenom() . " " . $enfant->getNom();
+            $reponse .= $enfant->getPrenom() . ' ' . $enfant->getNom();
             $reponse .= ' a bien été ajouté à la famille ';
             $reponse .= $famille->getNom();
         }
-        $this->addFlash($type,$reponse);
+        $this->addFlash($type, $reponse);
         return new JsonResponse($reponse);
     }
 
@@ -255,7 +260,7 @@ class FamilleController extends Controller implements FamilleInterface
      * méthode ajax qui permet de creer un enfant pour une famille
      * @param Request $request - la requete
      * @return JsonResponse
-     * @throws \Exception
+     * @throws Exception
      */
     public function creerEnfantAction(Request $request)
     {
@@ -267,7 +272,7 @@ class FamilleController extends Controller implements FamilleInterface
         $enfant->setPrenom($request->get('prenomEnfant'));
         $enfant->setNom($request->get('nomEnfant'));
         $enfant->setNaissance(
-            new \DateTime($request->get('dateNaissanceEnfant')
+            new DateTime($request->get('dateNaissanceEnfant')
         ));
         $enfant->setFamille($famille);
         $enfant->setCommentaire("Enfant créer via l'interface famille");
@@ -281,7 +286,7 @@ class FamilleController extends Controller implements FamilleInterface
         $reponse .= $enfant->getPrenom() . ' ' . $enfant->getNom();
         $reponse .= ' a bien été ajouté à la famille ';
         $reponse .= $famille->getNom();
-        $this->addFlash('success',$reponse);
+        $this->addFlash('success', $reponse);
         return new JsonResponse($reponse);
     }
 
@@ -289,6 +294,7 @@ class FamilleController extends Controller implements FamilleInterface
      * méthode ajax qui permet d'ajouter un enfant à une famille
      * Si l'enfant appartient déjà une famille, l'opération n'aura pas lieu
      * @param int $idEnfant - l'id de l'enfant
+     * @param $idFamille
      * @return Response
      */
     public function supprimerEnfantAction($idEnfant, $idFamille)
@@ -303,11 +309,11 @@ class FamilleController extends Controller implements FamilleInterface
             $this->em->persist($enfant);
             $this->em->flush();
             $reponse = "L'enfant ";
-            $reponse .= $enfant->getPrenom() . " " . $enfant->getNom();
+            $reponse .= $enfant->getPrenom() . ' ' . $enfant->getNom();
             $reponse .= ' a bien été supprimer de la famille ';
             $type = 'success';
         }
-        $this->addFlash($type,$reponse);
+        $this->addFlash($type, $reponse);
         return $this->forward(
             'BalancelleBundle:Famille:edit',
             [
@@ -328,7 +334,7 @@ class FamilleController extends Controller implements FamilleInterface
         $parent['parent1'] = null;
         $parent['parent2'] = null;
 
-        if($famille) {
+        if ($famille) {
             if ($famille->getParent1() !== null) {
                 $parent['parent1'] = $this->em->getRepository(
                     'BalancelleBundle:User'
@@ -348,7 +354,7 @@ class FamilleController extends Controller implements FamilleInterface
     /**
      * Méthode d'autocomplétion pour les familles
      * @param Request $request - la requete
-     * @return JsonResponse
+     * @return JsonResponse | null
      */
     public function autocompleteAction(Request $request)
     {
@@ -359,12 +365,12 @@ class FamilleController extends Controller implements FamilleInterface
                 ->autocomplete($request->get('recherche'));
             $tabResponse = [];
             foreach ($familles as $famille) {
-                $tab["label"] = ucfirst($famille->getNom());
-                $tab["value"] = $famille->getId();
+                $tab['label'] = ucfirst($famille->getNom());
+                $tab['value'] = $famille->getId();
                 $tabResponse[] = $tab;
             }
             return new JsonResponse($tabResponse);
         }
-
+        return null;
     }
 }

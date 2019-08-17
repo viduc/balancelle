@@ -8,13 +8,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use BalancelleBundle\Entity\Permanence;
 
 class PermanenceType extends AbstractType
 {
     protected $desactiver = true;
 
-    public function __construct(AuthorizationCheckerInterface $auth) {
-        if($auth->isGranted('ROLE_ADMIN')) {
+    /**
+     * PermanenceType constructor.
+     * @param AuthorizationCheckerInterface $auth
+     */
+    public function __construct(AuthorizationCheckerInterface $auth)
+    {
+        if ($auth->isGranted('ROLE_ADMIN')) {
             $this->desactiver = false;
         }
     }
@@ -26,22 +32,30 @@ class PermanenceType extends AbstractType
     {
         $builder
             ->add('titre', TextType::class, ['disabled' => $this->desactiver])
-            ->add('debut', DateType::class,
+            ->add(
+                'debut',
+                DateType::class,
                 [
                     'widget' => 'single_text',
                     'html5' => false,
                     'format' => 'dd/MM/yyyy HH-mm-ss',
-                    'disabled' => $this->desactiver
-                ])
-            ->add('fin', DateType::class,
+                    'disabled' => true
+                ]
+            )
+            ->add(
+                'fin',
+                DateType::class,
                 [
                     'widget' => 'single_text',
                     'html5' => false,
                     'format' => 'dd/MM/yyyy HH-mm-ss',
-                    'disabled' => $this->desactiver
-                ])
-            ->add('commentaire', TextType::class,
-                  ['disabled' => $this->desactiver]
+                    'disabled' => true
+                ]
+            )
+            ->add(
+                'commentaire',
+                TextType::class,
+                ['disabled' => $this->desactiver]
             );
     }/**
      * {@inheritdoc}
@@ -49,7 +63,7 @@ class PermanenceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'BalancelleBundle\Entity\Permanence'
+            'data_class' => Permanence::class
         ));
     }
 

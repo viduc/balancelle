@@ -2,6 +2,8 @@
 
 namespace BalancelleBundle\Entity;
 
+use DateTime;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -52,14 +54,14 @@ class Famille
     private $nom;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="dateCreation", type="datetime")
      */
     private $dateCreation;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="dateModification", type="datetime")
      */
@@ -117,7 +119,7 @@ class Famille
     /**
      * Set dateCreation
      *
-     * @param \DateTime $dateCreation
+     * @param DateTime $dateCreation
      *
      * @return Famille
      */
@@ -131,7 +133,7 @@ class Famille
     /**
      * Get dateCreation
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDateCreation()
     {
@@ -141,7 +143,7 @@ class Famille
     /**
      * Set dateModification
      *
-     * @param \DateTime $dateModification
+     * @param DateTime $dateModification
      *
      * @return Famille
      */
@@ -155,7 +157,7 @@ class Famille
     /**
      * Get dateModification
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDateModification()
     {
@@ -189,11 +191,11 @@ class Famille
     /**
      * Set parent1
      *
-     * @param \BalancelleBundle\Entity\User $parent1
+     * @param User $parent1
      *
      * @return Famille
      */
-    public function setParent1(\BalancelleBundle\Entity\User $parent1 = null)
+    public function setParent1(User $parent1 = null)
     {
         $this->parent1 = $parent1;
 
@@ -203,7 +205,7 @@ class Famille
     /**
      * Get parent1
      *
-     * @return \BalancelleBundle\Entity\User
+     * @return User
      */
     public function getParent1()
     {
@@ -213,11 +215,11 @@ class Famille
     /**
      * Set parent2
      *
-     * @param \BalancelleBundle\Entity\User $parent2
+     * @param User $parent2
      *
      * @return Famille
      */
-    public function setParent2(\BalancelleBundle\Entity\User $parent2 = null)
+    public function setParent2(User $parent2 = null)
     {
         $this->parent2 = $parent2;
 
@@ -227,7 +229,7 @@ class Famille
     /**
      * Get parent2
      *
-     * @return \BalancelleBundle\Entity\User
+     * @return User
      */
     public function getParent2()
     {
@@ -237,11 +239,11 @@ class Famille
     /**
      * Add enfant
      *
-     * @param \BalancelleBundle\Entity\Enfant $enfant
+     * @param Enfant $enfant
      *
      * @return Famille
      */
-    public function addEnfant(\BalancelleBundle\Entity\Enfant $enfant)
+    public function addEnfant(Enfant $enfant)
     {
         $this->enfants[] = $enfant;
 
@@ -251,9 +253,9 @@ class Famille
     /**
      * Remove enfant
      *
-     * @param \BalancelleBundle\Entity\Enfant $enfant
+     * @param Enfant $enfant
      */
-    public function removeEnfant(\BalancelleBundle\Entity\Enfant $enfant)
+    public function removeEnfant(Enfant $enfant)
     {
         $this->enfants->removeElement($enfant);
     }
@@ -261,7 +263,7 @@ class Famille
     /**
      * Get enfants
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getEnfants()
     {

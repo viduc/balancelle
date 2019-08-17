@@ -6,10 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use BalancelleBundle\Entity\User;
-use Doctrine\ORM\EntityRepository;
-use BalancelleBundle\Repository\UserRepository;
+use BalancelleBundle\Entity\Famille;
 
 class FamilleType extends AbstractType
 {
@@ -66,7 +63,7 @@ class FamilleType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'BalancelleBundle\Entity\Famille'
+            'data_class' => Famille::class
         ));
     }
 

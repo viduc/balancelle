@@ -103,7 +103,10 @@
                                                         {% else %}
                                                             <td><span class="status-p bg-primary">a faire</span></td>
                                                         {% endif %}
-                                                        <td><i class="ti-trash"></i></td>
+                                                        <td>
+                                                            <a href="{{ path('permanence_inscription', { 'id': permanence.id }) }}">
+                                                                <i class="ti-eye"></i></a>
+                                                        </td>
                                                     </tr>
                                                     {% endfor %}
                                                     </tbody>

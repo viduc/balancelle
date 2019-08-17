@@ -3,10 +3,16 @@
 namespace BalancelleBundle\Controller;
 
 use BalancelleBundle\Entity\Permanence;
+use BalancelleBundle\Entity\Semaine;
 use BalancelleBundle\Entity\Structure;
+use BalancelleBundle\Form\PermanenceCreerType;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use BalancelleBundle\Form\PermanenceType;
 
 /**
  * Permanence controller.
@@ -17,7 +23,8 @@ class PermanenceController extends Controller implements FamilleInterface
     /** ------------------------------ FAMILLE ----------------------------- **/
     /**
      * Accès au planning des permanences
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param $structure
+     * @return Response
      */
     public function indexAction($structure)
     {
@@ -34,9 +41,10 @@ class PermanenceController extends Controller implements FamilleInterface
      * Enregistre l'inscription d'une famille à une permanence
      * @param Request $request
      * @param $id - l'id de la permanence
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
+     * @throws \Exception
      */
-    public function inscriptionAction(Request $request, $id )
+    public function inscriptionAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
         $famille = $em
@@ -47,12 +55,12 @@ class PermanenceController extends Controller implements FamilleInterface
             ->find($id);
 
         $editForm = $this->createForm(
-            'BalancelleBundle\Form\PermanenceType',
+            PermanenceType::class,
             $permanence
         );
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            if($famille !== null) {
+            if ($famille !== null) {
                 $permanence->setFamille($famille);
             }
             $this->getDoctrine()->getManager()->flush();
@@ -62,6 +70,9 @@ class PermanenceController extends Controller implements FamilleInterface
             );
         }
 
+        if (!$famille && $permanence->getFamille()) {
+            $famille = $permanence->getFamille();
+        }
         $listeFamilles = $em
             ->getRepository('BalancelleBundle:Famille')
             ->findBy(['active' => 1]);
@@ -72,9 +83,31 @@ class PermanenceController extends Controller implements FamilleInterface
                 'permanence' => $permanence,
                 'inscription_form' => $editForm->createView(),
                 'famille' => $famille,
-                'listeFamilles' => $listeFamilles
+                'listeFamilles' => $listeFamilles,
+                'inscriptionPossible' => $this->inscriptionPossible($permanence)
             )
         );
+    }
+
+    /**
+     * Vérifie si l'inscription à une permanence est possible
+     * @param Permanence $permanence
+     * @return bool
+     * @throws \Exception
+     */
+    private function inscriptionPossible($permanence)
+    {
+        return ($permanence->getFamille() === null)
+            && (
+                $this->container->get(
+                    'security.authorization_checker'
+                )->isGranted('ROLE_ADMIN') ||
+                (
+                    new DateTime() < new DateTime(
+                        $permanence->getDebut()->format('Y-m-d')
+                    )
+                )
+            );
     }
 
     /** ------------------------------- ADMIN ------------------------------ **/
@@ -103,13 +136,13 @@ class PermanenceController extends Controller implements FamilleInterface
                 'toutesLesPermanencesArealiser' =>
                     $repository->recupererToutesLesPermanences(
                         'JEE',
-                        date("Y-m-d H:i:s"),
+                        date('Y-m-d H:i:s'),
                         null
                     ),
                 'toutesLesPermanencesArealiserLibre' =>
                     $repository->recupererToutesLesPermanencesLibre(
                         'JEE',
-                        date("Y-m-d H:i:s"),
+                        date('Y-m-d H:i:s'),
                         null
                     )
             )
@@ -119,7 +152,7 @@ class PermanenceController extends Controller implements FamilleInterface
     /**
      * Index de l'admin
      * @param Structure $structure - la structure visionnée
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function indexAdminAction($structure)
     {
@@ -138,9 +171,9 @@ class PermanenceController extends Controller implements FamilleInterface
      */
     public function ajouterFamilleAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
         $reponse = "La famille n'a pas été incrite à la permanence";
         $type = 'error';
-        $em = $this->getDoctrine()->getManager();
         $famille = $em
             ->getRepository('BalancelleBundle:Famille')
             ->find($request->get('idFamille'));
@@ -154,135 +187,142 @@ class PermanenceController extends Controller implements FamilleInterface
             $type = 'success';
         }
 
-        $this->addFlash($type,$reponse);
+        $this->addFlash($type, $reponse);
         return new JsonResponse($reponse);
     }
-    /**
-     * Récupère les dates d'une semaine (du lundi au samedi) en fonction du
-     * numéro de semaine et de l'année.
-     * @param int $numSemaine - le numéro de la semaine
-     * @param int $annee - l'année
-     * @param string $format - le formatage de retour pour la date
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    /*public function recupererLesJoursDeLaSemaine(
-        int $numSemaine,
-        int$annee,
-        $format="d/m/Y"
-    ) {
-        $tabRetour = null;
-        $firstDayInYear=date("N",mktime(0,0,0,1,1,$annee));
-        $shift=(8-$firstDayInYear)*86400;
-        if ($firstDayInYear<5){
-            $shift=-($firstDayInYear-1)*86400;
-        }
-        $weekInSeconds=0;
-        if ($numSemaine>1) {
-            $weekInSeconds=($numSemaine-1)*604800;
-        }
-        for($i = 1; $i<6; $i++) {
-            $timestamp=mktime(0,0,0,1,$i,$annee)+$weekInSeconds+$shift;
-            $tabRetour[] = date($format,$timestamp);
-        }
-
-        return $tabRetour;
-    }
 
     /**
-     * Creates a new permanence entity.
-     *
+     * Permet de désinscrire une famille d'une permanence
+     * Méthode ajax
+     * @param Request $request
+     * @return JsonResponse
      */
-    /*public function newAction(Request $request)
+    public function desinscrireFamilleAction(Request $request)
     {
-        $permanence = new Permanence();
-        $form = $this->createForm('BalancelleBundle\Form\PermanenceType', $permanence);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($permanence);
-            $em->flush();
-
-            return $this->redirectToRoute('permanence_show', array('id' => $permanence->getId()));
-        }
-
-        return $this->render('permanence/new.html.twig', array(
-            'permanence' => $permanence,
-            'form' => $form->createView(),
-        ));
-    }
-
-    /**
-     * Displays a form to edit an existing permanence entity.
-     *
-     */
-    /*public function editAction(Request $request, $id )/* Permanence $permanence)*/
-    /*{
-        $utilisateur = $this->getUser()->getPrenom() . " ";
-        $utilisateur .= $this->getUser()->getNom();
-
         $em = $this->getDoctrine()->getManager();
-
-        $famille = $em
-            ->getRepository('BalancelleBundle:Famille')
-            ->getFamilleByIdParent($this->getUser()->getId());
-
-
         $permanence = $em
             ->getRepository('BalancelleBundle:Permanence')
-            ->find($id);
+            ->find($request->get('idPermanence'));
+        $permanence->setFamille(null);
+        $em->flush();
+        $reponse = 'La famille a bien été désinscrite de la permanence';
+        $type = 'success';
+        $this->addFlash($type, $reponse);
+        return new JsonResponse('ok');
+    }
 
-        $editForm = $this->createForm('BalancelleBundle\Form\PermanenceType', $permanence);
+    /**
+     * Méthode pour supprimer une permanence
+     * Méthode ajax
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function supprimerPermanenceAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $permanence = $em
+            ->getRepository('BalancelleBundle:Permanence')
+            ->find($request->get('idPermanence'));
+        $em->remove($permanence);
+        $em->flush();
+        $reponse = 'La permanence a bien été supprimée';
+        $type = 'success';
+        $this->addFlash($type, $reponse);
+        $url = $this->generateUrl(
+            'admin_permanence_structure',
+            array('structure' => $this->get('session')->get('structure'))
+        );
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
+        return new JsonResponse($url);
+    }
 
+    /**
+     * Méthode pour créer une permanence
+     * Méthode ajax
+     * @param Request $request
+     * @return Response
+     * @throws \Exception
+     */
+    public function creerPermanenceAction(
+        Request $request
+    ) {
+        $em = $this->getDoctrine()->getManager();
+
+        $structure = $em->getRepository(Structure::class)
+            ->findOneBy(
+                ['nomCourt' => $this->get('session')->get('structure')]
+            );
+
+        if ($request->get('semaineId')!== null &&
+            $request->get('date')!== null) {
+            $permanence = new Permanence();
+            $permanence->setActive(true);
+            $permanence->setTitre('Nouvelle permanence');
+            $permanence->setCommentaire("Création d'une nouvelle permanence");
+            $permanence->setDebut(
+                new DateTime(
+                    $request->get('date')
+                ));
+            $permanence->setFin(
+                new DateTime(
+                    $request->get('date')
+                ));
+            $permanence->setSemaine(
+                $em->getRepository(Semaine::class)
+                   ->find($request->get('semaineId'))
+            );
+            $permanence->setCouleur('#567c3f');
+            $createForm = $this->createForm(
+                PermanenceCreerType::class,
+                $permanence
+            );
+        }
+
+        $createForm->handleRequest($request);
+        if ($createForm->isSubmitted() && $createForm->isValid()) {
+            $date = explode('-', $request->get('date'));
+            $dtoDebut = new DateTime($request->get('date'));
+            $dtoFin = new DateTime($request->get('date'));
+            $heureDebut = explode(
+                '-',
+                $structure->getHeureDebutPermanenceMatin()
+            );
+            $heureFin = explode(
+                '-',
+                $structure->getHeureFinPermanenceMatin()
+            );
+            if ($request->get('demiejournee') === "amPermanence") {
+                $heureDebut = explode(
+                    '-',
+                    $structure->getHeureDebutPermanenceAM()
+                );
+                $heureFin = explode('-', $structure->getHeureFinPermanenceAM());
+            }
+            $permanence->setDebut(
+                $dtoDebut->setTime($heureDebut[0], $heureDebut[1])
+            );
+            $permanence->setFin(
+                $dtoFin->setTime($heureFin[0], $heureFin[1])
+            );
+
+            $em->persist($permanence);
             $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('permanence_edit', array('id' => $permanence->getId()));
+            $succes = 'La permanence  ';
+            $succes .= ' a bien été enregistré';
+            $this->addFlash('success', $succes);
+            return $this->redirectToRoute(
+                'permanence_inscription',
+                array('id' => $permanence->getId())
+            );
         }
 
-
-        return $this->render('@Balancelle/Permanence/edit.html.twig', array(
-            'permanence' => $permanence,
-            'edit_form' => $editForm->createView(),
-            'utilisateur' => $utilisateur,
-            'famille' => $famille
-        ));
+        return $this->render(
+            '@Balancelle/Permanence/Admin/creer.html.twig',
+            array(
+                'permanence' => $permanence,
+                'create_form' => $createForm->createView(),
+                'structure' => $structure
+            )
+        );
     }
-
-    /**
-     * Deletes a permanence entity.
-     *
-     */
-    /*public function deleteAction(Request $request, Permanence $permanence)
-    {
-        $form = $this->createDeleteForm($permanence);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($permanence);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('permanence_index');
-    }
-
-    /**
-     * Creates a form to delete a permanence entity.
-     *
-     * @param Permanence $permanence The permanence entity
-     *
-     * @return \Symfony\Component\Form\FormInterface
-     */
-    /*private function createDeleteForm(Permanence $permanence)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('permanence_delete', array('id' => $permanence->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
-    }
-*/
-
 }

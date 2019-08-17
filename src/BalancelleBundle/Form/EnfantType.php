@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use BalancelleBundle\Entity\Enfant;
 
 class EnfantType extends AbstractType
 {
@@ -18,7 +19,7 @@ class EnfantType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'BalancelleBundle\Entity\Enfant'
+            'data_class' => Enfant::class
         ));
     }
 
@@ -46,14 +47,14 @@ class EnfantType extends AbstractType
                     'attr' => ['class' => 'js-datepicker'],
                     'html5' => false,
                     'format' => 'dd/MM/yyyy'
-                ])
+                ]
+            )
             ->add(
                 'commentaire',
                 TextareaType::class,
-                [
-                    'attr' => array('class' => 'tinymce', 'cols' => 80)
-                ])
-            ->add('active', CheckboxType::Class,['required' => false])
+                ['attr' => array('class' => 'tinymce', 'cols' => 80)]
+            )
+            ->add('active', CheckboxType::class, ['required' => false])
         ;
     }
 }

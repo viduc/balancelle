@@ -5,6 +5,7 @@ namespace BalancelleBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use BalancelleBundle\Entity\Structure;
 
 class StructureType extends AbstractType
 {
@@ -17,7 +18,11 @@ class StructureType extends AbstractType
             ->add('nom')
             ->add('nomCourt')
             ->add('commentaire')
-            ->add('active');
+            ->add('active')
+            ->add('heureDebutPermanenceMatin')
+            ->add('heureFinPermanenceMatin')
+            ->add('heureDebutPermanenceAM')
+            ->add('heureFinPermanenceAM');
     }/**
      * {@inheritdoc}
      */
@@ -25,7 +30,7 @@ class StructureType extends AbstractType
     {
         $resolver->setDefaults(array(
             'validation_groups' => array('Enregistrement'),
-            'data_class' => 'BalancelleBundle\Entity\Structure',
+            'data_class' => Structure::class,
             'cascade_validation' => true,
         ));
     }

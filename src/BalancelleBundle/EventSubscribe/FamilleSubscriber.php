@@ -13,7 +13,10 @@ use BalancelleBundle\Entity\Calendrier;
 use BalancelleBundle\Entity\Famille;
 use BalancelleBundle\Entity\Structure;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -22,7 +25,7 @@ use Symfony\Component\Security\Core\Security;
 class FamilleSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var object|\Symfony\Component\HttpFoundation\Session\Session
+     * @var object|Session
      */
     private $session;
 
@@ -54,8 +57,7 @@ class FamilleSubscriber implements EventSubscriberInterface
 
     /**
      * @param FilterControllerEvent $event
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function onKernelController(FilterControllerEvent $event)
     {
@@ -111,8 +113,7 @@ class FamilleSubscriber implements EventSubscriberInterface
     /**
      * Récupère la famille associée à l'utilisateur connecté
      * @return mixed
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     private function getFamille()
     {
@@ -135,18 +136,19 @@ class FamilleSubscriber implements EventSubscriberInterface
     private function menuPermanence($famille)
     {
         $menuPerm = [];
-        if($famille !== null) {
-            foreach ($famille->getEnfants() as $enfant ){
-                if(!in_array(
-                    $enfant->getStructure()->getNomCourt(),
-                    $menuPerm,
-                    true
-                )){
-                    if($this->verifieSiStructureAunCalendrier(
+        if ($famille !== null) {
+            foreach ($famille->getEnfants() as $enfant) {
+                if (
+                    $this->verifieSiStructureAunCalendrier(
                         $enfant->getStructure()
-                    )) {
-                        $menuPerm[] = $enfant->getStructure()->getNomCourt();
-                    }
+                    ) &&
+                    !in_array(
+                        $enfant->getStructure()->getNomCourt(),
+                        $menuPerm,
+                        true
+                    )
+                ) {
+                    $menuPerm[] = $enfant->getStructure()->getNomCourt();
                 }
             }
         } else {
@@ -154,7 +156,7 @@ class FamilleSubscriber implements EventSubscriberInterface
                 Structure::class
             )->findBy(['active' => 1]);
             foreach ($listeStructures as $structure) {
-                if($this->verifieSiStructureAunCalendrier($structure)) {
+                if ($this->verifieSiStructureAunCalendrier($structure)) {
                     $menuPerm[] = $structure->getNomCourt();
                 }
             }

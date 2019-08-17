@@ -4,8 +4,12 @@ namespace BalancelleBundle\Controller;
 
 use BalancelleBundle\Entity\Enfant;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use BalancelleBundle\Form\EnfantType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Enfant controller.
@@ -31,12 +35,13 @@ class EnfantController extends Controller
 
     /**
      * Creates a new enfant entity.
-     *
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
     public function newAction(Request $request)
     {
         $enfant = new Enfant();
-        $form = $this->createForm('BalancelleBundle\Form\EnfantType', $enfant);
+        $form = $this->createForm(EnfantType::class, $enfant);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -58,13 +63,15 @@ class EnfantController extends Controller
 
     /**
      * Displays a form to edit an existing enfant entity.
-     *
+     * @param Request $request
+     * @param Enfant $enfant
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, Enfant $enfant)
     {
         $deleteForm = $this->createDeleteForm($enfant);
         $editForm = $this->createForm(
-            'BalancelleBundle\Form\EnfantType',
+            EnfantType::class,
             $enfant
         );
         $editForm->handleRequest($request);
@@ -87,7 +94,9 @@ class EnfantController extends Controller
 
     /**
      * Deletes a enfant entity.
-     *
+     * @param Request $request
+     * @param Enfant $enfant
+     * @return RedirectResponse
      */
     public function deleteAction(Request $request, Enfant $enfant)
     {
@@ -108,7 +117,7 @@ class EnfantController extends Controller
      *
      * @param Enfant $enfant The enfant entity
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     private function createDeleteForm(Enfant $enfant)
     {
@@ -125,7 +134,7 @@ class EnfantController extends Controller
     /**
      * Méthode d'autocomplétion pour les enfants
      * @param Request $request - la requete
-     * @return JsonResponse
+     * @return JsonResponse|null
      */
     public function autocompleteAction(Request $request)
     {
@@ -147,6 +156,6 @@ class EnfantController extends Controller
             }
             return new JsonResponse($tabResponse);
         }
-
+        return null;
     }
 }

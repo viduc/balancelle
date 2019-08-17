@@ -2,6 +2,7 @@
 
 namespace BalancelleBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -46,7 +47,7 @@ class Enfant
     private $nom;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="naissance", type="date")
      */
@@ -127,7 +128,7 @@ class Enfant
     /**
      * Set naissance
      *
-     * @param \DateTime $naissance
+     * @param DateTime $naissance
      *
      * @return Enfant
      */
@@ -141,7 +142,7 @@ class Enfant
     /**
      * Get naissance
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getNaissance()
     {
@@ -199,11 +200,11 @@ class Enfant
     /**
      * Set famille
      *
-     * @param \BalancelleBundle\Entity\Famille $famille
+     * @param Famille $famille
      *
      * @return Enfant
      */
-    public function setFamille(\BalancelleBundle\Entity\Famille $famille = null)
+    public function setFamille(Famille $famille = null)
     {
         $this->famille = $famille;
 
@@ -213,7 +214,7 @@ class Enfant
     /**
      * Get famille
      *
-     * @return \BalancelleBundle\Entity\Famille
+     * @return Famille
      */
     public function getFamille()
     {
@@ -223,11 +224,11 @@ class Enfant
     /**
      * Set structure
      *
-     * @param \BalancelleBundle\Entity\Structure $structure
+     * @param Structure $structure
      *
      * @return Enfant
      */
-    public function setStructure(\BalancelleBundle\Entity\Structure $structure = null)
+    public function setStructure(Structure $structure = null)
     {
         $this->structure = $structure;
 
@@ -237,7 +238,7 @@ class Enfant
     /**
      * Get structure
      *
-     * @return \BalancelleBundle\Entity\Structure
+     * @return Structure
      */
     public function getStructure()
     {
