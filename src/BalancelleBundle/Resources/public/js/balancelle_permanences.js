@@ -19,73 +19,76 @@ $(document).ready(function(){
 /**
  * Chargement des évènements du calendrier
  */
-document.addEventListener('DOMContentLoaded', () => {
-    var calendarEl = document.getElementById('calendar-holder');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        locale: 'fr',
-        defaultView: 'dayGridMonth',
-        editable: true,
-        lazyFetching: true,
-        navLinks: true,
-        selectable: true,
-        eventDurationEditable: false,
-        displayEventTime: false,
-        eventSources: [
-            {
-                url: load,
-                type: 'POST',
-                data: {
-                    filters: JSON.stringify({})
-                },
-                error: function () {
-                    alert('There was an error while fetching FullCalendar!');
+if (typeof load !== "undefined") {
+    document.addEventListener('DOMContentLoaded', () => {
+        var calendarEl = document.getElementById('calendar-holder');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            locale: 'fr',
+            defaultView: 'dayGridMonth',
+            editable: true,
+            lazyFetching: true,
+            navLinks: true,
+            selectable: true,
+            eventDurationEditable: false,
+            displayEventTime: false,
+            eventSources: [
+                {
+                    url: load,
+                    type: 'POST',
+                    data: {
+                        filters: JSON.stringify({})
+                    },
+                    error: function () {
+                        alert('There was an error while fetching FullCalendar!');
+                    }
                 }
+            ],
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay',
+            },
+            plugins: ['interaction', 'dayGrid', 'timeGrid'], // https://fullcalendar.io/docs/plugin-index
+            timeZone: 'UTC',
+            columnHeaderFormat: {
+                weekday: 'long'
+            },
+            buttonText: {
+                today: "aujourd'hui",
+                month: 'mois',
+                week: 'semaine',
+                day: 'jour',
+                list: 'list'
             }
-        ],
-        header: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay',
-        },
-        plugins: [ 'interaction', 'dayGrid', 'timeGrid' ], // https://fullcalendar.io/docs/plugin-index
-        timeZone: 'UTC',
-        columnHeaderFormat: {
-            weekday: 'long'
-        },
-        buttonText: {
-            today:    "aujourd'hui",
-            month:    'mois',
-            week:     'semaine',
-            day:      'jour',
-            list:     'list'
-        }
+        });
+        calendar.render();
     });
-    calendar.render();
-});
-
+}
 /**
  * gère la progess barre des permaence famille
  */
 function progessBar()
 {
-    var color = '#fff6f8';
-    if (pourcentagePermanenceFaite <= 5) {
-        color = '#f63a0f';
-    } else if (pourcentagePermanenceFaite <= 25) {
-        color = '#f27011';
-    } else if (pourcentagePermanenceFaite <= 50) {
-        color ='#f2b01e';
-    } else if (pourcentagePermanenceFaite <= 75) {
-        color = '#f2d31b';
-    } else if (pourcentagePermanenceFaite < 100) {
-        color = '#b1e02c';
-    } else if (pourcentagePermanenceFaite <= 100) {
-        color = '#46e035';
+    if (typeof pourcentagePermanenceFaite !== "undefined") {
+        var color = '#fff6f8';
+        if (pourcentagePermanenceFaite <= 5) {
+            color = '#f63a0f';
+        } else if (pourcentagePermanenceFaite <= 25) {
+            color = '#f27011';
+        } else if (pourcentagePermanenceFaite <= 50) {
+            color = '#f2b01e';
+        } else if (pourcentagePermanenceFaite <= 75) {
+            color = '#f2d31b';
+        } else if (pourcentagePermanenceFaite < 100) {
+            color = '#b1e02c';
+        } else if (pourcentagePermanenceFaite <= 100) {
+            color = '#46e035';
+        }
+        $('#progessBarPermanence').css({
+            'width': pourcentagePermanenceFaite + '%',
+            'background-color': color
+        })
     }
-    $('#progessBarPermanence').css({
-        'width': pourcentagePermanenceFaite+'%',
-        'background-color': color
-    })
 }
 
 /**
@@ -230,13 +233,15 @@ $('input[type=radio][name=demiejournee]').change(function() {
 function changeDatePermanence(demieJournee)
 {
     let date = $('#balancellebundle_permanence_debut').val();
-    let splitDate = date.split((' '));
-    if (demieJournee == 'matinPermanence') {
-        $('#balancellebundle_permanence_debut').val(splitDate[0] + ' ' + debutMatin);
-        $('#balancellebundle_permanence_fin').val(splitDate[0] + ' ' + finMatin);
-    } else {
-        $('#balancellebundle_permanence_debut').val(splitDate[0] + ' ' + debutAM);
-        $('#balancellebundle_permanence_fin').val(splitDate[0] + ' ' + finAM);
+    if (typeof date !== "undefined") {
+        let splitDate = date.split((' '));
+        if (demieJournee == 'matinPermanence') {
+            $('#balancellebundle_permanence_debut').val(splitDate[0] + ' ' + debutMatin);
+            $('#balancellebundle_permanence_fin').val(splitDate[0] + ' ' + finMatin);
+        } else {
+            $('#balancellebundle_permanence_debut').val(splitDate[0] + ' ' + debutAM);
+            $('#balancellebundle_permanence_fin').val(splitDate[0] + ' ' + finAM);
+        }
     }
 }
 
