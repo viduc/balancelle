@@ -1,0 +1,72 @@
+{% extends '@Balancelle/Default/layout.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+    <h2>Créer une permanence</h2>
+    <div class="main-content-inner">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-ml-12">
+            <div class="card" style="background-color: #bbbbbb">
+                <div class="card-body" >
+                    {{ form_start(create_form) }}
+                    <div class="form-row align-items-center" >
+                        <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-12 my-1">
+                            <label for="nom">Permanence:</label>
+                            {{ form_widget(
+                                create_form.titre,
+                                {'attr': {'class': 'form-control','placeholder': "permanence"}}
+                            ) }}
+                        </div>
+                        <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-6 my-1">
+                            <label for="nom">Date de début</label>
+                            {{ form_widget(
+                                create_form.debut,
+                                {'attr': {'placeholder': "date de début"}}
+                            ) }}
+                        </div>
+                        <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-6 my-1">
+                            <label for="nom">Date de fin</label>
+                            {{ form_widget(
+                                create_form.fin,
+                                {'attr': {'placeholder': "date de fin"}}
+                            ) }}
+                        </div>
+                        <div class="form-group col-xl-2 col-lg-2 col-md- col-sm-6 my-1">
+                            <label for="couleur">Couleur:</label>
+                            {{ form_widget(
+                                create_form.couleur,
+                                {'attr': {'class': 'form-control','placeholder': "couleur"}}
+                            ) }}
+                        </div>
+                        <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-6 my-1 mt-5">
+                            <input type="radio" checked id="matinPermanence" name="demiejournee" value="matinPermanence">
+                            <label for="matin">matin</label>
+                            <input type="radio" id="amPermanence" name="demiejournee" value="amPermanence">
+                            <label for="amPermanence">après-midi</label>
+                        </div>
+                    </div>
+                    <div class="form-row align-items-center" >
+                        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 my-1">
+                            <label for="familleActive">Commentaire</label>
+                            {{ form_widget(
+                                create_form.commentaire,
+                                {'attr': {'class': 'form-control','placeholder': "Commentaire"}}) }}
+                        </div>
+                    </div>
+                    <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-4 mt-5">
+                        <button type="submit" class="btn btn-success pull-left" >
+                            <span class="glyphicon glyphicon-ok-sign"></span>
+                            Créer
+                        </button>
+                    </div>
+                    {{ form_end(create_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var debutMatin = "{{ structure.heureDebutPermanenceMatin }}";
+        var finMatin = "{{ structure.heureFinPermanenceMatin }}";
+        var debutAM = "{{ structure.heureDebutPermanenceAM }}";
+        var finAM = "{{ structure.heureFinPermanenceAM }}";
+    </script>
+{% endblock %}

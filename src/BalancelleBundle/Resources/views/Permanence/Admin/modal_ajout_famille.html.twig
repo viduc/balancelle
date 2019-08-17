@@ -1,0 +1,53 @@
+<div class="container">
+    <!-- Modal ajout famille-->
+    <div class="modal fade" id="modalAjoutFamille" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 style="color:darkred;"><span class="glyphicon glyphicon-search"></span> Rechercher</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                {% if listeFamilles|length >0 %}
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <input type="text" id="rechercherFamille">
+                        </div>
+                        <div class="col-md-6">
+                            <select id="famille-select">
+                                <option label=" "></option>
+                                {% for famille in listeFamilles %}
+                                    <option value={{ famille.id }}>{{ famille.nom }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" id="modalFamilleSelectionAffiche"  disabled>
+                            <input type="hidden" id="modalFamilleSelectionId">
+                        </div>
+                        <div class="col-md-2"></div>
+                    </div>
+                    <button type="button" id="btnAjouterFamilleModal" class="btn btn-default btn-success btn-block">
+                        <span class="glyphicon glyphicon-plus-sign"></span> Ajouter
+                    </button>
+                </div>
+                {% endif %}
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-remove"></span> Annuler
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var pathFamilleAUtocomplete = "{{ path('famille_autocomplete') }}";
+    var pathFamilleAjouter = "{{ path('admin_permanence_ajouterFamille') }}";
+    var idPermanence = {{ permanence.id }};
+</script>
