@@ -343,9 +343,8 @@ class FamilleController extends Controller implements FamilleInterface
                 )->findOneById($famille->getParent1()->getId())
                 ;
             }
-            $parent['parent2'] = null;
             if ($famille->getParent2() !== null) {
-                $parent[] = $this->em->getRepository(
+                $parent['parent2'] = $this->em->getRepository(
                     'BalancelleBundle:User'
                 )->findOneById($famille->getParent2()->getId());
             }
