@@ -144,11 +144,13 @@ class FamilleController extends Controller implements FamilleInterface
         }
 
         return $this->render('@Balancelle/famille/edit.html.twig', array(
-            'famille' => $famille,
+            'familleAdmin' => $famille,
             'form' => $form->createView(),
             'enfants' => null,
             'listeEnfants' => null,
-            'errors' => null
+            'errors' => null,
+            'structures' => $this->em->getRepository('BalancelleBundle:Structure')
+                 ->findBy(['active'=>1])
         ));
     }
 
