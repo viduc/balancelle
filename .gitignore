@@ -17,6 +17,7 @@
 !/app/config/routing.yml
 !/app/config/security.yml
 !/app/config/services.yml
+!/app/config/parameters.yml.dist
 !/app/AppKernel.php
 !/app/Resources/
 /app/Resources/*
