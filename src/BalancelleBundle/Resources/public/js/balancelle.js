@@ -110,3 +110,20 @@ function afficherBoutonValider(action)
     }
 
 }
+
+/**
+ * gestion du bouton de suppression d'une famille d'une permanence
+ */
+$("#btnRenvoyerMail").click(function(){
+
+    $.ajax({
+        url: pathREvoyerMailUser,
+        method: "post",
+        dataType : 'json',
+        data: {id: userId},
+        success: function (result) {
+            alert(result);
+        }
+    });
+
+});

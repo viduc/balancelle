@@ -27,3 +27,8 @@ user_verifier_mail:
     path:     /verifiermail
     defaults: { _controller: "BalancelleBundle:User:verifiermail" }
     methods:  [POST]
+
+user_renvoyer_mail:
+    path:     /renvoyer
+    defaults: { _controller: "BalancelleBundle:User:renvoyermail" }
+    methods:  [POST]

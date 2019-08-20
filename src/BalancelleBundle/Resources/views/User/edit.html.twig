@@ -98,11 +98,16 @@
                     {% endif %}
                     <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
                         {% if familleUtilisateur is defined and familleUtilisateur is not null %}
-                            <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
-                                <a href="{{ path('famille_edit', {'id': familleUtilisateur.id }) }}" class="btn btn-flat btn-primary mb-3">Voir la famille</a>
-                            </div>
+                            <a href="{{ path('famille_edit', {'id': familleUtilisateur.id }) }}" class="btn btn-flat btn-primary mb-3">Voir la famille</a>
                         {% endif %}
                     </div>
+                    {% if user.confirmationToken is not null %}
+                    <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
+                        <button type="button" id="btnRenvoyerMail" class="btn btn-default btn-warning btn-block">
+                            <span class="glyphicon glyphicon-plus-sign"></span> Renvoyer mdp
+                        </button>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -110,5 +115,6 @@
     <script type="text/javascript">
         var userId = "{{  user.id }}";
         var pathVerifierMailUser = "{{ path('user_verifier_mail') }}";
+        var pathREvoyerMailUser = "{{ path('user_renvoyer_mail') }}";
     </script>
 {% endblock %}

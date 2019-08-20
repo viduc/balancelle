@@ -315,4 +315,31 @@ class UserController extends Controller implements FamilleInterface
 
         return new JsonResponse('ok');
     }
+
+
+    public function renvoyermailAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em
+            ->getRepository('BalancelleBundle:User')
+            ->find($request->get('id'));
+        $message = Swift_Message::newInstance()
+            ->setSubject('Inscription')
+            ->setFrom('comptes@labalancelle.yo.fr')
+            ->setTo($user->getEmail())
+            ->setContentType('text/html')
+            ->setBody(
+                $this->renderView(
+                    '@Balancelle/User/enregistrement_email.html.twig',
+                    array(
+                        'token' => $user->getConfirmationToken(),
+                        'login' => $user->getUsername())//,
+                //'text/html'
+                )
+            );
+        $this->get('mailer')->send($message);
+        return new JsonResponse(
+            'Le mail pour la génération du mot de passe a bien été envoyé'
+        );
+    }
 }
