@@ -1,8 +1,34 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
-{{ form_start(form, { 'action': path('fos_user_resetting_reset', {'token': token}), 'attr': { 'class': 'fos_user_resetting_reset' } }) }}
+<div class="login-box ptb--100">
+    {{ form_start(form, { 'action': path('fos_user_resetting_reset', {'token': token}), 'attr': { 'class': 'fos_user_resetting_reset' } }) }}
     {{ form_widget(form) }}
-    <div>
-        <input type="submit" value="{{ 'resetting.reset.submit'|trans }}" />
-    </div>
+        <div id="wrappertop">
+            {% if error %}
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            {% endif %}
+        </div>
+        <div class="login-form-head">
+            <h4>Connexion</h4>
+            <p>Bonjour, bienvenu sur l'intranet de la crèche</p>
+            <p style="color: orange"><b>La Balancelle</b></p>
+            <p>Entrez votre login pour réinitialiser votre mot de passe</p>
+        </div>
+        <div class="login-form-body">
+            <div class="form-gp">
+                <label for="username">login</label>
+                {{ form_widget(form.username) }}
+                <i class="ti-user"></i>
+            </div>
+            <div class="submit-btn-area">
+                <button id="form_submit" type="submit">Envoyer <i class="ti-arrow-right"></i></button>
+            </div>
+            <div class="form-footer text-center mt-5">
+                <!--p class="text-muted">Don't have an account? <a href="register.html">Sign up</a></p-->
+
+            </div>
+        </div>
+    </form>
+</div>
+
 {{ form_end(form) }}

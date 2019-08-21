@@ -1,66 +1,35 @@
-<!DOCTYPE html>
-<html lang="fr">
-    {% block stylesheets %}
-    <link 
-        rel="stylesheet" 
-        href="{{ asset('bundles/balancelle/css/login.css') }}" 
-        type="text/css" 
-        media="screen" 
-    />
-    {% endblock %}
-{% block javascripts %}
-    <script 
-        type="text/javascript" 
-        src="{{ asset('bundles/balancelle/js/jquery-2.2.4.min.js') }}" >
-    </script>
-    <script
-        type="text/javascript" 
-        src="{{ asset('bundles/balancelle/js/rainbows.js') }}" >
-    </script>
-    <script>
-	$(document).ready(function(){
- 
-	$("#submit1").hover(
-	function() {
-	$(this).animate({"opacity": "0"}, "slow");
-	},
-	function() {
-	$(this).animate({"opacity": "1"}, "slow");
-	});
- 	});
-    </script>
-  <!-- CUSTOM SCRIPTS -->
-{% endblock %}
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Login - srtdash</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="assets/images/icon/favicon.ico">
+
+</head>
+
 <body>
-    <div>
-        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-            {{ 'layout.logged_in_as'|trans(
-                {'%username%': app.user.username},
-                'FOSUserBundle'
-            ) }} |
-            <a href="{{ path('fos_user_security_logout') }}">
-                {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
-            </a>
-        {# else #}
-            <!--a href="{{ path('fos_user_security_login') }}">
-                {{ 'layout.login'|trans({}, 'FOSUserBundle') }}
-            </a-->
-        {% endif %}
-    </div>
-
-    {% if app.request.hasPreviousSession %}
-        {% for type, messages in app.session.flashbag.all() %}
-            {% for message in messages %}
-                <div class="flash-{{ type }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endfor %}
-    {% endif %}
-
-    <div id="wrapper">
+{% include '@Balancelle/Default/strdash.css.html.twig' %}
+<!--[if lt IE 8]>
+<p class="browserupgrade">Vous utilisez un navigateur <strong>obsolète</strong>. <a href="http://browsehappy.com/">Mettez à jour</a> votre navigateur pour une meilleure expérience</p>
+<![endif]-->
+<!-- preloader area start -->
+<div id="preloader">
+    <div class="loader"></div>
+</div>
+<!-- preloader area end -->
+<!-- login area start -->
+<div class="login-area login-bg">
+    <div class="container">
         {% block fos_user_content %}
         {% endblock fos_user_content %}
+
     </div>
+</div>
+<!-- login area end -->
+{% include '@Balancelle/Default/strdash.js.html.twig' %}
 </body>
+
 </html>

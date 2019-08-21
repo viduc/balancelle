@@ -1,11 +1,24 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
-<form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
-    <div>
-        <label for="username">{{ 'resetting.request.username'|trans }}</label>
-        <input type="text" id="username" name="username" required="required" />
-    </div>
-    <div>
-        <input type="submit" value="{{ 'resetting.request.submit'|trans }}" />
-    </div>
-</form>
+<div class="login-box ptb--100">
+    <form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
+        <div class="login-form-head">
+            <h4>Connexion</h4>
+            <p>Bonjour, bienvenue sur l'intranet de la crèche</p>
+            <p style="color: orange"><b>La Balancelle</b></p>
+            <p>Entrez votre login pour réinitialiser votre mot de passe</p>
+        </div>
+        <div class="login-form-body">
+            <div class="form-gp">
+                <label for="username">login</label>
+                <input type="text" id="username" name="username" required="required" />
+                <i class="ti-user"></i>
+            </div>
+            <div class="submit-btn-area">
+                <button id="form_submit" type="submit">Envoyer <i class="ti-arrow-right"></i></button>
+            </div>
+            <div class="form-footer text-center mt-5"><!--p class="text-muted">Don't have an account? <a href="register.html">Sign up</a></p-->
+            </div>
+        </div>
+    </form>
+</div>
