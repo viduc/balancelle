@@ -2,11 +2,17 @@
 
 <div class="login-box ptb--100">
     <form action="{{ path("fos_user_security_check") }}" method="post">
-        <div id="wrappertop">
-            {% if error %}
+        {% if error %}
+        <div class="login-other"
+            style="margin: 10px 0px;
+                padding:12px;
+                color: #D8000C;
+                background-color: #FFD2D2;
+                vertical-align:middle;
+                horiz-align: center">
                 {{ error.messageKey|trans(error.messageData, 'security') }}
-            {% endif %}
         </div>
+        {% endif %}
         <div class="login-form-head">
             <h4>Connexion</h4>
             <p>Bonjour, bienvenue sur l'intranet de la crèche</p>
