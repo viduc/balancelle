@@ -1,21 +1,82 @@
 {% extends '@Balancelle/Default/layout.html.twig' %}
 
 {% block body %}
+    {% set action = app.request.attributes.get("_route") %}
     {{ parent() }}
-        <h1>Edition d'un utilisateur</h1>
-        <div class="row">
-            <div class="col-md-3">
-                <div class="card person-card">
-                    <img id="img_sex" class="person-img"
-                        src="https://visualpharm.com/assets/217/Life%20Cycle-595b40b75ba036ed117d9ef0.svg">
+    <div class="main-content-inner">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-ml-12 mt-5">
+            <div class="card" style="background-color: #bbbbbb">
+                <div class="card-body" >
+                    <h4 class="header-title">Information sur l'enfant</h4>
+                    {{ form_start(form) }}
+                    <div class="form-row align-items-center" >
+                        <!--div class="form-group col-xl-1 col-lg-1 col-md-2 col-sm-12 my-1">
+                            <label for="civilite">Sexe</label>
+                            <select id="input_sex" class="form-control">
+                                <option value="Mr.">Garçon</option>
+                                <option value="Mme.">Fille</option>
+                            </select>
+                        </div-->
+                        <div class="form-group col-xl-4 col-lg-4 col-md-5 col-sm-12 my-1">
+                            <label for="prenom">Prenom</label>
+                            {{ form_widget(form.prenom, {'attr': {'class': 'form-control',
+                                'placeholder': "prénom"}}) }}
+                        </div>
+                        <div class="form-group col-xl-4 col-lg-4 col-md-5 col-sm-12 my-1">
+                            <label for="nom">Nom</label>
+                            {{ form_widget(form.nom, {'attr': {'class': 'form-control',
+                                'placeholder': "nom"}}) }}
+                        </div>
+                        <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-12 my-1 mt-4">
+                            {{ form_widget(form.naissance, {'attr': {
+                                'placeholder': "date de naissance"}}) }}
+                        </div>
+                        <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-12 my-1">
+                            <label for="compteActif">Actif</label>
+                            {{ form_widget(form.active, {'attr': {'class': 'form-control',
+                                'placeholder': "actif"}}) }}<label></label>
+                        </div>
+                    </div>
+                    <div class="form-row align-items-center">
+                        <div class="form-group col-xl-8 col-lg-8 col-md-12 col-sm-12 my-1 mt-4">
+                            <label for="commentaire">Commentaire</label>
+                            {{ form_widget(form.commentaire, {'attr': {'class': 'form-control',
+                                'placeholder': "commentaire"}}) }}
+                        </div>
+                    </div>
+                </div>
+            </div></br>
+
+        </div>
+        <div class="card">
+            <div class="card-body" >
+                <div class="form-row align-items-center">
+                    {{ form_widget(form) }}
+                    {% if 'new' in action %}
+                        <div id="bouton_validation" class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
+                            <input type="submit" value="créer" class="btn btn-rounded btn-success mb-3"/>
+                        </div>
+                    {% endif %}
+                    {% if 'edit' in action %}
+                        <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
+                            <input type="submit" value="enregister" class="btn btn-rounded btn-success mb-3"/>
+                        </div>
+                    {% endif %}
+                    {{ form_end(form) }}
+                    {% if delete_form is defined %}
+                        <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
+                            {{ form_start(delete_form) }}
+                            <input type="submit" value="supprimer" class="btn btn-rounded btn-danger mb-3"/>
+                            {{ form_end(delete_form) }}
+                        </div>
+                    {% endif %}
+                    {% if enfant.famille.id is defined and enfant.famille.id is not null%}
+                        <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
+                            <a href="{{ path('famille_edit', {'id': enfant.famille.id }) }}" class="btn btn-flat btn-primary mb-3">Voir la famille</a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
-            <div class="col-md-8">    
-                {% include "@Balancelle/Enfant/form_enfant.html.twig" %}
-
-            </div>
-            <div class="col-md-1"></div>    
         </div>
     </div>
-</div>
 {% endblock %}

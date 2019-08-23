@@ -109,7 +109,7 @@
                                         <td>{{ enfant.naissance|date('d/m/Y') }}</td>
                                         <td>{{ enfant.structure }}</td>
                                         <td>
-                                            <a href="{{ path('famille_edit', { 'id': familleAdmin.id }) }}">Voir</a>
+                                            <a href="{{ path('enfant_edit', { 'id': enfant.id }) }}">Voir</a>
                                             <a href="{{ path('famille_supprimerEnfant', { 'idEnfant': enfant.id, 'idFamille': familleAdmin.id}) }}">Supprimer</a>
                                         </td>
                                     </tr>
