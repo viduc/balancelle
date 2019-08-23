@@ -30,6 +30,10 @@ class DefaultController extends Controller implements FamilleInterface
         } catch (InfluxDB\Exception $e) {//TODO gérer l'erreur ici
         }
 */
+        if ($this->get('session')->get('famille') &&
+            $this->get('session')->get('famille') !== null) {
+            return $this->redirectToRoute('famille_tableauDeBord');
+        }
         return $this->render('@Balancelle/Default/index.html.twig', array(
             'famille' => $this->get('session')->get('famille')
         ));
