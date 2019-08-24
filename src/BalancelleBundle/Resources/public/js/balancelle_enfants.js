@@ -81,7 +81,6 @@ $(document).ready(function(){
         $("#modalEnfantSelectionAffiche").val($( "select#enfant-select option:selected" ).text());
         $("#modalEnfantSelectionId").val($( "select#enfant-select").val());
     });
-
 });
 
 

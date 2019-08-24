@@ -274,13 +274,18 @@ class FamilleController extends Controller implements FamilleInterface
         $enfant->setPrenom($request->get('prenomEnfant'));
         $enfant->setNom($request->get('nomEnfant'));
         $enfant->setNaissance(
-            new DateTime($request->get('dateNaissanceEnfant')
-        ));
+            DateTime::createFromFormat(
+                'j/m/Y',
+                $request->get('dateNaissanceEnfant')
+            )
+        );
         $enfant->setFamille($famille);
         $enfant->setCommentaire("Enfant créer via l'interface famille");
         $enfant->setActive(true);
         $enfant->setStructure(
-            $this->em->getRepository('BalancelleBundle:Structure')->find($request->get('idStructure'))
+            $this->em->getRepository('BalancelleBundle:Structure')->find(
+                $request->get('idStructure')
+            )
         );
         $this->em->persist($enfant);
         $this->em->flush();
