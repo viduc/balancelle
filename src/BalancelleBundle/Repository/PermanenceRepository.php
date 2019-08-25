@@ -82,30 +82,6 @@ class PermanenceRepository extends EntityRepository
         $debut = null,
         $fin = null
     ) {
-        /*$qb = $this
-            ->createQueryBuilder('p')
-            ->from(Calendrier::class, 'c')
-            ->from(Semaine::class, 's')
-            ->from(Structure::class, 'st')
-            ->where('st.nomCourt = :structure')
-            ->andWhere('c.structure = st.id')
-            ->andWhere('s.calendrier = c.id')
-            ->andWhere('p.semaine = s.id')
-            ->andWhere('p.active = :active')
-            ->andWhere('p.famille is NULL')
-            ->setParameter('structure', $structure)
-            ->setParameter('active', 1);
-        if ($debut !== null) {
-            $qb->andWhere('p.debut > :debut')->setParameter('debut', $debut);
-        }
-        if ($fin !== null) {
-            $qb->andWhere('p.fin < :fin')->setParameter('fin', $fin);
-        }
-        return $qb->orderBy('p.debut', 'ASC')
-                  ->getQuery()
-                  ->execute();*/
-
-        // TODO vérifier si ça marche
         $permanences = $this->recupererToutesLesPermanences(
             $structure,
             $debut,
@@ -119,5 +95,29 @@ class PermanenceRepository extends EntityRepository
         }
 
         return $tabRetour;
+    }
+
+    /**
+     * Permet de récupérer toutes les permanences dont on doit rappeler
+     * l'inscription aux familles.
+     * @param $debut - la date de début de la permanence
+     * @param $fin - la date de fin ($debut + 1 jour)
+     * @return array
+     */
+    public function recupererToutesLesPermanencesPourRappel($debut, $fin) {
+        $queryBuilder = $this->createQueryBuilder('p');
+        $expr = $queryBuilder->expr();
+        $qb = $queryBuilder
+            ->where('p.active = :active')
+            ->andWhere('p.debut >= :debut')
+            ->andWhere('p.fin < :fin')
+            ->andWhere($expr->isNotNull('p.famille'))
+            ->setParameter('active', 1)
+            ->setParameter('debut', $debut)
+            ->setParameter('fin', $fin);
+
+        return $qb->orderBy('p.debut', 'ASC')
+                  ->getQuery()
+                  ->execute();
     }
 }

@@ -37,3 +37,10 @@ services:
     BalancelleBundle\:
         resource: '../../src/BalancelleBundle/*'
         exclude: '../../src/BalancelleBundle/{Entity,Repository,Tests}'
+
+    # controllers are imported separately to make sure they're public
+    # and have a tag that allows actions to type-hint services
+    BalancelleBundle\Controller\:
+        resource: '../../src/BalancelleBundle/Controller'
+        public: true
+        tags: ['controller.service_arguments']
