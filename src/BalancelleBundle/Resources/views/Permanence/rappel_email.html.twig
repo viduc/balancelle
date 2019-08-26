@@ -141,7 +141,7 @@
                                             <div style="cursor:auto;color:#55575d;font-family:Arial, sans-serif;font-size:13px;line-height:22px;text-align:left;">
                                                 <p style="font-size: 13px; margin: 10px 0;">Nous vous rappelons que vous êtes inscrit à une permanence le: {{ permanence.debut|date("d/m/Y") }} à {{ permanence.debut|date("H:i") }}</p>
                                                 <p style="font-size: 13px; margin: 10px 0;">Vérifiez les informations qui pourraient vous êtes transmises sur le site de l'association en cliquant sur ce
-                                                    <a target="_blank" rel="noFollow " href="{{ absolute_url(path("permanence_inscription", {'id': permanence.id})) }}">lien</a>
+                                                    <a target="_blank" rel="noFollow " href="{{ path("permanence_inscription", {'id': permanence.id}) }}">lien</a>
                                                 </p>
                                                 <p style="font-size: 13px; margin: 10px 0;">Nous vous remercions pour votre investissement et votre présence.</p>
                                             </div>
