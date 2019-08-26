@@ -65,7 +65,7 @@ class PermanenceRappelController extends Controller
             }
             $message = Swift_Message::newInstance()
                 ->setSubject($sujet)
-                ->setFrom('comptes@labalancelle.yo.fr')
+                ->setFrom('rappel_permanence@labalancelle.yo.fr')
                 ->setTo($to)
                 ->setContentType('text/html')
                 ->setBody(
