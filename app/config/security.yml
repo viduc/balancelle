@@ -28,6 +28,7 @@ security:
         - { path: ^/balancelle/permanence, role: ROLE_USER }
         - { path: ^/balancelle/permanence/admin, role: ROLE_ADMIN }
         - { path: ^/balancelle/user/enregistrement, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/balancelle/contact, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/balancelle/, role: ROLE_USER }
         #- { path: ^/user/admin, role: ROLE_ADMIN }
         #- { path: ^/user/user, role: ROLE_USER }

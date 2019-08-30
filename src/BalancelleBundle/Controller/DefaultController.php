@@ -2,7 +2,11 @@
 
 namespace BalancelleBundle\Controller;
 
+use BalancelleBundle\Entity\Contact;
+use Swift_Message;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use BalancelleBundle\Form\ContactType;
 //use InfluxDB;
 
 class DefaultController extends Controller implements FamilleInterface
@@ -37,6 +41,35 @@ class DefaultController extends Controller implements FamilleInterface
         return $this->render('@Balancelle/Default/index.html.twig', array(
             'famille' => $this->get('session')->get('famille')
         ));
+    }
+
+    public function contactAction(Request $request)
+    {
+        $contact = new Contact();
+
+        $form = $this->createForm(
+            ContactType::class,
+            $contact
+        );
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $sujet = '[' .$form->getData()->getPrenom();
+            $sujet .= ' ' .$form->getData()->getNom() . '] ';
+            $message = Swift_Message::newInstance()
+                ->setSubject($sujet . $form->getData()->getSujet())
+                ->setFrom('comptes@labalancelle.yo.fr')
+                ->setReplyTo($form->getData()->getEmail())
+                ->setTo('help@labalancelle.yo.fr')
+                ->setContentType('text/html')
+                ->setBody($form->getData()->getMessage());
+            $this->get('mailer')->send($message);
+        }
+
+        return $this->render(
+            '@Balancelle/Default/contact.html.twig',
+            array('form' => $form->createView() )
+        );
     }
 
 }

@@ -1,0 +1,50 @@
+{% extends '@FOSUser/layout.html.twig' %}
+
+{% block fos_user_content %}
+    <div class="login-box ptb--100">
+        {{ form_start(form) }}
+            <div class="login-form-head">
+                <h4>Demandez de l'aide</h4>
+                <p>Bonjour, bienvenue sur l'intranet de la crèche</p>
+                <p style="color: orange"><b>La Balancelle</b></p>
+                <p>Si vous rencontrez des soucis pour vous connecter avec vos identifiants,</p>
+                <p>utilisez le formulaire suivant pour nous contacter.</p>
+            </div>
+            <div class="login-form-body">
+                <div class="form-gp">
+                    <label for="nom">Nom</label>
+                    {{ form_widget(form.nom) }}
+                    <i class="ti-user"></i>
+                </div>
+                <div class="form-gp">
+                    <label for="prenom">Prénom</label>
+                    {{ form_widget(form.prenom) }}
+                    <i class="ti-user"></i>
+                </div>
+                <div class="form-gp">
+                    <label for="email">Email</label>
+                    {{ form_widget(form.email) }}
+                    <i class="ti-email"></i>
+                </div>
+                <div class="form-gp">
+                    <label for="sujet">Sujet</label>
+                    {{ form_widget(form.sujet) }}
+                    <i class="ti-support"></i>
+                </div>
+                <div class="form-gp">
+                    <label for="message">Message</label>
+                    {{ form_widget(form.message) }}
+                </div>
+                <div class="row mb-4 rmber-area">
+                </div>
+                <div class="submit-btn-area">
+                    {{ form_widget(form) }}
+                    <button id="form_submit" type="submit">Envoyer <i class="ti-arrow-right"></i></button>
+                </div>
+                <div class="form-footer text-center mt-5">
+
+                </div>
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock fos_user_content %}

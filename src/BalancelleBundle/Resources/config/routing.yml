@@ -57,3 +57,7 @@ balancelle_admin_revuepresse_add:
 balancelle_admin_revuepresse_modify:
     path:     /admin/revuepresseModify/{idrevuepresse}
     defaults: { _controller: BalancelleBundle:Admin:revuepresseSave }
+
+balancelle_contact:
+    path:     /contact
+    defaults: { _controller: BalancelleBundle:Default:contact }
