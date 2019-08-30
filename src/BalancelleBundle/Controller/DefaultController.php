@@ -64,6 +64,10 @@ class DefaultController extends Controller implements FamilleInterface
                 ->setContentType('text/html')
                 ->setBody($form->getData()->getMessage());
             $this->get('mailer')->send($message);
+            return $this->render(
+                '@Balancelle/Default/contact.html.twig',
+                array('reponse' => 'ok' )
+            );
         }
 
         return $this->render(
