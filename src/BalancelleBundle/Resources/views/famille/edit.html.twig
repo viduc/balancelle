@@ -87,6 +87,7 @@
             </div></br>
             <div class="card" style="background-color: #bbbbbb">
                 <div class="card-body" >
+                    {% if enfants|length %}
                     <h4 class="header-title">Liste des enfants de la famille</h4>
                     <div class="form-row align-items-center ml-4">
                         <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 my-1">
@@ -102,7 +103,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    {% for enfant in enfants%}
+                                    {% for enfant in enfants %}
                                     <tr>
                                         <td>{{ enfant.nom }}</td>
                                         <td>{{ enfant.prenom }}</td>
@@ -118,6 +119,8 @@
                             </table>
                         </div>
                     </div>
+                    {% endif %}
+                    {% if structures|length %}
                     <div class="row">
                         <div class="col-md-1">
                             <button
@@ -128,6 +131,7 @@
                             </button>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
