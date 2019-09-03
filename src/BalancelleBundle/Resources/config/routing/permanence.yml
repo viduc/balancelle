@@ -8,6 +8,11 @@ permanence_inscription:
     defaults: { _controller: "BalancelleBundle:Permanence:inscription" }
     methods:  [GET, POST]
 
+permanence_desinscription:
+    path:     /desinscription
+    defaults: { _controller: "BalancelleBundle:Permanence:desinscription" }
+    methods:  [POST]
+
 admin_permanence_index:
     path:     /admin
     defaults: { _controller: "BalancelleBundle:Permanence:tableauDeBord" }

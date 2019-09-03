@@ -53,7 +53,7 @@ class PermanenceController extends Controller implements FamilleInterface
         $permanence = $em
             ->getRepository('BalancelleBundle:Permanence')
             ->find($id);
-
+        $desinscription = $this->desinscriptionPossible($permanence, $famille);
         $editForm = $this->createForm(
             PermanenceType::class,
             $permanence
@@ -84,7 +84,8 @@ class PermanenceController extends Controller implements FamilleInterface
                 'inscription_form' => $editForm->createView(),
                 'famille' => $famille,
                 'listeFamilles' => $listeFamilles,
-                'inscriptionPossible' => $this->inscriptionPossible($permanence)
+                'inscriptionPossible' => $this->inscriptionPossible($permanence),
+                'desinscriptionPossible' => $desinscription
             )
         );
     }
@@ -108,6 +109,46 @@ class PermanenceController extends Controller implements FamilleInterface
                     )
                 )
             );
+    }
+
+    /**
+     * Vérifie si la famille peut se désinscrire d'une permanence
+     * @param Permanence $permanence
+     * @return bool
+     * @throws \Exception
+     */
+    private function desinscriptionPossible($permanence, $idFamille)
+    {
+        $date = new DateTime();
+        $date->modify(
+            '+14 days'
+        );
+        return ($idFamille === $permanence->getFamille()
+            &&
+            $date < new DateTime(
+                $permanence->getDebut()->format('Y-m-d')
+            )
+        );
+    }
+
+    /**
+     * Permet à une famille de se désinscrire d'une permanence
+     * Méthode ajax
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function desinscriptionAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $permanence = $em
+            ->getRepository('BalancelleBundle:Permanence')
+            ->find($request->get('idPermanence'));
+        $permanence->setFamille(null);
+        $em->flush();
+        $reponse = 'Vous avez a bien été désinscrit de la permanence';
+        $type = 'success';
+        $this->addFlash($type, $reponse);
+        return new JsonResponse('ok');
     }
 
     /** ------------------------------- ADMIN ------------------------------ **/

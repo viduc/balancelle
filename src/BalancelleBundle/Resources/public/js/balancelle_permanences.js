@@ -94,6 +94,39 @@ function progessBar()
 /**
  * gestion du bouton de suppression d'une famille d'une permanence
  */
+$("#btnSeDesinscrire").click(function(){
+    $.confirm({
+        title: "Confirmation de la désinscription",
+        content: "Etes vous sure de vouloir vous désinscrire de cette permanence?",
+        buttons: {
+            confirmer: {
+                text: 'Confirmer',
+                btnClass: 'btn-blue',
+                action: function()
+                {
+                    $.ajax({
+                        url: pathPermanenceDesinscription,
+                        method: "post",
+                        dataType : 'json',
+                        data: {idPermanence: idPermanence},
+                        success: function (result) {
+                            parent.location.reload();
+                        }
+                    });
+                }
+            },
+            annuler: {
+                text: 'Annuler',
+                btnClass: 'btn-red',
+                action: function()
+                {}
+            }
+        }
+    });
+});
+/**
+ * gestion du bouton de suppression d'une famille d'une permanence
+ */
 $("#btnSupprimerFamille").click(function(){
     $.confirm({
         title: "Confirmation de la désinscription",

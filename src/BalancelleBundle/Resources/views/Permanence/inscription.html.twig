@@ -44,21 +44,30 @@
                                     S'inscrire
                                 </button>
                             </div>
+                        {% elseif desinscriptionPossible %}
+                            <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-4 mt-5">
+                                <button
+                                    type="button"
+                                    class="btn btn-danger"
+                                    id="btnSeDesinscrire">
+                                    <i class="fa fa-sign-out"></i> Se désinscrire
+                                </button>
+                            </div>
                         {% endif %}
                         {% if is_granted('ROLE_ADMIN') and inscriptionPossible %}
                             <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-4 mt-5">
                                 <button
-                                        type="button"
-                                        class="btn btn-primary"
-                                        id="btnAjouterFamille">
+                                    type="button"
+                                    class="btn btn-primary"
+                                    id="btnAjouterFamille">
                                     <i class="fa fa-child"></i> Inscrire famille
                                 </button>
                             </div>
                             <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-4 mt-5">
                                 <button
-                                        type="button"
-                                        class="btn btn-danger"
-                                        id="btnSupprimerPermanence">
+                                    type="button"
+                                    class="btn btn-danger"
+                                    id="btnSupprimerPermanence">
                                     <i class="fa fa-trash"></i>
                                 </button>
                             </div>
@@ -96,9 +105,9 @@
                             </div>
                             <div class=" form-group col-lg-3 col-md-3 mt-5">
                                 <button
-                                        type="button"
-                                        class="btn btn-warning"
-                                        id="btnSupprimerFamille">
+                                    type="button"
+                                    class="btn btn-warning"
+                                    id="btnSupprimerFamille">
                                     <i class="fa fa-ban"></i> Désinscrire la famille
                                 </button>
                             </div>
@@ -144,7 +153,6 @@
                                             <h6 class="card-subtitle mb-2 text-muted">
                                                 {{ enfant.prenom }}
                                                 {{ enfant.nom }}
-
                                             </h6>
                                             <p class="card-text">
                                                 {{ enfant.naissance|date('d/m/Y') }}
@@ -168,5 +176,6 @@
     var idPermanence = "{{  permanence.id }}";
     var pathFamilleDesinscrire = "{{  path('admin_permanence_desinscrireFamille') }}";
     var pathPermanenceSuppression = "{{  path('admin_permanence_suppression') }}";
+    var pathPermanenceDesinscription = "{{  path('permanence_desinscription') }}";
 </script>
 {% endblock %}
