@@ -66,11 +66,14 @@ class UserController extends Controller implements FamilleInterface
             $user->setUsername($this->genererLogin($user));
             $user->setPlainPassword(md5(uniqid('', true)));
             $userManager->updateUser($user);
+            $pdf = $this->getParameter('web_dir');
+            $pdf .= '/bundles/balancelle/documents/MODE_EMPLOI_BALANCELLE.pdf';
             $message = Swift_Message::newInstance()
                 ->setSubject('Inscription')
                 ->setFrom('comptes@labalancelle.yo.fr')
                 ->setTo($user->getEmail())
                 ->setContentType('text/html')
+                ->attach(\Swift_Attachment::fromPath($pdf, 'application/pdf'))
                 ->setBody(
                     $this->renderView(
                         '@Balancelle/User/enregistrement_email.html.twig',
