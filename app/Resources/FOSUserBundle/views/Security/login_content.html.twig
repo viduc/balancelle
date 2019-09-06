@@ -50,13 +50,21 @@
             <div class="submit-btn-area">
                 <button id="form_submit" type="submit">Envoyer <i class="ti-arrow-right"></i></button>
             </div>
+
             <div class="form-footer text-center mt-5">
                 <!--p class="text-muted">Don't have an account? <a href="register.html">Sign up</a></p-->
+                <a href="{{ app.request.getSchemeAndHttpHost() }}/web/bundles/balancelle/documents/MODE_EMPLOI_BALANCELLE.pdf">
+                    <button
+                            type="button"
+                            class="btn btn-primary">
+                        <i class="fa fa-question-circle"> aide</i>
+                    </button>
+                </a>
                 <a href="{{ path('balancelle_contact') }}">
                     <button
                             type="button"
                             class="btn btn-primary">
-                        <i class="fa fa-question-circle"></i>
+                        <i class="fa fa-comment"> contact</i>
                     </button>
                 </a>
             </div>
