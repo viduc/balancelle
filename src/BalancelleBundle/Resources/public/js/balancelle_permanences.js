@@ -124,6 +124,73 @@ $("#btnSeDesinscrire").click(function(){
         }
     });
 });
+
+/**
+ * gestion du bouton de demande d'échange d'une permanence
+ */
+$("#btnEchanger").click(function(){
+    $.confirm({
+        title: "Confirmation de la demande d'échange",
+        content: "Etes vous sure de vouloir vous proposer cette permanence à l'échange ?",
+        buttons: {
+            confirmer: {
+                text: 'Confirmer',
+                btnClass: 'btn-blue',
+                action: function()
+                {
+                    echangerPermanence(true);
+                }
+            },
+            annuler: {
+                text: 'Annuler',
+                btnClass: 'btn-red',
+                action: function()
+                {}
+            }
+        }
+    });
+});
+
+/**
+ * gestion du bouton de demande d'échange d'une permanence
+ */
+$("#btnAnnulerEchanger").click(function(){
+    $.confirm({
+        title: "Confirmation de la demande d' annulation d' échange",
+        content: "Etes vous sure de vouloir annuler l'échange de cette permanence?",
+        buttons: {
+            confirmer: {
+                text: 'Confirmer',
+                btnClass: 'btn-blue',
+                action: function()
+                {
+                    echangerPermanence(false);
+                }
+            },
+            annuler: {
+                text: 'Annuler',
+                btnClass: 'btn-red',
+                action: function()
+                {}
+            }
+        }
+    });
+});
+
+
+function echangerPermanence(action)
+{
+    $.ajax({
+        url: pathPermanenceEchange,
+        method: "post",
+        dataType : 'json',
+        data: {idPermanence: idPermanence, action: action},
+        success: function (result) {
+            parent.location.reload();
+        }
+    });
+}
+
 /**
  * gestion du bouton de suppression d'une famille d'une permanence
  */

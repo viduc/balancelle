@@ -85,7 +85,11 @@ class PermanenceController extends Controller implements FamilleInterface
                 'famille' => $famille,
                 'listeFamilles' => $listeFamilles,
                 'inscriptionPossible' => $this->inscriptionPossible($permanence),
-                'desinscriptionPossible' => $desinscription
+                'desinscriptionPossible' => $desinscription,
+                'echangePossible' => $this->echangePossible(
+                    $permanence,
+                    $famille
+                )
             )
         );
     }
@@ -132,6 +136,28 @@ class PermanenceController extends Controller implements FamilleInterface
     }
 
     /**
+     * Vérifie si la famille peut demander un échange d'une permanence
+     * @param Permanence $permanence
+     * @return bool
+     * @throws \Exception
+     */
+    private function echangePossible($permanence, $idFamille)
+    {
+        $dateMax = new DateTime();
+        $dateMax->modify(
+            '+14 days'
+        );
+        $datePermanence = new DateTime(
+            $permanence->getDebut()->format('Y-m-d')
+        );
+        return ($idFamille === $permanence->getFamille()
+            && $dateMax > $datePermanence
+            && $datePermanence > new DateTime()
+            && !$permanence->getEchange()
+        );
+    }
+
+    /**
      * Permet à une famille de se désinscrire d'une permanence
      * Méthode ajax
      * @param Request $request
@@ -146,6 +172,24 @@ class PermanenceController extends Controller implements FamilleInterface
         $permanence->setFamille(null);
         $em->flush();
         $reponse = 'Vous avez a bien été désinscrit de la permanence';
+        $type = 'success';
+        $this->addFlash($type, $reponse);
+        return new JsonResponse('ok');
+    }
+
+    public function echangeAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $permanence = $em
+            ->getRepository('BalancelleBundle:Permanence')
+            ->find($request->get('idPermanence'));
+        $permanence->setEchange(0);
+        $reponse = "Votre permanence n'est plus proposée à l'échange";
+        if ($request->get('action') !== 'false') {
+            $reponse = "Votre permanence a été proposée à l'échange";
+            $permanence->setEchange(1);
+        }
+        $em->flush();
         $type = 'success';
         $this->addFlash($type, $reponse);
         return new JsonResponse('ok');

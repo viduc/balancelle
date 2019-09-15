@@ -53,6 +53,24 @@
                                     <i class="fa fa-sign-out"></i> Se désinscrire
                                 </button>
                             </div>
+                        {% elseif echangePossible %}
+                            <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-4 mt-5">
+                                <button
+                                        type="button"
+                                        class="btn btn-secondary"
+                                        id="btnEchanger">
+                                    <i class="fa fa-refresh"></i> Proposer un échange
+                                </button>
+                            </div>
+                        {% elseif permanence.echange %}
+                            <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-4 mt-5">
+                                <button
+                                        type="button"
+                                        class="btn btn-danger"
+                                        id="btnAnnulerEchanger">
+                                    <i class="fa fa-remove"></i> Annuler l' échange
+                                </button>
+                            </div>
                         {% endif %}
                         {% if is_granted('ROLE_ADMIN') and inscriptionPossible %}
                             <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-4 mt-5">
@@ -177,5 +195,6 @@
     var pathFamilleDesinscrire = "{{  path('admin_permanence_desinscrireFamille') }}";
     var pathPermanenceSuppression = "{{  path('admin_permanence_suppression') }}";
     var pathPermanenceDesinscription = "{{  path('permanence_desinscription') }}";
+    var pathPermanenceEchange = "{{  path('permanence_echange') }}";
 </script>
 {% endblock %}

@@ -77,6 +77,13 @@ class Permanence
     private $active;
 
     /**
+     * @var bool|null
+     *
+     * @ORM\Column(name="echange", type="boolean")
+     */
+    private $echange;
+
+    /**
      * Get id.
      *
      * @return int
@@ -158,6 +165,29 @@ class Permanence
         return $this->active;
     }
 
+    /**
+     * Set echange.
+     *
+     * @param bool $echange
+     *
+     * @return Permanence
+     */
+    public function setEchange($echange)
+    {
+        $this->echange = $echange;
+
+        return $this;
+    }
+
+    /**
+     * Get echange.
+     *
+     * @return bool
+     */
+    public function getEchange()
+    {
+        return $this->echange;
+    }
     /**
      * Set debut.
      *

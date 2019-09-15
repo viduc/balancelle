@@ -13,6 +13,11 @@ permanence_desinscription:
     defaults: { _controller: "BalancelleBundle:Permanence:desinscription" }
     methods:  [POST]
 
+permanence_echange:
+    path:     /echange
+    defaults: { _controller: "BalancelleBundle:Permanence:echange" }
+    methods:  [POST]
+
 admin_permanence_index:
     path:     /admin
     defaults: { _controller: "BalancelleBundle:Permanence:tableauDeBord" }
