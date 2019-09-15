@@ -79,18 +79,18 @@ class CalendarListener
         );
 
         $permanences = $this->em->getRepository(Permanence::class)
-            ->createQueryBuilder('b')
-            ->from(Calendrier::class, 'c')
-            ->from(Semaine::class, 's')
-            ->andWhere('b.debut BETWEEN :startDate and :endDate')
-            ->andWhere('c.structure = :structureId')
-            ->andWhere('s.calendrier = c.id')
-            ->andWhere('b.semaine = s.id')
-            ->andWhere('c.active = 1')
-            ->setParameter('startDate', $startDate->format('Y-m-d H:i:s'))
-            ->setParameter('endDate', $endDate->format('Y-m-d H:i:s'))
-            ->setParameter('structureId', $structureId)
-            ->getQuery()->getResult();
+                                ->createQueryBuilder('b')
+                                ->from(Calendrier::class, 'c')
+                                ->from(Semaine::class, 's')
+                                ->andWhere('b.debut BETWEEN :startDate and :endDate')
+                                ->andWhere('c.structure = :structureId')
+                                ->andWhere('s.calendrier = c.id')
+                                ->andWhere('b.semaine = s.id')
+                                ->andWhere('c.active = 1')
+                                ->setParameter('startDate', $startDate->format('Y-m-d H:i:s'))
+                                ->setParameter('endDate', $endDate->format('Y-m-d H:i:s'))
+                                ->setParameter('structureId', $structureId)
+                                ->getQuery()->getResult();
 
         foreach ($permanences as $permanence) {
             try {
@@ -124,24 +124,27 @@ class CalendarListener
             $permanence->getFin()
         );
         $permanencePassee = new DateTime() > new DateTime(
-            $permanence->getDebut()->format('Y-m-d')
-        );
+                $permanence->getDebut()->format('Y-m-d')
+            );
 
         $backgroundColor = '#427fb0'; //couleur perm effectuée de la famille
         $borderColor = 'red';
         $url = null;
         $titre = $permanence->getDebut()->format('H:i');
         if ($permanence->getFamille() !== null) {
-            if (
+            if ($this->security->isGranted('ROLE_ADMIN')) {
+                $titre .= ' ' . $permanence->getFamille()->getNom();
+            }
+            elseif (
                 $this->famille &&
                 ($permanence->getFamille()->getId() === $this->famille->getId())
             ) {
                 if ($permanencePassee) {
                     $backgroundColor = '#ae2305';
                     $borderColor = 'blue';
-                    $titre .= ' Permanence réalisée';
+                    $titre .= ' Réalisée';
                 } else {
-                    $titre .= ' Permanence a réaliser';
+                    $titre .= ' A faire';
                 }
                 $url = $this->router->generate(
                     'permanence_inscription',
@@ -151,7 +154,7 @@ class CalendarListener
                 $backgroundColor = '#252dd3';
                 $borderColor = 'yellow';
                 $titre = $permanence->getDebut()->format('H:i');
-                $titre .= ' Permanence non disponible';
+                $titre .= ' Indisponible';
             }
         } else {
             $backgroundColor = $permanence->getCouleur();
@@ -160,9 +163,9 @@ class CalendarListener
             if ($permanencePassee) {
                 $backgroundColor = '#7c7c70';
                 $borderColor = 'black';
-                $titre .= ' Permanence terminée';
+                $titre .= ' Terminée';
             } else {
-                $titre .= ' Permanence disponible';
+                $titre .= ' Disponible';
                 $url = $this->router->generate(
                     'permanence_inscription',
                     array('id' => $permanence->getId())
@@ -176,13 +179,13 @@ class CalendarListener
                 'borderColor' => $borderColor
             ]
         );
-        $permanenceEvent->setTitle($titre);
         if ($this->security->isGranted('ROLE_ADMIN')) {
             $url = $this->router->generate(
                 'permanence_inscription',
                 array('id' => $permanence->getId())
             );
         }
+        $permanenceEvent->setTitle($titre);
         if ($url !== null) {
             $permanenceEvent->addOption('url', $url);
         }
