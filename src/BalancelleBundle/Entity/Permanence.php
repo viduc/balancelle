@@ -79,7 +79,7 @@ class Permanence
     /**
      * @var bool|null
      *
-     * @ORM\Column(name="echange", type="boolean")
+     * @ORM\Column(name="echange", type="boolean", nullable=true)
      */
     private $echange;
 
