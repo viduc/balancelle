@@ -150,8 +150,19 @@ class CalendarListener
                     'permanence_inscription',
                     array('id' => $permanence->getId())
                 );
-            } else {
-                $backgroundColor = '#252dd3';
+            } elseif ($permanence->getEchange()) {
+                $backgroundColor = '#bd5d09';
+                $borderColor = 'green';
+                $titre = $permanence->getDebut()->format('H:i');
+                $titre .= " Proposée à l'échange";
+                $url = $this->router->generate(
+                    'permanence_inscription',
+                    array('id' => $permanence->getId())
+                );
+            }
+
+            else {
+                $backgroundColor = '#6b70e3';
                 $borderColor = 'yellow';
                 $titre = $permanence->getDebut()->format('H:i');
                 $titre .= ' Indisponible';

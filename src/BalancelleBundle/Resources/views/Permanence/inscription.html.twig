@@ -63,14 +63,23 @@
                                 </button>
                             </div>
                         {% elseif permanence.echange %}
-                            <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-4 mt-5">
-                                <button
-                                        type="button"
-                                        class="btn btn-danger"
-                                        id="btnAnnulerEchanger">
-                                    <i class="fa fa-remove"></i> Annuler l' échange
-                                </button>
-                            </div>
+                                <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-4 mt-5">
+                                    {% if permanence.famille.id == famille.id %}
+                                        <button
+                                            type="button"
+                                            class="btn btn-danger"
+                                            id="btnAnnulerEchanger">
+                                            <i class="fa fa-remove"></i> Annuler l' échange
+                                        </button>
+                                    {% else %}
+                                        <button
+                                            type="button"
+                                            class="btn btn-secondary"
+                                            id="btnAccepterEchanger">
+                                            <i class="fa fa-calendar-check-o"></i> Accepter l' échange
+                                        </button>
+                                    {% endif %}
+                                </div>
                         {% endif %}
                         {% if is_granted('ROLE_ADMIN') and inscriptionPossible %}
                             <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-4 mt-5">

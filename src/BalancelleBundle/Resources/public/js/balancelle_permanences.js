@@ -177,6 +177,31 @@ $("#btnAnnulerEchanger").click(function(){
     });
 });
 
+/**
+ * gestion du bouton de demande d'échange d'une permanence
+ */
+$("#btnAccepterEchanger").click(function(){
+    $.confirm({
+        title: "Echange de permanence",
+        content: "Etes vous sure de vouloir accepter cet échange de permanence?",
+        buttons: {
+            confirmer: {
+                text: 'Confirmer',
+                btnClass: 'btn-blue',
+                action: function()
+                {
+                    echangerPermanence('accept');
+                }
+            },
+            annuler: {
+                text: 'Annuler',
+                btnClass: 'btn-red',
+                action: function()
+                {}
+            }
+        }
+    });
+});
 
 function echangerPermanence(action)
 {

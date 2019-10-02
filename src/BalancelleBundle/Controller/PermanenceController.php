@@ -185,9 +185,17 @@ class PermanenceController extends Controller implements FamilleInterface
             ->find($request->get('idPermanence'));
         $permanence->setEchange(0);
         $reponse = "Votre permanence n'est plus proposée à l'échange";
-        if ($request->get('action') !== 'false') {
+        if ($request->get('action') !== 'false' &&
+            $request->get('action') !== 'accept') {
             $reponse = "Votre permanence a été proposée à l'échange";
             $permanence->setEchange(1);
+        }
+        if ($request->get('action') === 'accept') {
+            $famille = $em
+                ->getRepository('BalancelleBundle:Famille')
+                ->findByFamille($this->getUser()->getId());
+            $reponse = "Vous êtes désormais inscrit à cette permanence";
+            $permanence->setFamille($famille);
         }
         $em->flush();
         $type = 'success';
