@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use BalancelleBundle\Form\PermanenceType;
+use Swift_Message;
 
 /**
  * Permanence controller.
@@ -195,6 +196,27 @@ class PermanenceController extends Controller implements FamilleInterface
                 ->getRepository('BalancelleBundle:Famille')
                 ->findByFamille($this->getUser()->getId());
             $reponse = "Vous êtes désormais inscrit à cette permanence";
+
+            $sujet = "Echange d'une permanence";
+            //$to = $permanence->getSemaine()->getCalendrier()->getStructure()->getEmail();
+            $to = 'tristan.fleury@labalancelle.yo.fr';
+            $mail = Swift_Message::newInstance()
+                ->setSubject($sujet)
+                ->setFrom('comptes@labalancelle.yo.fr')
+                ->setTo($to)
+                ->setContentType('text/html')
+                ->setBody(
+                    $this->renderView(
+                        '@Balancelle/Permanence/Admin/echange_email.html.twig',
+                        array(
+                            'famille1' => $permanence->getFamille()->getNom(),
+                            'famille2' => $famille->getNom(),
+                            'datePerm' => $permanence->getDebut(),
+                            'id' => $permanence->getId()
+                        )
+                    )
+                );
+            $this->get('mailer')->send($mail);
             $permanence->setFamille($famille);
         }
         $em->flush();
