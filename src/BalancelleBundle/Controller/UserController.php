@@ -69,7 +69,7 @@ class UserController extends Controller implements FamilleInterface
             $pdf = $this->getParameter('web_dir');
             $pdf .= '/bundles/balancelle/documents/MODE_EMPLOI_BALANCELLE.pdf';
             $message = Swift_Message::newInstance()
-                ->setSubject('Inscription')
+                ->setSubject('[La Balancelle] - Votre espace personnel')
                 ->setFrom('comptes@labalancelle.yo.fr')
                 ->setTo($user->getEmail())
                 ->setContentType('text/html')
