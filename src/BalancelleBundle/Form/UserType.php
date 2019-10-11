@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use BalancelleBundle\Entity\User;
 
 class UserType extends AbstractType
@@ -32,6 +33,12 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('civilite', ChoiceType::class, [
+                'choices'  => [
+                    'Mr' => 'Mr',
+                    'Mme' => 'Mme'
+                ],
+            ])
             ->add('prenom')
             ->add('nom')
             ->add(

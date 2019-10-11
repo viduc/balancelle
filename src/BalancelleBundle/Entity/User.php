@@ -45,6 +45,13 @@ class User extends BaseUser
     protected $birthday=null;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="civilite", type="string", length=10)
+     */
+    protected $civilite;
+
+    /**
      * Set prenom
      *
      * @param string $prenom
@@ -115,7 +122,31 @@ class User extends BaseUser
     {
         return $this->birthday;
     }
-    
+
+    /**
+     * Set civilite
+     *
+     * @param string $civilite
+     *
+     * @return User
+     */
+    public function setCivilite($civilite)
+    {
+        $this->civilite = $civilite;
+
+        return $this;
+    }
+
+    /**
+     * Get civilite
+     *
+     * @return string
+     */
+    public function getCivilite()
+    {
+        return $this->civilite;
+    }
+
     /**
      * Détermine si l'utilisateur a le rôle administrateur
      * @return Boolean
