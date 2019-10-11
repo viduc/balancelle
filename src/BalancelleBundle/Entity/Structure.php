@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Structure
@@ -90,6 +91,14 @@ class Structure
      * @ORM\Column(name="heure_fin_permanence_am", type="string", length=255, nullable=true)
      */
     private $heureFinPermanenceAM;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     * @Assert\Email(checkMX=true)
+     */
+    private $email;
 
     /**
      * Constructor
@@ -204,6 +213,30 @@ class Structure
     public function getNomCourt()
     {
         return $this->nomCourt;
+    }
+
+    /**
+     * Set email.
+     *
+     * @param string $email
+     *
+     * @return Structure
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email.
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 
     /**

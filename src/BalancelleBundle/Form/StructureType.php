@@ -3,6 +3,7 @@
 namespace BalancelleBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use BalancelleBundle\Entity\Structure;
@@ -17,12 +18,13 @@ class StructureType extends AbstractType
         $builder
             ->add('nom')
             ->add('nomCourt')
-            ->add('commentaire')
+            ->add('commentaire', TextareaType::class, [])
             ->add('active')
             ->add('heureDebutPermanenceMatin')
             ->add('heureFinPermanenceMatin')
             ->add('heureDebutPermanenceAM')
-            ->add('heureFinPermanenceAM');
+            ->add('heureFinPermanenceAM')
+            ->add('email');
     }/**
      * {@inheritdoc}
      */
