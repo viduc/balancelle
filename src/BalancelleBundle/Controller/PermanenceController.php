@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use BalancelleBundle\Form\PermanenceType;
+use Swift_Message;
 
 /**
  * Permanence controller.
@@ -85,7 +86,11 @@ class PermanenceController extends Controller implements FamilleInterface
                 'famille' => $famille,
                 'listeFamilles' => $listeFamilles,
                 'inscriptionPossible' => $this->inscriptionPossible($permanence),
-                'desinscriptionPossible' => $desinscription
+                'desinscriptionPossible' => $desinscription,
+                'echangePossible' => $this->echangePossible(
+                    $permanence,
+                    $famille
+                )
             )
         );
     }
@@ -132,6 +137,28 @@ class PermanenceController extends Controller implements FamilleInterface
     }
 
     /**
+     * Vérifie si la famille peut demander un échange d'une permanence
+     * @param Permanence $permanence
+     * @return bool
+     * @throws \Exception
+     */
+    private function echangePossible($permanence, $idFamille)
+    {
+        $dateMax = new DateTime();
+        $dateMax->modify(
+            '+14 days'
+        );
+        $datePermanence = new DateTime(
+            $permanence->getDebut()->format('Y-m-d')
+        );
+        return ($idFamille === $permanence->getFamille()
+            && $dateMax > $datePermanence
+            && $datePermanence > new DateTime()
+            && !$permanence->getEchange()
+        );
+    }
+
+    /**
      * Permet à une famille de se désinscrire d'une permanence
      * Méthode ajax
      * @param Request $request
@@ -146,6 +173,57 @@ class PermanenceController extends Controller implements FamilleInterface
         $permanence->setFamille(null);
         $em->flush();
         $reponse = 'Vous avez a bien été désinscrit de la permanence';
+        $type = 'success';
+        $this->addFlash($type, $reponse);
+        return new JsonResponse('ok');
+    }
+
+    /**
+     * Action pour échanger une permanence
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function echangeAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $permanence = $em
+            ->getRepository('BalancelleBundle:Permanence')
+            ->find($request->get('idPermanence'));
+        $permanence->setEchange(0);
+        $reponse = "Votre permanence n'est plus proposée à l'échange";
+        if ($request->get('action') !== 'false' &&
+            $request->get('action') !== 'accept') {
+            $reponse = "Votre permanence a été proposée à l'échange";
+            $permanence->setEchange(1);
+        }
+        if ($request->get('action') === 'accept') {
+            $famille = $em
+                ->getRepository('BalancelleBundle:Famille')
+                ->findByFamille($this->getUser()->getId());
+            $reponse = "Vous êtes désormais inscrit à cette permanence";
+
+            $sujet = "Echange d'une permanence";
+            $to = $permanence->getSemaine()->getCalendrier()->getStructure()->getEmail();
+            $mail = Swift_Message::newInstance()
+                ->setSubject($sujet)
+                ->setFrom('comptes@labalancelle.yo.fr')
+                ->setTo($to)
+                ->setContentType('text/html')
+                ->setBody(
+                    $this->renderView(
+                        '@Balancelle/Permanence/Admin/echange_email.html.twig',
+                        array(
+                            'famille1' => $permanence->getFamille()->getNom(),
+                            'famille2' => $famille->getNom(),
+                            'datePerm' => $permanence->getDebut(),
+                            'id' => $permanence->getId()
+                        )
+                    )
+                );
+            $this->get('mailer')->send($mail);
+            $permanence->setFamille($famille);
+        }
+        $em->flush();
         $type = 'success';
         $this->addFlash($type, $reponse);
         return new JsonResponse('ok');

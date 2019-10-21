@@ -68,6 +68,7 @@ class CalendrierController extends Controller
                     //$calendrier->getDateFin()
                 );
             } catch (Exception $e) { //TODO gérer l'erreur ici
+                $this->addFlash('success', 'blop');
             }
             return $this->redirectToRoute(
                 'calendrier_edit',
@@ -187,6 +188,7 @@ class CalendrierController extends Controller
         );
 
         if ($calendrier->getAnneeDebut() === $calendrier->getAnneeFin()) {
+
             for ($i=$numPremiereSemaine; $i<=$numDerniereSemaine; $i++) {
                 $this->creerSemaine($i, $calendrier, true);
             }
@@ -234,6 +236,7 @@ class CalendrierController extends Controller
         $semaine->setCalendrier($calendrier);
         $em = $this->getDoctrine()->getManager();
         $em->persist($semaine);
+        $em->flush();
         $this->genererLesPermanences($calendrier, $semaine, $debut);
     }
 
@@ -299,7 +302,6 @@ class CalendrierController extends Controller
                     $permanence->setSemaine($semaine);
                     $permanence->setCouleur('#567c3f');
                     $em->persist($permanence);
-                    $em->flush();
                 }
 
                 /* génération des permanences de l'am */
@@ -313,9 +315,11 @@ class CalendrierController extends Controller
                     $permanence->setSemaine($semaine);
                     $permanence->setCouleur('#635178');
                     $em->persist($permanence);
-                    $em->flush();
+                    //$em->flush();
                 }
+                $this->addFlash('success', 'ici');
             }
+            $em->flush();
         }
         return true;
     }
