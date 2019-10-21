@@ -178,6 +178,11 @@ class PermanenceController extends Controller implements FamilleInterface
         return new JsonResponse('ok');
     }
 
+    /**
+     * Action pour échanger une permanence
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function echangeAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -198,8 +203,7 @@ class PermanenceController extends Controller implements FamilleInterface
             $reponse = "Vous êtes désormais inscrit à cette permanence";
 
             $sujet = "Echange d'une permanence";
-            //$to = $permanence->getSemaine()->getCalendrier()->getStructure()->getEmail();
-            $to = 'tristan.fleury@labalancelle.yo.fr';
+            $to = $permanence->getSemaine()->getCalendrier()->getStructure()->getEmail();
             $mail = Swift_Message::newInstance()
                 ->setSubject($sujet)
                 ->setFrom('comptes@labalancelle.yo.fr')
