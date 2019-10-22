@@ -47,9 +47,12 @@ class FamilleController extends Controller implements FamilleInterface
             );
             $nbPermanenceAFaire = $famille->getNombrePermanence();
             $permanenceInscrit = $repository->findByFamille($famille);
-            $pourcentagePermanenceFaite = count(
-                $permFaite
-            )*100/$nbPermanenceAFaire;
+            $pourcentagePermanenceFaite = 0;
+            if ($nbPermanenceAFaire) {
+                $pourcentagePermanenceFaite = count(
+                        $permFaite
+                    )*100/$nbPermanenceAFaire;
+            }
         } else {
             return $this->redirectToRoute(
                 'famille_erreurFamille',
