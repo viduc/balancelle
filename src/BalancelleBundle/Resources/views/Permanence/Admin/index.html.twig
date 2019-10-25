@@ -1,48 +1,55 @@
 {% extends '@Balancelle/Default/layout.html.twig' %}
 {% block body %}
-    {{ parent() }}
-
-
     <div class="main-content-inner">
         <!-- pie chart start -->
         <div class="row">
-            <div class="col-lg-6 mt-5">
+            <div class="col-lg-12 mt-5">
                 <div class="card">
-                    <div id="ampiechart1"></div>
-                </div>
-            </div>
-            <div class="col-lg-6 mt-5">
-                <div class="card">
-                    <div id="ampiechart2"></div>
-                </div>
-            </div>
-            <div class="col-lg-6 mt-5">
-                <div class="card">
-                    <div id="ampiechart3"></div>
-                </div>
-            </div>
-            <div class="col-lg-6 mt-5">
-                <div class="card">
-                    <div id="highpiechart4"></div>
-                </div>
-            </div>
-            <div class="col-lg-6 mt-5">
-                <div class="card">
-                    <div id="highpiechart5"></div>
-                </div>
-            </div>
-            <div class="col-lg-6 mt-5">
-                <div class="card">
-                    <div id="highpiechart6"></div>
+                    <div class="data-tables">
+                        <table id="dataTable" name="dataTable" class="text-center">
+                            <thead class="bg-light text-capitalize">
+                            <tr>
+                                <th>Famille</th>
+                                <th>total</th>
+                                <th>faites</th>
+                                <th>inscrit</th>
+                                <th>réserve</th>
+                                <th>Progression</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <script type="text/javascript">
+                                var familles = [];
+                            </script>
+                            {% for famille in familles %}
+                                <script type="text/javascript">
+                                    familles[{{ famille.id }}] = {{ famille.pourcentagePermanenceFaite }};
+                                </script>
+                                <tr>
+                                    <td>{{ famille.nom }}</td>
+                                    <td>{{ famille.nombrePermanence }}</td>
+                                    <td>{{ famille.permFaite|length }}</td>
+                                    <td>{{ famille.permanenceInscrit|length - famille.permFaite|length }}</td>
+                                    <td>{{ famille.nombrePermanence - famille.permFaite|length - (famille.permanenceInscrit|length - famille.permFaite|length) }}</td>
+                                    <td>
+                                        <div class="progress-perm">
+                                            <div id="progessBarPermanence{{ famille.id }}" class="progress-bar-perm"></div>
+                                        </div>
+                                    </td>
+                                    <td><a href="{{ path('famille_edit', { 'id': famille.id }) }}">Voir</a></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
         <!-- pie chart end -->
     </div>
-    Permanences libres: {{ toutesLesPermanencesArealiserLibre|length }}
-    Permanences prises: {{ toutesLesPermanencesArealiser|length - toutesLesPermanencesArealiserLibre|length }}
-
-    {{ dump(familles) }}
-    {{ dump(toutesLesPermanencesArealiser) }}
-    {{ dump(toutesLesPermanencesArealiserLibre) }}
+    <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/balancelle_permanences_admin.js') }}" >
+    </script>
 {% endblock %}

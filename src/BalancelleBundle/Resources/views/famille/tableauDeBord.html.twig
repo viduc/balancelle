@@ -70,10 +70,10 @@
                                 </div>
                             </h6>
                             <p class="card-text">
-                                Vous avez effectué {{ permanenceFaite|length }} permanence(s) sur {{ nbPermanenceAFaire }} à réaliser.
+                                Vous avez effectué {{ permanences.faite|length }} permanence(s) sur {{ permanences.aFaire }} à réaliser.
                             </p>
                             <p class="card-text">
-                                Vous êtes inscrit à {{ permanenceInscrit }} permanence(s).
+                                Vous êtes inscrit à {{ permanences.inscrit|length - permanences.faite|length }} permanence(s).
                             </p>
                             {% if listePermanence|length %}
 
@@ -115,9 +115,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <p>
-                                    {#dump(listePermanence) #}
-                                </p>
                             {% endif %}
                         </div>
                     </div>
@@ -127,6 +124,6 @@
     </div>
 
     <script type="text/javascript">
-        var pourcentagePermanenceFaite = "{{  pourcentagePermanenceFaite }}";
+        var pourcentagePermanenceFaite = "{{  permanences.pourcentage }}";
     </script>
 {% endblock %}

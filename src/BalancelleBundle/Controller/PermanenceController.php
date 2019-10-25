@@ -244,15 +244,18 @@ class PermanenceController extends Controller implements FamilleInterface
             );
             $famille->nbPermanenceAFaire = $famille->getNombrePermanence();
             $famille->permanenceInscrit = $repository->findByFamille($famille);
-            $famille->pourcentagePermanenceFaite = count(
-                    $famille->permFaite
-                )*100/$famille->nbPermanenceAFaire;
+            $famille->pourcentagePermanenceFaite = 0;
+            if ($famille->nbPermanenceAFaire) {
+                $famille->pourcentagePermanenceFaite = count(
+                        $famille->permFaite
+                    )*100/$famille->nbPermanenceAFaire;
+            }
         }
         return $this->render(
             '@Balancelle/Permanence/Admin/index.html.twig',
             array(
                 'familles' => $familles,
-                'toutesLesPermanencesArealiser' =>
+                /*'toutesLesPermanencesArealiser' =>
                     $repository->recupererToutesLesPermanences(
                         'JEE',
                         date('Y-m-d H:i:s'),
@@ -263,7 +266,7 @@ class PermanenceController extends Controller implements FamilleInterface
                         'JEE',
                         date('Y-m-d H:i:s'),
                         null
-                    )
+                    )*/
             )
         );
     }

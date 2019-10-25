@@ -30,49 +30,54 @@ class FamilleController extends Controller implements FamilleInterface
     }
 
     /**
+     * Permet de récupérer toutes les finformations des permanences pour une
+     * famille
+     * @param Famille $famille - la famille
+     * @return array|null - un tableau contenant les informations
+     */
+    private function getInfoPermanenceFamille(Famille $famille)
+    {
+        $permanence = null;
+        /** @var Famille $famille */
+        if ($famille) {
+            $repository = $this->getDoctrine()->getRepository(Permanence::class);
+            $permanence['faite'] = $repository->recupererLesPermanencesRealisees(
+                $famille
+            );
+            $permanence['aFaire'] = $famille->getNombrePermanence();
+            $permanence['inscrit'] = $repository->findByFamille($famille);
+            $permanence['pourcentage'] = 0;
+            if ($permanence['aFaire']) {
+                $permanence['pourcentage'] = count(
+                        $permanence['faite']
+                    )*100/$permanence['aFaire'];
+            }
+        }
+        return $permanence;
+    }
+
+    /**
+     * Tableau de bord pour les familles
      * @return Response
      */
     public function tableauDeBordAction()
     {
-        $pourcentagePermanenceFaite = null;
-        $nbPermanenceAFaire = null;
-        $permFaite = null;
-        $permanenceInscrit = null;
         /** @var Famille $famille */
         $famille = $this->get('session')->get('famille');
-        if ($famille) {
-            $repository = $this->getDoctrine()->getRepository(Permanence::class);
-            $permFaite = $repository->recupererLesPermanencesRealisees(
-                $famille
-            );
-            $nbPermanenceAFaire = $famille->getNombrePermanence();
-            $permanenceInscrit = $repository->findByFamille($famille);
-            $pourcentagePermanenceFaite = 0;
-            if ($nbPermanenceAFaire) {
-                $pourcentagePermanenceFaite = count(
-                        $permFaite
-                    )*100/$nbPermanenceAFaire;
-            }
-        } else {
+        if (!$famille) {
             return $this->redirectToRoute(
                 'famille_erreurFamille',
-                array());
+                array()
+            );
         }
+        $permanences = $this->getInfoPermanenceFamille($famille);
         return $this->render(
             '@Balancelle/famille/tableauDeBord.html.twig',
             array(
                 'famille' => $famille,
                 'parents' => $this->getParents($famille),
-                'pourcentagePermanenceFaite' =>$pourcentagePermanenceFaite,
-                'nbPermanenceAFaire' => $nbPermanenceAFaire,
-                'permanenceFaite' => $permFaite,
-                'permanenceInscrit' => count(
-                    $permanenceInscrit
-                ) - count($permFaite),
-                'listePermanence' => $this->formaterListePermanence(
-                    $permanenceInscrit,
-                    $permFaite
-                )
+                'permanences' => $permanences,
+                'listePermanence' => $this->formaterListePermanence($permanences)
             )
         );
     }
@@ -88,15 +93,14 @@ class FamilleController extends Controller implements FamilleInterface
 
     /**
      * Formate la liste des permanences réalisée.
-     * @param $permanenceInscrit
-     * @param $permFaite
+     * @param $permanences - la tableau des information de permanences
      * @return array
      */
-    private function formaterListePermanence($permanenceInscrit, $permFaite)
+    private function formaterListePermanence($permanences)//$permanenceInscrit, $permFaite)
     {
         $retour = [];
-        foreach ($permanenceInscrit as $perm) {
-            $perm->realise = in_array($perm, $permFaite, true);
+        foreach ($permanences['inscrit'] as $perm) {
+            $perm->realise = in_array($perm, $permanences['faite'], true);
             $retour[] = $perm;
         }
 
@@ -178,6 +182,7 @@ class FamilleController extends Controller implements FamilleInterface
             $this->addFlash('success', $succes);
         }
         $structures = $this->em->getRepository('BalancelleBundle:Structure')->findBy(['active'=>1]);
+        $permanences = $this->getInfoPermanenceFamille($famille);
         return $this->render('@Balancelle/famille/edit.html.twig', array(
             'familleAdmin' => $famille,
             'form' => $editForm->createView(),
@@ -186,7 +191,9 @@ class FamilleController extends Controller implements FamilleInterface
                 'BalancelleBundle:Enfant'
             )->getEnfantSansFamille(),
             'delete_form' => $deleteForm->createView(),
-            'structures' => $structures
+            'structures' => $structures,
+            'permanences' => $permanences,
+            'listePermanence' => $this->formaterListePermanence($permanences)
         ));
     }
 
