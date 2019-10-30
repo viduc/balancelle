@@ -6,6 +6,9 @@ tristan.fleury@labalancelle.yo.fr
 **Site intranet de l'association La Balancelle**    
 
 ------------
+## [30/10/2019] [v0.0.2][bug52]
+    - réinitialisation de la variable to (array) à chaque permanence ciblée
+    
 ## [28/10/2019] [v0.0.2][bug56]
     - correction déconnexion impossible
     - désactivation des assests chart
