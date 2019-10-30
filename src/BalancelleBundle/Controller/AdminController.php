@@ -2,6 +2,7 @@
 
 namespace BalancelleBundle\Controller;
 
+use BalancelleBundle\Entity\Structure;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\File;
@@ -15,12 +16,14 @@ class AdminController extends Controller
 {
     /**
      * Index de la partie admin
+     * @param CommunicationController $communication
      * @return Response
      */
-    public function indexAction()
+    public function indexAction(CommunicationController $communication)
     {
+        $structure = $this->getDoctrine()->getRepository(Structure::class)->find(1);
         return $this->render('@Balancelle/Default/index.html.twig', array(
-            'test' => 'toto'
+            'test' => $communication->envoyerMailStructure($structure, 'test', 'test')
         ));
     }
  
