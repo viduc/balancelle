@@ -74,6 +74,7 @@ class PermanenceRappelController extends Controller
                     array('permanence' => $permanence))
                 );
             $this->mailer->send($message);
+            $to = null;
         }
 
         return true;
