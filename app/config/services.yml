@@ -44,3 +44,8 @@ services:
         resource: '../../src/BalancelleBundle/Controller'
         public: true
         tags: ['controller.service_arguments']
+
+    communication:
+        class: BalancelleBundle\Controller\CommunicationController
+
+    BalancelleBundle\Controller\CommunicationController: '@communication'

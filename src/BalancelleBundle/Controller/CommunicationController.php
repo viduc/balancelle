@@ -25,7 +25,22 @@ class CommunicationController extends Controller
         $this->twig = $twig;
     }
 
-    public function envoyerMailStructure(Structure $structure, $sujet, $message)
+    /**
+     * Envoie un mail à tout les parents d'une structure
+     * @param Structure $structure - la structure
+     * @param String $sujet - le sujet du mail
+     * @param String $message - le message au format html
+     * @param null|array $fichiers - chemin du fichier pdf (pièce jointe)
+     * @return mixed
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function envoyerMailStructure(
+        Structure $structure,
+        $sujet,
+        $message,
+        array $fichiers = null)
     {
         $listeUser = $this->em->getRepository(
             User::class
@@ -34,24 +49,90 @@ class CommunicationController extends Controller
         foreach ($listeUser as $user) {
             $listeMail[] = $user->getEmail();
         }
-        $this->envoyerMail($listeMail, $sujet, $message);
-        return $listeUser;
+
+        return $this->envoyerMail($listeMail, $sujet, $message, $fichiers);
     }
 
-    public function envoyerMail(array $listeMail, string $sujet, string $message)
+    /**
+     * Envoie un mail avec le template générique balancelle
+     * @param array $listeMail - une liste d'adresse mail
+     * @param String $sujet - le sujet du mail
+     * @param String $message - le message du mail au format html
+     * @param null|array $fichier - chemin du fichier pdf (pièce jointe)
+     * @return mixed
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function envoyerMail(
+        array $listeMail,
+        $sujet,
+        $message,
+        array $fichier = null
+    ) {
+        $tabRetour = $this->verifierFichier($fichier);
+
+        foreach ($listeMail as $mail) {
+            $email = Swift_Message::newInstance()
+                ->setSubject('[La Balancelle] - ' . $sujet)
+                ->setFrom('comptes@labalancelle.yo.fr')
+                ->setTo($mail)
+                ->setContentType('text/html')
+                ->setBody(
+                    $this->twig->render(
+                        '@Balancelle/Default/email.html.twig',
+                        array('message' => $message, 'sujet' => $sujet)
+                    )
+                );
+            foreach ($tabRetour as $retour) {
+                if ($retour['valide']) {
+                    $email->attach(\Swift_Attachment::fromPath(
+                        $tabRetour['attachement'],
+                        'application/pdf'
+                    ));
+                }
+            }
+
+            $this->mailer->send($email);
+        }
+
+        return $tabRetour;
+    }
+
+    /**
+     * vérifie les fichiers joins
+     * @param null|array(path) $fichiers - les chemin des fichiers pdf
+     * @return mixed
+     */
+    public function verifierFichier(array $fichiers = null)
     {
-        $mail = Swift_Message::newInstance()
-            ->setSubject('[La Balancelle] - ' . $sujet)
-            ->setFrom('comptes@labalancelle.yo.fr')
-            ->setTo($listeMail)
-            ->setContentType('text/html')
-            //->attach(\Swift_Attachment::fromPath($pdf, 'application/pdf'))
-            ->setBody(
-                $this->twig->render(
-                    '@Balancelle/Default/email.html.twig',
-                    array('message' => $message, 'sujet' => $sujet)
-                )
-            );
-        $this->mailer->send($mail);
+        $tabRetour = [];
+
+        if ($fichiers === null || !count($fichiers)) {
+            return $tabRetour;
+        }
+
+        $lengthFichiers = count($fichiers);
+        for ($i=0; $i<$lengthFichiers; $i++) {
+            if (!file_exists($fichiers[$i])) {
+                $tabRetour[$i]['erreur']['erreurFichierPath'] =
+                    'Le fichier n\'existe pas ';
+                $tabRetour[$i]['valide'] = false;
+            }
+            elseif (!strpos($fichiers[$i], '.pdf')) {
+                $tabRetour[$i]['erreur']['erreurFichierFormat'] =
+                    'Le chemin du fichier est non conforme';
+                $tabRetour[$i]['valide'] = false;
+            }
+            else {
+                $tabRetour[$i]['attachement'] = \Swift_Attachment::fromPath(
+                    $fichiers[$i],
+                    'application/pdf'
+                );
+                $tabRetour[$i]['valide'] = true;
+            }
+        }
+
+        return $tabRetour;
     }
 }

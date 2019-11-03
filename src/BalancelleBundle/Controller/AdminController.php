@@ -184,7 +184,6 @@ class AdminController extends Controller
             array('form' => $form->createView(), 'revuepresse' => $revuepresse)
         );
     }
-
     
     /**
      * @return string
