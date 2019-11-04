@@ -157,7 +157,8 @@ class FamilleController extends Controller implements FamilleInterface
             'listeEnfants' => null,
             'errors' => null,
             'structures' => $this->em->getRepository('BalancelleBundle:Structure')
-                 ->findBy(['active'=>1])
+                 ->findBy(['active'=>1]),
+            'permanences' => null
         ));
     }
 

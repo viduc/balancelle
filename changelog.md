@@ -6,6 +6,9 @@ tristan.fleury@labalancelle.yo.fr
 **Site intranet de l'association La Balancelle**    
 
 ------------
+## [04/11/2019] [v0.0.2][bug57]
+    - correction du bug (test de l'existance de la variable permanence)
+    
 ## [30/10/2019] [v0.0.2][bug52]
     - réinitialisation de la variable to (array) à chaque permanence ciblée
     
