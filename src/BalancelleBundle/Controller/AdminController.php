@@ -23,7 +23,7 @@ class AdminController extends Controller
     {
         $structure = $this->getDoctrine()->getRepository(Structure::class)->find(1);
         return $this->render('@Balancelle/Default/index.html.twig', array(
-            'test' => $communication->envoyerMailStructure($structure, 'test', 'test')
+            'test' => 'test'
         ));
     }
  

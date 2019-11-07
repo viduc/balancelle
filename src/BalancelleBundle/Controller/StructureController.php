@@ -167,17 +167,21 @@ class StructureController extends Controller implements FamilleInterface
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $documents = $form->getData()['documents'];
+            array_pop($documents);
+            //var_dump($documents);
             $this->get('communication')->envoyerMailStructure(
                 $structure,
                 $form->getData()['sujet'],
-                $form->getData()['message']
+                $form->getData()['message'],
+                $documents
             );
             $succes = 'Votre email a bien été envoyé aux parents';
             $this->addFlash('success', $succes);
-            return $this->redirectToRoute(
+            /*return $this->redirectToRoute(
                 'structure_edit',
                 array('id' => $structure->getId())
-            );
+            );*/
         }
         $titre = 'Envoyer un email aux parents de la structure ';
         $titre .= $structure->getNom();

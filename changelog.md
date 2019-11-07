@@ -6,6 +6,10 @@ tristan.fleury@labalancelle.yo.fr
 **Site intranet de l'association La Balancelle**    
 
 ------------
+## [07/1/2019] [v0.0.2][task53]
+    - mise en place envoie de mail par structure
+    - gestion des pièces jointes
+    
 ## [28/10/2019] [v0.0.2][bug56]
     - correction déconnexion impossible
     - désactivation des assests chart

@@ -86,10 +86,7 @@ class CommunicationController extends Controller
                 );
             foreach ($tabRetour as $retour) {
                 if ($retour['valide']) {
-                    $email->attach(\Swift_Attachment::fromPath(
-                        $tabRetour['attachement'],
-                        'application/pdf'
-                    ));
+                    $email->attach($retour['attachement']);
                 }
             }
 
@@ -114,21 +111,22 @@ class CommunicationController extends Controller
 
         $lengthFichiers = count($fichiers);
         for ($i=0; $i<$lengthFichiers; $i++) {
-            if (!file_exists($fichiers[$i])) {
+            $file = $fichiers[$i]['file'];
+            if (!file_exists($file->getPathName())) {
                 $tabRetour[$i]['erreur']['erreurFichierPath'] =
                     'Le fichier n\'existe pas ';
                 $tabRetour[$i]['valide'] = false;
             }
-            elseif (!strpos($fichiers[$i], '.pdf')) {
+            /*elseif (!strpos($fichiers[$i], '.pdf')) {
                 $tabRetour[$i]['erreur']['erreurFichierFormat'] =
                     'Le chemin du fichier est non conforme';
                 $tabRetour[$i]['valide'] = false;
-            }
+            }*/
             else {
                 $tabRetour[$i]['attachement'] = \Swift_Attachment::fromPath(
-                    $fichiers[$i],
-                    'application/pdf'
-                );
+                    $file->getPathName(),
+                    $file->getMimeType()
+                )->setFilename($file->getClientOriginalName());
                 $tabRetour[$i]['valide'] = true;
             }
         }

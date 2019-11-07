@@ -41,7 +41,10 @@
                                                 <img src="{{asset('bundles/balancelle/images/off.png')}}" alt="inactif" />
                                             {% endif %}
                                         </td>
-                                        <td><a href="{{ path('structure_edit', { 'id': structure.id }) }}">Voir</a></td>
+                                        <td>
+                                            <a href="{{ path('structure_edit', { 'id': structure.id }) }}"><i class="fa fa-eye"></i> Voir </a> -
+                                            <a href="{{ path('structure_envoi_mail', {'id': structure.id }) }}"> <i class="fa fa-envelope"></i> Envoyer un mail aux parents</a>
+                                        </td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
