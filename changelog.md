@@ -6,6 +6,12 @@ tristan.fleury@labalancelle.yo.fr
 **Site intranet de l'association La Balancelle**    
 
 ------------
+## [08/11/2019] [v0.0.2][bug58]
+    - correction du bug: séparation de l'instanciation des dates matin et am
+        pour la génération des permanences (le setTime de l'am écrasait
+        l'instance du matin)
+    - récupération des heures de la structure pour générer les permanences
+    
 ## [04/11/2019] [v0.0.2][bug57]
     - correction du bug (test de l'existance de la variable permanence)
     

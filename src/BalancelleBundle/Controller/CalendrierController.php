@@ -254,24 +254,43 @@ class CalendrierController extends Controller
         $debut
     )
     {
+        $heures = $this->getHeurePermanences($calendrier);
         $em = $this->getDoctrine()->getManager();
-        $dtoDebut = new DateTime();
-        $dtoFin = new DateTime();
+        $dtoDebutMatin =  new DateTime();
+        $dtoFinMatin =  new DateTime();
+        $dtoDebutAm =  new DateTime();
+        $dtoFinAm =  new DateTime();
         if ($debut) {
-            $dtoDebut->setISODate(
+            $dtoDebutMatin->setISODate(
                 $calendrier->getAnneeDebut(),
                 $semaine->getNumero()
             );
-            $dtoFin->setISODate(
+            $dtoDebutAm->setISODate(
+                $calendrier->getAnneeDebut(),
+                $semaine->getNumero()
+            );
+            $dtoFinMatin->setISODate(
+                $calendrier->getAnneeDebut(),
+                $semaine->getNumero()
+            );
+            $dtoFinAm->setISODate(
                 $calendrier->getAnneeDebut(),
                 $semaine->getNumero()
             );
         } else {
-            $dtoDebut->setISODate(
+            $dtoDebutMatin->setISODate(
                 $calendrier->getAnneeFin(),
                 $semaine->getNumero()
             );
-            $dtoFin->setISODate(
+            $dtoDebutAm->setISODate(
+                $calendrier->getAnneeFin(),
+                $semaine->getNumero()
+            );
+            $dtoFinMatin->setISODate(
+                $calendrier->getAnneeFin(),
+                $semaine->getNumero()
+            );
+            $dtoFinAm->setISODate(
                 $calendrier->getAnneeFin(),
                 $semaine->getNumero()
             );
@@ -279,26 +298,39 @@ class CalendrierController extends Controller
 
         for ($i=0; $i<5; $i++) {
             if ($i !== 0) {
-                $dtoDebut->modify(
+                $dtoDebutMatin->modify(
                     '+1 days'
                 );
-                $dtoFin->modify(
+                $dtoDebutAm->modify(
+                    '+1 days'
+                );
+                $dtoFinMatin->modify(
+                    '+1 days'
+                );
+                $dtoFinAm->modify(
                     '+1 days'
                 );
             }
-            $datePerm = $dtoDebut->format('Y-m-d');
+            $datePerm = $dtoDebutMatin->format('Y-m-d');
             if (
                 $datePerm <= $calendrier->getDateFin()->format('Y-m-d') &&
                 $datePerm >= $calendrier->getDateDebut()->format('Y-m-d')
             ) {
                 /* génération des permanences du matin */
+
                 for ($j = 0; $j < $calendrier->getNbrPermanenceMatin(); $j++) {
                     $permanence = new Permanence();
                     $permanence->setTitre('Permanence matin');
                     $permanence->setCommentaire('Ici commentaire');
                     $permanence->setActive(true);
-                    $permanence->setDebut($dtoDebut->setTime(8, 30));
-                    $permanence->setFin($dtoFin->setTime(11, 30));
+                    $permanence->setDebut($dtoDebutMatin->setTime(
+                        $heures['debutmatin'][0],
+                        $heures['debutmatin'][1]
+                    ));
+                    $permanence->setFin($dtoFinMatin->setTime(
+                        $heures['finmatin'][0],
+                        $heures['finmatin'][1]
+                    ));
                     $permanence->setSemaine($semaine);
                     $permanence->setCouleur('#567c3f');
                     $em->persist($permanence);
@@ -310,14 +342,19 @@ class CalendrierController extends Controller
                     $permanence->setTitre('Permanence AM');
                     $permanence->setCommentaire('Ici commentaire');
                     $permanence->setActive(true);
-                    $permanence->setDebut($dtoDebut->setTime(14, 00));
-                    $permanence->setFin($dtoFin->setTime(17, 30));
+                    $permanence->setDebut($dtoDebutAm->setTime(
+                        $heures['debutam'][0],
+                        $heures['debutam'][1]
+                    ));
+                    $permanence->setFin($dtoFinAm->setTime(
+                        $heures['finam'][0],
+                        $heures['finam'][1]
+                    ));
                     $permanence->setSemaine($semaine);
                     $permanence->setCouleur('#635178');
                     $em->persist($permanence);
-                    //$em->flush();
                 }
-                $this->addFlash('success', 'ici');
+
             }
             $em->flush();
         }
@@ -340,5 +377,19 @@ class CalendrierController extends Controller
         $ret['week_start'] = $debut->setISODate($year, $week);
         $ret['week_end'] = $fin->setISODate($year, $week, 7);
         return $ret;
+    }
+
+    /**
+     * @param Calendrier $calendrier
+     * @return mixed
+     */
+    private function getHeurePermanences(Calendrier $calendrier)
+    {
+        $st = $calendrier->getStructure();
+        $retour['debutmatin'] = explode('-',$st->getHeureDebutPermanenceMatin());
+        $retour['finmatin'] = explode('-', $st->getHeureFinPermanenceMatin());
+        $retour['debutam'] = explode('-', $st->getHeureDebutPermanenceAM());
+        $retour['finam'] = explode('-', $st->getHeureFinPermanenceAM());
+        return $retour;
     }
 }
