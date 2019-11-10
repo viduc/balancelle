@@ -19,7 +19,8 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new AppBundle\AppBundle(),
             new BalancelleBundle\BalancelleBundle(),
-            new CalendarBundle\CalendarBundle()
+            new CalendarBundle\CalendarBundle(),
+            new FOS\CKEditorBundle\FOSCKEditorBundle()
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

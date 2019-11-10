@@ -2,7 +2,10 @@
 
 namespace BalancelleBundle\Repository;
 
+use BalancelleBundle\Entity\Structure;
 use Doctrine\ORM\EntityRepository;
+use BalancelleBundle\Entity\Famille;
+use BalancelleBundle\Entity\Enfant;
 
 /**
  * UserRepository
@@ -22,5 +25,24 @@ class UserRepository extends EntityRepository
             ->getQuery()
             ->execute()
             ;
+    }
+
+    /** Récupère les utilisateur d'une structure
+     * @param Structure $structure
+     * @return mixed
+     */
+    public function recupererLesUtilisateursViaStructure($structure)
+    {
+        return $this
+            ->createQueryBuilder('u')
+            ->from(Famille::class, 'f')
+            ->from(Enfant::class, 'e')
+            ->where('e.structure = :structure')
+            ->andWhere('e.famille = f.id')
+            ->andWhere('f.parent1 = u.id')
+            ->orWhere('f.parent2 = u.id')
+            ->setParameter('structure', $structure)
+            ->getQuery()
+            ->execute();
     }
 }

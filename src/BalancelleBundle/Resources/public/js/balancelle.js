@@ -40,6 +40,9 @@ jQuery(document).ready(function() {
      * cache le bloc bouton en entrée de page
      */
     afficherBoutonValider("cacher");
+
+    createAddFile(fileCount);
+    fileCount++;
 });
 
 /**
@@ -127,3 +130,22 @@ $("#btnRenvoyerMail").click(function(){
     });
 
 });
+
+/**
+ * Gère la gestion des pièces jointes dans un email
+ * @param fileCount
+ */
+function createAddFile(fileCount)
+{
+    // grab the prototype template
+    var newWidget = $("#filesProto").attr('data-prototype');
+    // replace the "__name__" used in the id and name of the prototype
+    newWidget = newWidget.replace(/__name__/g, fileCount);
+    $("#filesBox").append("<div class='row'>" + "<div class='col-md-10'>" + newWidget + "</div></div>");
+
+    // Once the file is added
+    $('#balancellebundle_structure_documents_' + fileCount + '_file').on('change', function() {
+        // Create another instance of add file button and company
+        createAddFile(parseInt(fileCount)+1);
+    });
+}

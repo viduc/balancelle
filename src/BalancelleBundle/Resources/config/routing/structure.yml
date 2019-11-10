@@ -17,3 +17,8 @@ structure_delete:
     path:     /{id}/delete
     defaults: { _controller: "BalancelleBundle:Structure:delete" }
     methods:  DELETE
+
+structure_envoi_mail:
+    path:     /{id}/envoyerMail
+    defaults: { _controller: "BalancelleBundle:Structure:envoyerMail" }
+    methods:  [GET, POST]
