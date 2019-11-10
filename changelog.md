@@ -6,9 +6,11 @@ tristan.fleury@labalancelle.yo.fr
 **Site intranet de l'association La Balancelle**    
 
 ------------
-## [07/1/2019] [v0.0.2][task53]
+## [10/11/2019] [v0.0.2][task53]
     - mise en place envoie de mail par structure
     - gestion des pièces jointes
+    - installation ckeditor: sudo apt-get install php7.2-zip
+    - ajout du ckeditor
     
 ## [28/10/2019] [v0.0.2][bug56]
     - correction déconnexion impossible

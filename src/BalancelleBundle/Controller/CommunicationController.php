@@ -80,7 +80,7 @@ class CommunicationController extends Controller
                 ->setContentType('text/html')
                 ->setBody(
                     $this->twig->render(
-                        '@Balancelle/Default/email.html.twig',
+                        '@Balancelle/Communication/email.html.twig',
                         array('message' => $message, 'sujet' => $sujet)
                     )
                 );

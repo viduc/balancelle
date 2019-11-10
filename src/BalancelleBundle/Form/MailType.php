@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 
 
 class MailType extends AbstractType
@@ -19,7 +20,13 @@ class MailType extends AbstractType
     {
         $builder
             ->add('sujet', TextType::class, ['required' => true])
-            ->add('message', TextareaType::class, ['required' => true])
+            //->add('message', TextareaType::class, ['required' => true])
+            ->add('message', CKEditorType::class, array(
+                /*'config' => array(
+                    'toolbar' => 'balancelle'
+                ),*/
+                'config_name' => 'standard'
+            ))
             ->add('documents', CollectionType::class, array(
                 'entry_type'   		=> DocumentType::class,
                 'prototype'			=> true,
