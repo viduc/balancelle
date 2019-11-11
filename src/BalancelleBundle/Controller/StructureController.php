@@ -177,10 +177,10 @@ class StructureController extends Controller implements FamilleInterface
             );
             $succes = 'Votre email a bien été envoyé aux parents';
             $this->addFlash('success', $succes);
-            /*return $this->redirectToRoute(
+            return $this->redirectToRoute(
                 'structure_edit',
                 array('id' => $structure->getId())
-            );*/
+            );
         }
         $titre = 'Envoyer un email aux parents de la structure ';
         $titre .= $structure->getNom();
