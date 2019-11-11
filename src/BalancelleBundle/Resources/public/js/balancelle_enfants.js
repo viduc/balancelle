@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function(){alert('toto');
     /* ajout de l'autocomplétion sur le bouton ajout */
     $("#btnAjouterEnfant").click(function(){alert('ici');
         $("#modalAjoutEnfant").appendTo("body").modal('show');
