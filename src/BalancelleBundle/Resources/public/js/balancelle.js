@@ -3,7 +3,6 @@
  * @type type
  */
 jQuery(document).ready(function() {
-
     $(".js-datepicker").datepicker({
         format: 'dd/mm/yyyy',
         changeYear: true,
@@ -41,8 +40,11 @@ jQuery(document).ready(function() {
      */
     afficherBoutonValider("cacher");
 
-    createAddFile(fileCount);
-    fileCount++;
+    if (typeof fileCount !== 'undefined') {
+        createAddFile(fileCount);
+        fileCount++;
+    }
+
 });
 
 /**
