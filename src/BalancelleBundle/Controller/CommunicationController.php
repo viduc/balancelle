@@ -50,7 +50,12 @@ class CommunicationController extends Controller
             $listeMail[] = $user->getEmail();
         }
 
-        return $this->envoyerMail($listeMail, $sujet, $message, $fichiers);
+        return $this->envoyerMail(
+            $listeMail,
+            $sujet,
+            $message,
+            $fichiers,
+            $structure->getEmail());
     }
 
     /**
@@ -59,6 +64,7 @@ class CommunicationController extends Controller
      * @param String $sujet - le sujet du mail
      * @param String $message - le message du mail au format html
      * @param null|array $fichier - chemin du fichier pdf (pièce jointe)
+     * @param String|null $from - l'adresse de l'expéditeur
      * @return mixed
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
@@ -68,14 +74,19 @@ class CommunicationController extends Controller
         array $listeMail,
         $sujet,
         $message,
-        array $fichier = null
+        array $fichier = null,
+        $from = null
     ) {
         $tabRetour = $this->verifierFichier($fichier);
+
+        if ($from === null) {
+            $from = 'comptes@labalancelle.yo.fr';
+        }
 
         foreach ($listeMail as $mail) {
             $email = Swift_Message::newInstance()
                 ->setSubject('[La Balancelle] - ' . $sujet)
-                ->setFrom('comptes@labalancelle.yo.fr')
+                ->setFrom($from)
                 ->setTo($mail)
                 ->setContentType('text/html')
                 ->setBody(

@@ -11,6 +11,8 @@ tristan.fleury@labalancelle.yo.fr
     - gestion des pièces jointes
     - installation ckeditor: sudo apt-get install php7.2-zip
     - ajout du ckeditor
+    - ajout du from dans la méthode envoie de mail
+    - from de la structure passé en paramètre pour envoie depuis structure
     
 ## [28/10/2019] [v0.0.2][bug56]
     - correction déconnexion impossible
