@@ -1,6 +1,6 @@
 $(document).ready(function(){
     /* ajout de l'autocomplétion sur le bouton ajout */
-    $("#btnAjouterEnfant").click(function(){
+    $("#btnAjouterEnfant").click(function(){alert('ici');
         $("#modalAjoutEnfant").appendTo("body").modal('show');
     });
 
