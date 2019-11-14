@@ -187,7 +187,6 @@ class StructureController extends Controller implements FamilleInterface
         return $this->render(
             '@Balancelle/Communication/email_create.html.twig',
             array(
-                'structure' => $structure,
                 'form' => $form->createView(),
                 'titre' => $titre
             )

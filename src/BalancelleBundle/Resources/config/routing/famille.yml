@@ -45,3 +45,8 @@ famille_autocomplete:
     path:     /autocomplete
     defaults: { _controller: "BalancelleBundle:Famille:autocomplete" }
     methods:  [POST]
+
+famille_envoi_mail:
+    path:     /{id}/envoyerMail
+    defaults: { _controller: "BalancelleBundle:Famille:envoyerMail" }
+    methods:  [GET, POST]

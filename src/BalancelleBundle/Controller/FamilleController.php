@@ -5,6 +5,8 @@ namespace BalancelleBundle\Controller;
 use BalancelleBundle\Entity\Enfant;
 use BalancelleBundle\Entity\Famille;
 use BalancelleBundle\Entity\Permanence;
+use BalancelleBundle\Entity\Structure;
+use BalancelleBundle\Form\MailType;
 use DateTime;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -389,5 +391,52 @@ class FamilleController extends Controller implements FamilleInterface
             return new JsonResponse($tabResponse);
         }
         return null;
+    }
+
+    /**
+     * Envoie un mail aux parents de la structure
+     * @param Request $request
+     * @param Famille $famille - la famille concernée
+     * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function envoyerMailAction(Request $request, Famille $famille)
+    {
+        $form = $this->createForm(
+            MailType::class
+        );
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $documents = $form->getData()['documents'];
+            array_pop($documents);
+            $tabMails[] = $famille->getParent1()->getEmail();
+            if ($famille->getParent2()) {
+                $tabMails[] = $famille->getParent2()->getEmail();
+            }
+            $this->get('communication')->envoyerMail(
+                $tabMails,
+                $form->getData()['sujet'],
+                $form->getData()['message'],
+                $documents
+            );
+            $succes = 'Votre email a bien été envoyé à la famille';
+            $this->addFlash('success', $succes);
+            return $this->redirectToRoute(
+                'famille_edit',
+                array('id' => $famille->getId())
+            );
+        }
+        $titre = 'Envoyer un email à la famille ';
+        $titre .= $famille->getNom();
+        return $this->render(
+            '@Balancelle/Communication/email_create.html.twig',
+            array(
+                'form' => $form->createView(),
+                'titre' => $titre
+            )
+        );
     }
 }
