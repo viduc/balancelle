@@ -6,6 +6,7 @@
 namespace BalancelleBundle\Controller;
 
 use BalancelleBundle\Entity\User;
+use BalancelleBundle\Form\MailType;
 use Exception;
 use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -319,7 +320,11 @@ class UserController extends Controller implements FamilleInterface
         return new JsonResponse('ok');
     }
 
-
+    /**
+     * Renvoi le mail de création de mot de passe à l'utilisateur
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function renvoyermailAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -343,6 +348,50 @@ class UserController extends Controller implements FamilleInterface
         $this->get('mailer')->send($message);
         return new JsonResponse(
             'Le mail pour la génération du mot de passe a bien été envoyé'
+        );
+    }
+
+    /**
+     * Envoie un mail à l'utilisateur
+     * @param Request $request
+     * @param User $user - l'utilisateur' concerné
+     * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function envoyerMailAction(Request $request, User $user)
+    {
+        $form = $this->createForm(
+            MailType::class
+        );
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $documents = $form->getData()['documents'];
+            array_pop($documents);
+            $this->get('communication')->envoyerMail(
+                [$user->getEmail()],
+                $form->getData()['sujet'],
+                $form->getData()['message'],
+                $documents
+            );
+            $succes = 'Votre email a bien été envoyé à ' . $user->getPrenom();
+            $succes .= ' ' . $user->getNom();
+            $this->addFlash('success', $succes);
+            return $this->redirectToRoute(
+                'user_edit',
+                array('id' => $user->getId())
+            );
+        }
+        $titre = 'Envoyer un email à '. $user->getPrenom() . ' ';
+        $titre .= $user->getNom();
+        return $this->render(
+            '@Balancelle/Communication/email_create.html.twig',
+            array(
+                'form' => $form->createView(),
+                'titre' => $titre
+            )
         );
     }
 }

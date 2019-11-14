@@ -13,6 +13,8 @@ tristan.fleury@labalancelle.yo.fr
     - ajout du ckeditor
     - ajout du from dans la méthode envoie de mail
     - from de la structure passé en paramètre pour envoie depuis structure
+    - ajout d'un envoi de mail utilisateur
+    - ajout envoi mail famille
     
 ## [28/10/2019] [v0.0.2][bug56]
     - correction déconnexion impossible

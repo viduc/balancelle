@@ -32,3 +32,8 @@ user_renvoyer_mail:
     path:     /renvoyer
     defaults: { _controller: "BalancelleBundle:User:renvoyermail" }
     methods:  [POST]
+
+user_envoi_mail:
+    path:     /{id}/envoyerMail
+    defaults: { _controller: "BalancelleBundle:User:envoyerMail" }
+    methods:  [GET, POST]

@@ -45,7 +45,10 @@
                                             <img src="{{asset('bundles/balancelle/images/off.png')}}" alt="inactif" />
                                         {% endif %}
                                     </td>
-                                    <td><a href="{{ path('user_edit', { 'id': user.id }) }}">Voir</a></td>
+                                    <td>
+                                        <a href="{{ path('user_edit', { 'id': user.id }) }}"><i class="fa fa-eye"></i> Voir </a> -
+                                        <a href="{{ path('user_envoi_mail', {'id': user.id }) }}"> <i class="fa fa-envelope"></i> Envoyer un mail à {{ user.prenom }} {{ user.nom }}</a>
+                                    </td>
                                 </tr>
                             {% endfor %}
                             </tbody>
