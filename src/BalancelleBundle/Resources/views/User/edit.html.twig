@@ -100,7 +100,8 @@
                             </div>
                         {% endif %}
                         {{ form_end(form) }}
-                        {% if delete_form is defined %}
+                        {% if delete_form is defined and
+                            ( familleUtilisateur is not defined or familleUtilisateur is null) %}
                             <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
                                 {{ form_start(delete_form) }}
                                 <input type="submit" value="supprimer" class="btn btn-rounded btn-danger mb-3"/>
@@ -112,9 +113,11 @@
                                 <a href="{{ path('famille_edit', {'id': familleUtilisateur.id }) }}" class="btn btn-flat btn-primary mb-3"><i class="fa fa-eye"></i>Voir la famille</a>
                             {% endif %}
                         </div>
+                        {% if user.id is defined and user.id != "" %}
                         <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-1 my-1">
                             <a href="{{ path('user_envoi_mail', {'id': user.id }) }}" class="btn btn-flat btn-primary mb-3"><i class="fa fa-envelope"></i> Envoyer un mail à {{ user.prenom }} {{ user.nom }}</a>
                         </div>
+                        {% endif %}
                         {% if user.confirmationToken is not null %}
                             <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 mb-3 ml-3">
                                 <button type="button" id="btnRenvoyerMail" class="btn btn-default btn-warning btn-block">

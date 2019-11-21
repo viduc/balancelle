@@ -193,9 +193,22 @@ class UserController extends Controller implements FamilleInterface
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $utilisateur = $user->getPrenom() . ' ' . $user->getNom();
             $em = $this->getDoctrine()->getManager();
-            $em->remove($user);
-            $em->flush();
+            if ($em->getRepository(
+                'BalancelleBundle:Famille'
+            )->findByFamille($user->getId()) === null) {
+                $em->remove($user);
+                $em->flush();
+                $succes = "L'utilisateur " . $utilisateur;
+                $succes .= ' a bien été modifié';
+                $this->addFlash('success', $succes);
+            } else {
+                $error = "L'utilisateur " . $utilisateur;
+                $error .= " n'a pas pu être supprimé car il est lié à une famille";
+                $this->addFlash('danger', $error);
+            }
+
         }
 
         return $this->redirectToRoute('user_index');

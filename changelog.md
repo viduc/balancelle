@@ -6,6 +6,11 @@ tristan.fleury@labalancelle.yo.fr
 **Site intranet de l'association La Balancelle**    
 
 ------------
+## [21/11/2019] [v0.0.2][task35]
+    - bloquage de la suppression d'un utilisateur si il est lié à une famille
+        - plus de bouton dans la vue edit
+        - vérification dans méthode delete du controller
+    
 ## [10/11/2019] [v0.0.2][task53]
     - mise en place envoie de mail par structure
     - gestion des pièces jointes
