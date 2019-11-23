@@ -4,41 +4,42 @@
     {% set action = app.request.attributes.get("_route") %}
     {{ parent() }}
     <div class="main-content-inner">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-ml-12 mt-5">
+        <div class="col-xl-8 col-lg-8 col-md-8 col-ml-12 mt-5">
             <div class="card" style="background-color: #bbbbbb">
                 <div class="card-body" >
                     <h4 class="header-title">Information sur l'enfant</h4>
                     {{ form_start(form) }}
                     <div class="form-row align-items-center" >
-                        <!--div class="form-group col-xl-1 col-lg-1 col-md-2 col-sm-12 my-1">
-                            <label for="civilite">Sexe</label>
-                            <select id="input_sex" class="form-control">
-                                <option value="Mr.">Garçon</option>
-                                <option value="Mme.">Fille</option>
-                            </select>
-                        </div-->
-                        <div class="form-group col-xl-4 col-lg-4 col-md-5 col-sm-12 my-1">
+                        <div class="form-group col-xl-6 col-lg-6 col-md-12 col-sm-12 my-1">
                             <label for="prenom">Prenom</label>
                             {{ form_widget(form.prenom, {'attr': {'class': 'form-control',
                                 'placeholder': "prénom"}}) }}
                         </div>
-                        <div class="form-group col-xl-4 col-lg-4 col-md-5 col-sm-12 my-1">
+                        <div class="form-group col-xl-6 col-lg-6 col-md-12 col-sm-12 my-1">
                             <label for="nom">Nom</label>
                             {{ form_widget(form.nom, {'attr': {'class': 'form-control',
                                 'placeholder': "nom"}}) }}
                         </div>
-                        <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-12 my-1 mt-4">
+                    </div>
+                    <div class="form-row align-items-center" >
+                        <div class="form-group col-xl-6 col-lg-6 col-md-12 col-sm-12 mt-4">
+                            <label for="structure">Structure</label>
+                            {{ form_widget(form.structure, {'attr': {'class': 'form-control',
+                                'placeholder': "structure"}}) }}
+                        </div>
+                        <div class="form-group col-xl-3 col-lg-3 col-md-12 col-sm-12 mt-4">
+                            <label for="datenaissance">Date de naissance</label>
                             {{ form_widget(form.naissance, {'attr': {
                                 'placeholder': "date de naissance"}}) }}
                         </div>
-                        <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-12 my-1">
+                        <div class="form-group col-xl-3 col-lg-3 col-md-12 col-sm-12 mt-4">
                             <label for="compteActif">Actif</label>
                             {{ form_widget(form.active, {'attr': {'class': 'form-control',
                                 'placeholder': "actif"}}) }}<label></label>
                         </div>
                     </div>
                     <div class="form-row align-items-center">
-                        <div class="form-group col-xl-8 col-lg-8 col-md-12 col-sm-12 my-1 mt-4">
+                        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 my-1 mt-4">
                             <label for="commentaire">Commentaire</label>
                             {{ form_widget(form.commentaire, {'attr': {'class': 'form-control',
                                 'placeholder': "commentaire"}}) }}

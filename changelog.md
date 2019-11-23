@@ -9,6 +9,9 @@ tristan.fleury@labalancelle.yo.fr
 ## [23/11/2019] [v0.0.2][task40]
     - correction ajout enfant déjà enregistré à une famille (était redirigé vers
         supprimé si action avant était suppression
+    - ajout de la modification de la structure dans l'édition enfant
+    - correction bug ajout structure avec path envoyer mail (attente de l'id
+        de la structure)
     
 ## [21/11/2019] [v0.0.2][task35]
     - bloquage de la suppression d'un utilisateur si il est lié à une famille

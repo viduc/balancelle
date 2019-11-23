@@ -54,6 +54,7 @@ class EnfantType extends AbstractType
                 TextareaType::class,
                 ['attr' => array('class' => 'tinymce', 'cols' => 80)]
             )
+            ->add('structure')
             ->add('active', CheckboxType::class, ['required' => false])
         ;
     }
