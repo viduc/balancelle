@@ -6,6 +6,10 @@ tristan.fleury@labalancelle.yo.fr
 **Site intranet de l'association La Balancelle**    
 
 ------------
+## [23/11/2019] [v0.0.2][task40]
+    - correction ajout enfant déjà enregistré à une famille (était redirigé vers
+        supprimé si action avant était suppression
+    
 ## [21/11/2019] [v0.0.2][task35]
     - bloquage de la suppression d'un utilisateur si il est lié à une famille
         - plus de bouton dans la vue edit

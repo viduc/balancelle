@@ -47,7 +47,7 @@ $(document).ready(function(){
                 method: "post",
                 data: {idEnfant: idEnfant, idFamille: idFamille},
                 success: function (result) {
-                    parent.location.reload();
+                    parent.document.location.href = pathEditFamille;
                 }
             });
         }
