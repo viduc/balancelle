@@ -334,14 +334,7 @@ class FamilleController extends Controller implements FamilleInterface
             $type = 'success';
         }
         $this->addFlash($type, $reponse);
-        return $this->forward(
-            'BalancelleBundle:Famille:edit',
-            [
-                'famille' => $this->em
-                    ->getRepository('BalancelleBundle:Famille')
-                    ->find($idFamille)
-            ]
-        );
+        return $this->redirectToRoute('famille_edit', ['id' => $idFamille]);
     }
 
     /**

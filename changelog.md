@@ -6,6 +6,14 @@ tristan.fleury@labalancelle.yo.fr
 **Site intranet de l'association La Balancelle**    
 
 ------------
+## [26/11/2019] [v0.0.2][bug38]
+    - supression de la possiblité de créer des enfants lors de la création d'une
+        famille.
+    - modification de la vue famille (edit)
+    - correction de bug:
+        - pathEditFamille demande id (bug avec création)
+        - redirect lors de la suppression enfant (forward -> redirecttoroute)
+        
 ## [23/11/2019] [v0.0.2][task40]
     - correction ajout enfant déjà enregistré à une famille (était redirigé vers
         supprimé si action avant était suppression
