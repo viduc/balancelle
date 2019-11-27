@@ -50,9 +50,11 @@ class FamilleController extends Controller implements FamilleInterface
             $permanence['inscrit'] = $repository->findByFamille($famille);
             $permanence['pourcentage'] = 0;
             if ($permanence['aFaire']) {
-                $permanence['pourcentage'] = count(
-                        $permanence['faite']
-                    )*100/$permanence['aFaire'];
+                $permanence['pourcentage'] =
+                    count($permanence['faite'])*100/$permanence['aFaire'];
+            }
+            if ($permanence['pourcentage']>100) {
+                $permanence['pourcentage'] = 100;
             }
         }
         return $permanence;
