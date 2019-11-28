@@ -44,6 +44,15 @@ class CalendrierController extends Controller
      */
     public function newAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
+        if (!$em->getRepository(Structure::class)->coutStructure()) {
+            $message = 'Vous ne pouvez pas créer de calendrier si aucune ';
+            $message .= " structre n'est disponible.";
+            return $this->render(
+                '@Balancelle/Default/error.html.twig',
+                array('message' => $message)
+            );
+        }
         $calendrier = new Calendrier();
         $form = $this->createForm(
             CalendrierType::class,
@@ -54,7 +63,7 @@ class CalendrierController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $calendrier->setAnneeDebut($calendrier->getDateDebut()->format('Y'));
             $calendrier->setAnneeFin($calendrier->getDateFin()->format('Y'));
-            $em = $this->getDoctrine()->getManager();
+
             $em->persist($calendrier);
             $em->flush();
             $succes = 'Le calendrier  ';
@@ -62,11 +71,7 @@ class CalendrierController extends Controller
             $this->addFlash('success', $succes);
 
             try {
-                $this->genererLesSemaines(
-                    $calendrier//,
-                    //$calendrier->getDateDebut(),
-                    //$calendrier->getDateFin()
-                );
+                $this->genererLesSemaines($calendrier);
             } catch (Exception $e) { //TODO gérer l'erreur ici
                 $this->addFlash('success', 'blop');
             }

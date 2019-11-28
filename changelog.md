@@ -6,6 +6,10 @@ tristan.fleury@labalancelle.yo.fr
 **Site intranet de l'association La Balancelle**    
 
 ------------
+## [28/11/2019] [v0.0.2][bug36]
+    - il n'est désormais plus possible de créer (accès au formulaire) un calendrier
+    si aucune structure n'est disponible (active)
+    
 ## [26/11/2019] [v0.0.2][bug38]
     - supression de la possiblité de créer des enfants lors de la création d'une
         famille.

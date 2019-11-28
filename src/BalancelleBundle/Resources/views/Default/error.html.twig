@@ -1,0 +1,19 @@
+{% extends '@Balancelle/Default/layout.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+<div class="main-content-inner" xmlns="http://www.w3.org/1999/html">
+    <div class="form-row" >
+        <div class="col-xl-6 col-lg-6 col-md-12 col-ml-12">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-ml-12">
+                <div class="card" style="background-color: #bbbbbb">
+                    <div class="card-body" >
+                        <h5 class="title">Erreur</h5>
+                        {{ message }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -3,6 +3,8 @@
 namespace BalancelleBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 
 /**
  * StructureRepository
@@ -12,4 +14,22 @@ use Doctrine\ORM\EntityRepository;
  */
 class StructureRepository extends EntityRepository
 {
+    /**
+     * Récupère les enfants non liés à une famille
+     * @return mixed
+     */
+    public function coutStructure()
+    {
+        try {
+            return $this
+                ->createQueryBuilder('a')
+                ->select('COUNT(a.id)')
+                ->where('a.active = 1')
+                ->getQuery()
+                ->getSingleScalarResult()
+                ;
+        } catch (NoResultException $e) {
+        } catch (NonUniqueResultException $e) {
+        }
+    }
 }
