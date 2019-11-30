@@ -6,6 +6,10 @@ tristan.fleury@labalancelle.yo.fr
 **Site intranet de l'association La Balancelle**    
 
 ------------
+## [29/11/2019] [v0.0.2][task29]
+    - correction de l'insertion de l'ajout de perm
+    - filtrage des structures actives pour la création de calendrier
+    
 ## [28/11/2019] [v0.0.2][bug36]
     - il n'est désormais plus possible de créer (accès au formulaire) un calendrier
     si aucune structure n'est disponible (active)

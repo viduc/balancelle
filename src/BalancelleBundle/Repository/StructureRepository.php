@@ -32,4 +32,14 @@ class StructureRepository extends EntityRepository
         } catch (NonUniqueResultException $e) {
         }
     }
+
+    public function getStructureActive()
+    {
+        return $this
+            ->createQueryBuilder('a')
+            ->where('a.active = 1')
+            ->getQuery()
+            ->execute()
+            ;
+    }
 }
