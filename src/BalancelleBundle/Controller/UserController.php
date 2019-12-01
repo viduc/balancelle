@@ -53,7 +53,7 @@ class UserController extends Controller implements FamilleInterface
      * @return RedirectResponse|Response
      * @throws Exception
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request, CommunicationController $com)
     {
         $userManager = $this->get('fos_user.user_manager');
         $user = $userManager->createUser();
@@ -69,22 +69,19 @@ class UserController extends Controller implements FamilleInterface
             $userManager->updateUser($user);
             $pdf = $this->getParameter('web_dir');
             $pdf .= '/bundles/balancelle/documents/MODE_EMPLOI_BALANCELLE.pdf';
-            $message = Swift_Message::newInstance()
-                ->setSubject('[La Balancelle] - Votre espace personnel')
-                ->setFrom('comptes@labalancelle.yo.fr')
-                ->setTo($user->getEmail())
-                ->setContentType('text/html')
-                ->attach(\Swift_Attachment::fromPath($pdf, 'application/pdf'))
-                ->setBody(
-                    $this->renderView(
-                        '@Balancelle/User/enregistrement_email.html.twig',
-                        array(
-                            'token' => $user->getConfirmationToken(),
-                            'login' => $user->getUsername())//,
-                        //'text/html'
-                    )
-                );
-            $this->get('mailer')->send($message);
+            $com->envoyerMail(
+                [$user->getEmail()],
+                'Votre espace personnel',
+                null,
+                [$pdf],
+                'comptes@labalancelle.yo.fr',
+                $this->renderView(
+                    '@Balancelle/Communication/enregistrement_email.html.twig',
+                    array(
+                        'token' => $user->getConfirmationToken(),
+                        'login' => $user->getUsername())
+                )
+            );
             $succes = "L'utilisateur " . $user->getPrenom() . ' ';
             $succes .= $user->getNom() . ' a bien été enregistré';
             $this->addFlash('success', $succes);

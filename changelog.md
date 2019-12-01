@@ -6,6 +6,10 @@ tristan.fleury@labalancelle.yo.fr
 **Site intranet de l'association La Balancelle**    
 
 ------------
+## [01/12/2019] [v0.0.2][task61]
+    - modification envoie mail lors de la création de compte -> utilise désormais
+        la class communication
+    
 ## [29/11/2019] [v0.0.2][task29]
     - correction de l'insertion de l'ajout de perm
     - filtrage des structures actives pour la création de calendrier

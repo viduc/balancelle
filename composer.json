@@ -35,7 +35,8 @@
         "symfony/symfony": "3.4.*",
         "tattali/calendar-bundle": "^1.1.4",
         "twig/twig": "^1.0||^2.0",
-        "friendsofsymfony/ckeditor-bundle": "^2.0||^2.1"
+        "friendsofsymfony/ckeditor-bundle": "^2.0||^2.1",
+        "ext-fileinfo": "*"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

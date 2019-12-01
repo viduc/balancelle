@@ -73,9 +73,10 @@ class CommunicationController extends Controller
     public function envoyerMail(
         array $listeMail,
         $sujet,
-        $message,
+        $message = null,
         array $fichier = null,
-        $from = null
+        $from = null,
+        $body = null
     ) {
         $tabRetour = $this->verifierFichier($fichier);
 
@@ -88,13 +89,17 @@ class CommunicationController extends Controller
                 ->setSubject('[La Balancelle] - ' . $sujet)
                 ->setFrom($from)
                 ->setTo($mail)
-                ->setContentType('text/html')
-                ->setBody(
+                ->setContentType('text/html');
+            if ($body !== null) {
+                $email->setBody($body);
+            } else {
+                $email->setBody(
                     $this->twig->render(
                         '@Balancelle/Communication/email.html.twig',
                         array('message' => $message, 'sujet' => $sujet)
                     )
                 );
+            }
             foreach ($tabRetour as $retour) {
                 if ($retour['valide']) {
                     $email->attach($retour['attachement']);
@@ -122,22 +127,32 @@ class CommunicationController extends Controller
 
         $lengthFichiers = count($fichiers);
         for ($i=0; $i<$lengthFichiers; $i++) {
-            $file = $fichiers[$i]['file'];
-            if (!file_exists($file->getPathName())) {
+
+            if (isset($fichiers[$i]['file'])) {
+                $file = $fichiers[$i]['file'];
+                $fileExist = file_exists($file->getPathName());
+                $pathName = $file->getPathName();
+                $mimeType = $file->getMimeType();
+                $name = $file->getClientOriginalName();
+            } else {
+                $file = $fichiers[$i];
+                $fileExist = file_exists($file);
+                $pathName = $file;
+                $mimeType = mime_content_type($file);
+                $explode = (explode('/',$file));
+                $name = end($explode);
+            }
+            if (!$fileExist) {
                 $tabRetour[$i]['erreur']['erreurFichierPath'] =
                     'Le fichier n\'existe pas ';
                 $tabRetour[$i]['valide'] = false;
             }
-            /*elseif (!strpos($fichiers[$i], '.pdf')) {
-                $tabRetour[$i]['erreur']['erreurFichierFormat'] =
-                    'Le chemin du fichier est non conforme';
-                $tabRetour[$i]['valide'] = false;
-            }*/
             else {
                 $tabRetour[$i]['attachement'] = \Swift_Attachment::fromPath(
-                    $file->getPathName(),
-                    $file->getMimeType()
-                )->setFilename($file->getClientOriginalName());
+                    $pathName,
+                    $mimeType
+                )->setFilename($name)
+                ;
                 $tabRetour[$i]['valide'] = true;
             }
         }
