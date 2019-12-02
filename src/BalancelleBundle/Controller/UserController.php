@@ -8,7 +8,6 @@ namespace BalancelleBundle\Controller;
 use BalancelleBundle\Entity\User;
 use BalancelleBundle\Form\MailType;
 use Exception;
-use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -333,29 +332,35 @@ class UserController extends Controller implements FamilleInterface
     /**
      * Renvoi le mail de création de mot de passe à l'utilisateur
      * @param Request $request
+     * @param CommunicationController $com
      * @return JsonResponse
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
-    public function renvoyermailAction(Request $request)
-    {
+    public function renvoyermailAction(
+        Request $request,
+        CommunicationController $com
+    ) {
         $em = $this->getDoctrine()->getManager();
         $user = $em
             ->getRepository('BalancelleBundle:User')
             ->find($request->get('id'));
-        $message = Swift_Message::newInstance()
-            ->setSubject('Inscription')
-            ->setFrom('comptes@labalancelle.yo.fr')
-            ->setTo($user->getEmail())
-            ->setContentType('text/html')
-            ->setBody(
-                $this->renderView(
-                    '@Balancelle/User/enregistrement_email.html.twig',
-                    array(
-                        'token' => $user->getConfirmationToken(),
-                        'login' => $user->getUsername())//,
-                //'text/html'
-                )
-            );
-        $this->get('mailer')->send($message);
+        $pdf = $this->getParameter('web_dir');
+        $pdf .= '/bundles/balancelle/documents/MODE_EMPLOI_BALANCELLE.pdf';
+        $com->envoyerMail(
+            [$user->getEmail()],
+            'Votre espace personnel',
+            null,
+            [$pdf],
+            'comptes@labalancelle.yo.fr',
+            $this->renderView(
+                '@Balancelle/Communication/enregistrement_email.html.twig',
+                array(
+                    'token' => $user->getConfirmationToken(),
+                    'login' => $user->getUsername())
+            )
+        );
         return new JsonResponse(
             'Le mail pour la génération du mot de passe a bien été envoyé'
         );
