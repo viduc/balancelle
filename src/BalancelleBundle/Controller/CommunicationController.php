@@ -83,29 +83,29 @@ class CommunicationController extends Controller
         if ($from === null) {
             $from = 'comptes@labalancelle.yo.fr';
         }
+        $email = Swift_Message::newInstance()
+            ->setSubject('[La Balancelle] - ' . $sujet)
+            ->setFrom($from)
+            //->setTo($mail)
+            ->setContentType('text/html');
+        if ($body !== null) {
+            $email->setBody($body);
+        } else {
+            $email->setBody(
+                $this->twig->render(
+                    '@Balancelle/Communication/email.html.twig',
+                    array('message' => $message, 'sujet' => $sujet)
+                )
+            );
+        }
+        foreach ($tabRetour as $retour) {
+            if ($retour['valide']) {
+                $email->attach($retour['attachement']);
+            }
+        }
 
         foreach ($listeMail as $mail) {
-            $email = Swift_Message::newInstance()
-                ->setSubject('[La Balancelle] - ' . $sujet)
-                ->setFrom($from)
-                ->setTo($mail)
-                ->setContentType('text/html');
-            if ($body !== null) {
-                $email->setBody($body);
-            } else {
-                $email->setBody(
-                    $this->twig->render(
-                        '@Balancelle/Communication/email.html.twig',
-                        array('message' => $message, 'sujet' => $sujet)
-                    )
-                );
-            }
-            foreach ($tabRetour as $retour) {
-                if ($retour['valide']) {
-                    $email->attach($retour['attachement']);
-                }
-            }
-
+            $email->setTo($mail);
             $this->mailer->send($email);
         }
 

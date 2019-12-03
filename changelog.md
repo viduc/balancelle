@@ -6,6 +6,12 @@ tristan.fleury@labalancelle.yo.fr
 **Site intranet de l'association La Balancelle**    
 
 ------------
+## [03/12/2019] [v0.0.2][bug66]
+    - suppression de l'alert en retour ajax de modification utilisateur
+    - optimisation envoi mail (préparation du mail puis boucle sur la liste
+        utilisateur pour faire un setTo
+    - modification libellé email (active) dans edit structure
+    
 ## [01/12/2019] [v0.0.2][task61]
     - modification envoie mail lors de la création de compte -> utilise désormais
         la class communication

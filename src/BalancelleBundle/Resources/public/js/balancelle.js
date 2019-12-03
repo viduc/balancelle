@@ -127,7 +127,7 @@ $("#btnRenvoyerMail").click(function(){
         dataType : 'json',
         data: {id: userId},
         success: function (result) {
-            alert(result);
+            //alert(result);
         }
     });
 
