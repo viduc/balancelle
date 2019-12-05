@@ -397,7 +397,7 @@ class FamilleController extends Controller implements FamilleInterface
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function envoyerMailAction(Request $request, Famille $famille)
+    public function envoyerMailAction(Request $request, Famille $famille = null)
     {
         $form = $this->createForm(
             MailType::class
@@ -407,25 +407,45 @@ class FamilleController extends Controller implements FamilleInterface
         if ($form->isSubmitted() && $form->isValid()) {
             $documents = $form->getData()['documents'];
             array_pop($documents);
-            $tabMails[] = $famille->getParent1()->getEmail();
-            if ($famille->getParent2()) {
-                $tabMails[] = $famille->getParent2()->getEmail();
+            if ($famille !== null) {
+                $tabFamille[] = $famille;
+            } else {
+                $tabFamille = $this->em
+                    ->getRepository('BalancelleBundle:Famille')
+                    ->findBy(['active' => 1]);
             }
+            foreach ($tabFamille as $fam) {
+                $tabMails[] = $fam->getParent1()->getEmail();
+                if ($fam->getParent2()) {
+                    $tabMails[] = $fam->getParent2()->getEmail();
+                }
+            }
+
             $this->get('communication')->envoyerMail(
                 $tabMails,
                 $form->getData()['sujet'],
                 $form->getData()['message'],
                 $documents
             );
-            $succes = 'Votre email a bien été envoyé à la famille';
+
+            if ($famille !== null) {
+                $succes = 'Votre email a bien été envoyé à la famille';
+                $this->addFlash('success', $succes);
+                return $this->redirectToRoute(
+                    'famille_edit',
+                    array('id' => $famille->getId())
+                );
+            }
+            $succes = 'Votre email a bien été envoyé à toutes les familles';
             $this->addFlash('success', $succes);
-            return $this->redirectToRoute(
-                'famille_edit',
-                array('id' => $famille->getId())
-            );
+            return $this->redirectToRoute('famille_index', array());
         }
-        $titre = 'Envoyer un email à la famille ';
-        $titre .= $famille->getNom();
+        $titre = 'Envoyer un email à toutes les familles ';
+        if ($famille !== null) {
+            $titre = 'Envoyer un email à la famille ';
+            $titre .= $famille->getNom();
+        }
+
         return $this->render(
             '@Balancelle/Communication/email_create.html.twig',
             array(

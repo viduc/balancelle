@@ -27,7 +27,7 @@ class CommunicationController extends Controller
 
     /**
      * Envoie un mail à tout les parents d'une structure
-     * @param Structure $structure - la structure
+     * @param $structure - la structure
      * @param String $sujet - le sujet du mail
      * @param String $message - le message au format html
      * @param null|array $fichiers - chemin du fichier pdf (pièce jointe)
@@ -37,7 +37,7 @@ class CommunicationController extends Controller
      * @throws \Twig\Error\SyntaxError
      */
     public function envoyerMailStructure(
-        Structure $structure,
+        $structure,
         $sujet,
         $message,
         array $fichiers = null)
@@ -49,13 +49,17 @@ class CommunicationController extends Controller
         foreach ($listeUser as $user) {
             $listeMail[] = $user->getEmail();
         }
-
+        $from = null;
+        if ($structure !== null) {
+            $from = $structure->getEmail();
+        }
         return $this->envoyerMail(
             $listeMail,
             $sujet,
             $message,
             $fichiers,
-            $structure->getEmail());
+            $from
+            );
     }
 
     /**

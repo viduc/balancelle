@@ -22,3 +22,8 @@ structure_envoi_mail:
     path:     /{id}/envoyerMail
     defaults: { _controller: "BalancelleBundle:Structure:envoyerMail" }
     methods:  [GET, POST]
+
+structure_envoi_mail_general:
+    path:     /envoyerMailGeneral
+    defaults: { _controller: "BalancelleBundle:Structure:envoyerMail" }
+    methods:  [GET, POST]

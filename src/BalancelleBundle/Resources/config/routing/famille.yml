@@ -50,3 +50,8 @@ famille_envoi_mail:
     path:     /{id}/envoyerMail
     defaults: { _controller: "BalancelleBundle:Famille:envoyerMail" }
     methods:  [GET, POST]
+
+famille_envoi_mail_general:
+    path:     /envoyerMailGeneral
+    defaults: { _controller: "BalancelleBundle:Famille:envoyerMail" }
+    methods:  [GET, POST]

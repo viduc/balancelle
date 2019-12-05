@@ -5,12 +5,23 @@
     <div class="main-content-inner">
         <div class="row">
             <div class="col-2 pt-50">
-                <div class="card">
-                    <div class="card-body">
-                        <a href="{{ path('famille_new') }}" >
-                            <img src="{{ asset('bundles/balancelle/images/add.svg') }}" alt="ajouter" />
-                        </a>
-
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <a href="{{ path('famille_new') }}" >
+                                <img src="{{ asset('bundles/balancelle/images/add.svg') }}" alt="ajouter" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <a href="{{ path('famille_envoi_mail_general')}}"
+                               class="btn btn-flat btn-primary mb-3">
+                                <i class="fa fa-envelope"></i> Envoyer un mail </br>à tous les parents
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

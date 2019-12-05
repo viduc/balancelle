@@ -6,6 +6,12 @@ tristan.fleury@labalancelle.yo.fr
 **Site intranet de l'association La Balancelle**    
 
 ------------
+## [05/12/2019] [v0.0.2][task63]
+    - ajout d'un bouton envoyer mail à tous les parents et envoyer mail à toutes
+        les familles dans index structure et index famille
+    - modification méthode envoyerMailStructure pour prendre en compte une
+        structure null -> envoie du mail à toute les strcutures
+    
 ## [05/12/2019] [v0.0.2][task61]
     - modification envoie mail lors du rappel permanence
         

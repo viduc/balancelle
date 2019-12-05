@@ -159,7 +159,7 @@ class StructureController extends Controller implements FamilleInterface
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function envoyerMailAction(Request $request, Structure $structure)
+    public function envoyerMailAction(Request $request, Structure $structure = null)
     {
         $form = $this->createForm(
             MailType::class
@@ -177,13 +177,20 @@ class StructureController extends Controller implements FamilleInterface
             );
             $succes = 'Votre email a bien été envoyé aux parents';
             $this->addFlash('success', $succes);
-            return $this->redirectToRoute(
-                'structure_edit',
-                array('id' => $structure->getId())
-            );
+            if ($structure !== null) {
+                return $this->redirectToRoute(
+                    'structure_edit',
+                    array('id' => $structure->getId())
+                );
+            }
+
+            return $this->redirectToRoute('structure_index',array());
         }
-        $titre = 'Envoyer un email aux parents de la structure ';
-        $titre .= $structure->getNom();
+        $titre = 'Envoyer un email aux parents ';
+        if ($structure !== null) {
+            $titre .= 'de la structure ' . $structure->getNom();
+        }
+
         return $this->render(
             '@Balancelle/Communication/email_create.html.twig',
             array(
