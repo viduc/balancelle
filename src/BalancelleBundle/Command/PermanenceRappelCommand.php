@@ -6,6 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class PermanenceRappelCommand extends ContainerAwareCommand
 {
@@ -35,6 +38,11 @@ class PermanenceRappelCommand extends ContainerAwareCommand
         $controller = $this->getContainer()->get(
             'BalancelleBundle\Controller\PermanenceRappelController'
         );
-        $output->writeln($controller->rappel($input->getArgument('nbrJour')));
+        try {
+            $output->writeln($controller->rappel($input->getArgument('nbrJour')));
+        } catch (LoaderError $e) {
+        } catch (RuntimeError $e) {
+        } catch (SyntaxError $e) {
+        }
     }
 }

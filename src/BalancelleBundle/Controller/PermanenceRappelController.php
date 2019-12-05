@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Swift_Message;
 use Symfony\Component\Form\Extension\Templating\TemplatingRendererEngine;
 use Twig\Environment;
+use BalancelleBundle\Controller\CommunicationController;
 
 class PermanenceRappelController extends Controller
 {
@@ -22,7 +23,15 @@ class PermanenceRappelController extends Controller
      */
     private $em;
 
+    /**
+     * @var Environment
+     */
     private $twig;
+
+    /**
+     * @var
+     */
+    private $com;
 
     /**
      * PermanenceRappelController constructor.
@@ -33,11 +42,13 @@ class PermanenceRappelController extends Controller
     public function __construct(
         \Swift_Mailer $mailer,
         EntityManagerInterface $em,
-        Environment $twig
+        Environment $twig,
+        CommunicationController $com
     ) {
         $this->mailer = $mailer;
         $this->em = $em;
         $this->twig = $twig;
+        $this->com = $com;
     }
 
     /**
@@ -63,17 +74,20 @@ class PermanenceRappelController extends Controller
             if ($permanence->getFamille()->getParent2() !== null) {
                 $to[] = $permanence->getFamille()->getParent2()->getEmail();
             }
-            $message = Swift_Message::newInstance()
-                ->setSubject($sujet)
-                ->setFrom('rappel_permanence@labalancelle.yo.fr')
-                ->setTo($to)
-                ->setContentType('text/html')
-                ->setBody(
-                    $this->twig->render(
-                    '@Balancelle/Permanence/rappel_email.html.twig',
+            $this->com->envoyerMail(
+                $to,
+                $sujet,
+                null,
+                null,
+                $permanence
+                    ->getSemaine()
+                    ->getCalendrier()
+                    ->getStructure()
+                    ->getEmail(),
+                $this->twig->render(
+                    '@Balancelle/Communication/rappel_email.html.twig',
                     array('permanence' => $permanence))
-                );
-            $this->mailer->send($message);
+            );
             $to = null;
         }
 

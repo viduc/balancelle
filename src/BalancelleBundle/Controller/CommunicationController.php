@@ -65,6 +65,7 @@ class CommunicationController extends Controller
      * @param String $message - le message du mail au format html
      * @param null|array $fichier - chemin du fichier pdf (pièce jointe)
      * @param String|null $from - l'adresse de l'expéditeur
+     * @param null $body
      * @return mixed
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
