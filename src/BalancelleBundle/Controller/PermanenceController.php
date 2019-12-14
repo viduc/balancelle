@@ -192,12 +192,28 @@ class PermanenceController extends Controller implements FamilleInterface
             ->find($request->get('idPermanence'));
         $permanence->setEchange(0);
         $reponse = "Votre permanence n'est plus proposée à l'échange";
-        if ($request->get('action') !== 'false' &&
-            $request->get('action') !== 'accept') {
+        $action = $request->get('action');
+        $url = $this->generateUrl(
+            'permanence_inscription',
+            array('id' => $permanence->getId()),
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+        if ($action !== 'false' && $action !== 'accept') {
             $reponse = "Votre permanence a été proposée à l'échange";
             $permanence->setEchange(1);
+            $to[] = $permanence->getSemaine()->getCalendrier()->getStructure()->getEmail();
+            $message = 'La famille: ' + $permanence->getFamille()->getNom();
+            $message .= ' a proposé sa permanence du ';
+            $message .= '<a href="'. $url . '">lien';
+            $message .= $permanence->getDebut()->format('d/m/Y H:i:s');
+            $message .= '</a> à l\'échange';
+            $this->get('communication')->envoyerMail(
+                $to,
+                'Permanence proposée à l\'échange',
+                $message
+            );
         }
-        if ($request->get('action') === 'accept') {
+        elseif ($action === 'accept') {
             $famille = $em
                 ->getRepository('BalancelleBundle:Famille')
                 ->findByFamille($this->getUser()->getId());
@@ -449,6 +465,12 @@ class PermanenceController extends Controller implements FamilleInterface
         );
     }
 
+    /**
+     * Envoie un rappel aux familles d'une structure pour une permanence
+     * @param Request $request
+     * @param Permanence $permanence
+     * @return JsonResponse
+     */
     public function rappelAction(Request $request, Permanence $permanence)
     {
         $url = $this->generateUrl(
