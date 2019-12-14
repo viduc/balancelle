@@ -2,14 +2,13 @@
 
 {% block body %}
     {{ parent() }}
-
+    {{ form_start(inscription_form) }}
     <div class="main-content-inner">
         <div class="row">
             <div class="col-xl-6 col-lg-6 col-md-12 col-ml-12">
                 <div class="card" style="background-color: #bbbbbb">
                     <div class="card-body" >
                         <h5 class="title">Inscription à une permanence</h5>
-                        {{ form_start(inscription_form) }}
                         <div class="form-row align-items-center" >
                             <div class="form-group col-xl-4 col-lg-4 col-md-12 col-sm-12 my-1">
                                 <label for="nom">Permanence:</label>
@@ -38,7 +37,7 @@
                                     inscription_form.commentaire,
                                     {'attr': {'class': 'form-control','placeholder': "Commentaire"}}) }}
                             </div>
-                            {{ form_end(inscription_form) }}
+
                         </div>
                     </div>
                 </div>
@@ -132,7 +131,7 @@
                 </div>
             </div>
         </div>
-
+    {{ form_end(inscription_form) }}
 
         {% if is_granted('ROLE_ADMIN') and famille != null %}
         <div class="row">
