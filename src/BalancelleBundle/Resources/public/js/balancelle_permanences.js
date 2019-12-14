@@ -355,19 +355,62 @@ $('input[type=radio][name=demiejournee]').change(function() {
  * Change l'heure de la permanence (input)
  * @param demieJournee
  */
-function changeDatePermanence(demieJournee)
-{
-    let date = $('#balancellebundle_permanence_debut').val();
-    if (typeof date !== "undefined") {
-        let splitDate = date.split((' '));
-        if (demieJournee == 'matinPermanence') {
-            $('#balancellebundle_permanence_debut').val(splitDate[0] + ' ' + debutMatin);
-            $('#balancellebundle_permanence_fin').val(splitDate[0] + ' ' + finMatin);
-        } else {
-            $('#balancellebundle_permanence_debut').val(splitDate[0] + ' ' + debutAM);
-            $('#balancellebundle_permanence_fin').val(splitDate[0] + ' ' + finAM);
+function changeDatePermanence(demieJournee) {
+    if (typeof debutMatin !== "undefined"
+        && typeof finMatin !== "undefined"
+        && typeof debutAM !== "undefined"
+        && typeof finAM !== "undefined") {
+        let date = $('#balancellebundle_permanence_debut').val();
+        if (typeof date !== "undefined") {
+            let splitDate = date.split((' '));
+            if (demieJournee == 'matinPermanence') {
+                $('#balancellebundle_permanence_debut').val(splitDate[0] + ' ' + debutMatin);
+                $('#balancellebundle_permanence_fin').val(splitDate[0] + ' ' + finMatin);
+            } else {
+                $('#balancellebundle_permanence_debut').val(splitDate[0] + ' ' + debutAM);
+                $('#balancellebundle_permanence_fin').val(splitDate[0] + ' ' + finAM);
+            }
         }
     }
 }
 
+/**
+ * gestion du bouton de suppression d'une famille d'une permanence
+ */
+$("#btnEnvoyerRappelPermanence").click(function(){
+    $.confirm({
+        title: "Confirmation",
+        content: "Etes vous sur de vouloir envoyer un rappel pour cette" +
+            "  permanence ?",
+        buttons: {
+            confirmer: {
+                text: 'Confirmer',
+                btnClass: 'btn-blue',
+                action: function()
+                {
+                    $.ajax({
+                        url: pathEvoyerRappelPermanence,
+                        method: "post",
+                        dataType : 'json',
+                        data: {id: idPermanence},
+                        success: function (result) {
+                            alert('Le rappel a bien été envoyé aux familles');
+                        },
+                        error: function (error) {
+                            alert('Une erreur est apparue, veillez ressayer plus tard');
+                        }
+                    });
+                    return true;
+                }
+
+            },
+            annuler: {
+                text: 'Annuler',
+                btnClass: 'btn-red',
+                action: function()
+                { }
+            }
+        }
+    });
+});
 changeDatePermanence('matinPermanence');
