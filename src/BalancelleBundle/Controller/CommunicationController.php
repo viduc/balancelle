@@ -59,7 +59,7 @@ class CommunicationController extends Controller
             $message,
             $fichiers,
             $from
-            );
+        );
     }
 
     /**

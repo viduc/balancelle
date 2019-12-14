@@ -6,6 +6,10 @@ tristan.fleury@labalancelle.yo.fr
 **Site intranet de l'association La Balancelle**    
 
 ------------
+## [14/12/2019] [v0.0.2][task62]
+    - ajout d'un bouton de rappel pour les permanences non inscrites.
+    - envoie un mail formaté avec le lien de la permanence
+    
 ## [05/12/2019] [v0.0.2][task63]
     - ajout d'un bouton envoyer mail à tous les parents et envoyer mail à toutes
         les familles dans index structure et index famille

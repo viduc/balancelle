@@ -2,124 +2,147 @@
 
 {% block body %}
     {{ parent() }}
-    <h2>Inscription à une permanence</h2>
+
     <div class="main-content-inner">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-ml-12">
-            <div class="card" style="background-color: #bbbbbb">
-                <div class="card-body" >
-                    {{ form_start(inscription_form) }}
-                    <div class="form-row align-items-center" >
-                        <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-12 my-1">
-                            <label for="nom">Permanence:</label>
-                            {{ form_widget(
-                                inscription_form.titre,
-                                {'attr': {'class': 'form-control','placeholder': "permanence"}}
-                            ) }}
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-12 col-ml-12">
+                <div class="card" style="background-color: #bbbbbb">
+                    <div class="card-body" >
+                        <h5 class="title">Inscription à une permanence</h5>
+                        {{ form_start(inscription_form) }}
+                        <div class="form-row align-items-center" >
+                            <div class="form-group col-xl-4 col-lg-4 col-md-12 col-sm-12 my-1">
+                                <label for="nom">Permanence:</label>
+                                {{ form_widget(
+                                    inscription_form.titre,
+                                    {'attr': {'class': 'form-control','placeholder': "permanence"}}
+                                ) }}
+                            </div>
+                            <div class="form-group col-xl-4 col-lg-4 col-md-6 col-sm-6 my-1">
+                                <label for="nom">Date de début</label>
+                                {{ form_widget(
+                                    inscription_form.debut,
+                                    {'attr': {'placeholder': "date de début"}}
+                                ) }}
+                            </div>
+                            <div class="form-group col-xl-4 col-lg-4 col-md-6 col-sm-6 my-1">
+                                <label for="nom">Date de fin</label>
+                                {{ form_widget(
+                                    inscription_form.fin,
+                                    {'attr': {'placeholder': "date de fin"}}
+                                ) }}
+                            </div>
+                            <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 my-1">
+                                <label for="familleActive">Commentaire</label>
+                                {{ form_widget(
+                                    inscription_form.commentaire,
+                                    {'attr': {'class': 'form-control','placeholder': "Commentaire"}}) }}
+                            </div>
+                            {{ form_end(inscription_form) }}
                         </div>
-                        <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-6 my-1">
-                            <label for="nom">Date de début</label>
-                            {{ form_widget(
-                                inscription_form.debut,
-                                {'attr': {'placeholder': "date de début"}}
-                            ) }}
-                        </div>
-                        <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-6 my-1">
-                            <label for="nom">Date de fin</label>
-                            {{ form_widget(
-                                inscription_form.fin,
-                                {'attr': {'placeholder': "date de fin"}}
-                            ) }}
-                        </div>
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-4 mt-5">
-                                <button type="submit" class="btn btn-success pull-left" >
-                                    <span class="glyphicon glyphicon-ok-sign"></span>
-                                    Modifier
-                                </button>
-                            </div>
-                        {% elseif inscriptionPossible %}
-                            <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-4 mt-5">
-                                <button type="submit" class="btn btn-success pull-left" >
-                                    <span class="glyphicon glyphicon-ok-sign"></span>
-                                    S'inscrire
-                                </button>
-                            </div>
-                        {% elseif desinscriptionPossible %}
-                            <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-4 mt-5">
-                                <button
-                                    type="button"
-                                    class="btn btn-danger"
-                                    id="btnSeDesinscrire">
-                                    <i class="fa fa-sign-out"></i> Se désinscrire
-                                </button>
-                            </div>
-                        {% elseif echangePossible %}
-                            <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-4 mt-5">
-                                <button
-                                        type="button"
-                                        class="btn btn-secondary"
-                                        id="btnEchanger">
-                                    <i class="fa fa-refresh"></i> Proposer un échange
-                                </button>
-                            </div>
-                        {% elseif permanence.echange %}
-                                <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-4 mt-5">
-                                    {% if permanence.famille.id == famille.id %}
-                                        <button
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-12 col-ml-12">
+                <div class="card" style="background-color: #bbbbbb">
+                    <div class="card-body" >
+                        <h5 class="title">Actions disponibles</h5>
+                        <div class="form-row align-items-center" >
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-6 mt-5">
+                                    <button type="submit" class="btn btn-success pull-left" >
+                                        <span class="fa fa-edit"></span>
+                                        Modifier
+                                    </button>
+                                </div>
+                            {% elseif inscriptionPossible %}
+                                <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-6 mt-5">
+                                    <button type="submit" class="btn btn-success pull-left" >
+                                        <span class="fa fa-check-circle"></span>
+                                        S'inscrire
+                                    </button>
+                                </div>
+                            {% elseif desinscriptionPossible %}
+                                <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-6 mt-5">
+                                    <button
                                             type="button"
                                             class="btn btn-danger"
-                                            id="btnAnnulerEchanger">
+                                            id="btnSeDesinscrire">
+                                        <i class="fa fa-sign-out"></i> Se désinscrire
+                                    </button>
+                                </div>
+                            {% elseif echangePossible %}
+                                <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-6 mt-5">
+                                    <button
+                                            type="button"
+                                            class="btn btn-secondary"
+                                            id="btnEchanger">
+                                        <i class="fa fa-refresh"></i> Proposer un échange
+                                    </button>
+                                </div>
+                            {% elseif permanence.echange %}
+                                <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-6 mt-5">
+                                    {% if permanence.famille.id == famille.id %}
+                                        <button
+                                                type="button"
+                                                class="btn btn-danger"
+                                                id="btnAnnulerEchanger">
                                             <i class="fa fa-remove"></i> Annuler l' échange
                                         </button>
                                     {% else %}
                                         <button
-                                            type="button"
-                                            class="btn btn-secondary"
-                                            id="btnAccepterEchanger">
+                                                type="button"
+                                                class="btn btn-secondary"
+                                                id="btnAccepterEchanger">
                                             <i class="fa fa-calendar-check-o"></i> Accepter l' échange
                                         </button>
                                     {% endif %}
                                 </div>
-                        {% endif %}
-                        {% if is_granted('ROLE_ADMIN') and inscriptionPossible %}
-                            <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-4 mt-5">
-                                <button
-                                    type="button"
-                                    class="btn btn-primary"
-                                    id="btnAjouterFamille">
-                                    <i class="fa fa-child"></i> Inscrire famille
-                                </button>
-                            </div>
-                            <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-4 mt-5">
-                                <button
-                                    type="button"
-                                    class="btn btn-danger"
-                                    id="btnSupprimerPermanence">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                            </div>
-                            {% include "@Balancelle/Permanence/Admin/modal_ajout_famille.html.twig" %}
-                        {% endif %}
-                    </div>
-                    <div class="form-row align-items-center" >
-                        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 my-1">
-                            <label for="familleActive">Commentaire</label>
-                            {{ form_widget(
-                                inscription_form.commentaire,
-                                {'attr': {'class': 'form-control','placeholder': "Commentaire"}}) }}
+                            {% endif %}
+                            {% if is_granted('ROLE_ADMIN') and inscriptionPossible %}
+                                <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-6 mt-5">
+                                    <button
+                                            type="button"
+                                            class="btn btn-primary"
+                                            id="btnAjouterFamille">
+                                        <i class="fa fa-child"></i> Inscrire famille
+                                    </button>
+                                </div>
+                                <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-6 mt-5">
+                                    <button
+                                            type="button"
+                                            class="btn btn-danger"
+                                            id="btnSupprimerPermanence">
+                                        <i class="fa fa-trash"></i> Supprimer
+                                    </button>
+                                </div>
+                                <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-6 mt-5">
+                                    <button
+                                            type="button"
+                                            class="btn btn-warning"
+                                            id="btnEnvoyerRappelPermanence">
+                                        <i class="fa fa-clock-o"></i> Rappel
+                                    </button>
+                                </div>
+                                {% include "@Balancelle/Permanence/Admin/modal_ajout_famille.html.twig" %}
+                            {% endif %}
                         </div>
-                        {{ form_end(inscription_form) }}
                     </div>
                 </div>
             </div>
+        </div>
 
-            {% if is_granted('ROLE_ADMIN') and famille != null %}
+
+        {% if is_granted('ROLE_ADMIN') and famille != null %}
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-12 col-ml-12">
                 </br>
                 <div class="card" style="background-color: #bbbbbb">
                     <div class="card-body" >
-                        <h5>Famille inscrite à la permanence: {{ famille.nom }}</h5>
+                        <h5 class="title">Famille inscrite à la permanence: {{ famille.nom }}</h5>
                         <div class="row">
-                            <div class="col-lg-3 col-md-3 mt-5">
+                            <div class="col-lg-6 col-md-6 mt-5">
                                 <div class="card card-bordered">
                                     <div class="card-body">
                                         <h5 class="title">Nom de la famille:</h5>
@@ -130,7 +153,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class=" form-group col-lg-3 col-md-3 mt-5">
+                            <div class=" form-group col-lg-4 col-md-4 mt-5">
                                 <button
                                     type="button"
                                     class="btn btn-warning"
@@ -140,7 +163,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-3 col-md-3 mt-5">
+                            <div class="col-lg-6 col-md-6 mt-5">
                                 <div class="card card-bordered">
                                     <div class="card-body">
                                         <h5 class="title">Parent 1:</h5>
@@ -155,7 +178,7 @@
                                 </div>
                             </div>
                             {% if famille.parent2 %}
-                                <div class="col-lg-3 col-md-3 mt-5">
+                                <div class="col-lg-6 col-md-6 mt-5">
                                     <div class="card card-bordered">
                                         <div class="card-body">
                                             <h5 class="title">Parent 2:</h5>
@@ -173,7 +196,7 @@
                         </div>
                         <div class="row">
                             {% for enfant in famille.enfants %}
-                                <div class="col-lg-3 col-md-3 mt-5">
+                                <div class="col-lg-4 col-md-4 mt-5">
                                     <div class="card card-bordered">
                                         <div class="card-body">
                                             <h5 class="title">Enfant:</h5>
@@ -194,16 +217,16 @@
                         </div>
                     </div>
                 </div>
-            {% endif %}
-
-
+            </div>
         </div>
     </div>
+    {% endif %}
 <script type="text/javascript">
     var idPermanence = "{{  permanence.id }}";
     var pathFamilleDesinscrire = "{{  path('admin_permanence_desinscrireFamille') }}";
     var pathPermanenceSuppression = "{{  path('admin_permanence_suppression') }}";
     var pathPermanenceDesinscription = "{{  path('permanence_desinscription') }}";
     var pathPermanenceEchange = "{{  path('permanence_echange') }}";
+    var pathEvoyerRappelPermanence = "{{  path('admin_permanence_rappel', {'id': permanence.id }) }}";
 </script>
 {% endblock %}

@@ -151,3 +151,48 @@ function createAddFile(fileCount)
         createAddFile(parseInt(fileCount)+1);
     });
 }
+
+/**
+ * gestion du bouton de suppression d'une famille d'une permanence
+ */
+$("#btnEnvoyerRappelPermanence").click(function(){
+    $.confirm({
+        title: "Confirmation",
+        content: "Etes vous sur de vouloir envoyer un rappel pour cette" +
+            "  permanence ?",
+        buttons: {
+            confirmer: {
+                text: 'Confirmer',
+                btnClass: 'btn-blue',
+                action: function()
+                {
+                    $.ajax({
+                        url: pathEvoyerRappelPermanence,
+                        method: "post",
+                        dataType : 'json',
+                        data: {id: idPermanence},
+                        success: function (result) {
+                            alert('Le rappel a bien été envoyé aux familles');
+                        },
+                        error: function (error) {
+                            alert('Une erreur est apparue, veillez ressayer plus tard');
+                        }
+                    });
+                    return true;
+                }
+
+            },
+            annuler: {
+                text: 'Annuler',
+                btnClass: 'btn-red',
+                action: function()
+                { }
+
+            }
+        }
+    });
+
+
+
+
+});

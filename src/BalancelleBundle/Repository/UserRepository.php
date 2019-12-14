@@ -33,17 +33,14 @@ class UserRepository extends EntityRepository
      */
     public function recupererLesUtilisateursViaStructure($structure)
     {
-        $query = $this
+        return $this
             ->createQueryBuilder('u')
             ->from(Famille::class, 'f')
-            ->from(Enfant::class, 'e');
-        if ($structure !== null) {
-            $query->where('e.structure = :structure');
-            $query->setParameter('structure', $structure);
-        }
-        $query->andWhere('e.famille = f.id')
-            ->andWhere('f.parent1 = u.id')
-            ->orWhere('f.parent2 = u.id');
-        return $query->getQuery()->execute();
+            ->from(Enfant::class, 'e')
+            ->where('e.structure = :structure')
+            ->setParameter('structure', $structure)
+            ->andWhere('e.famille = f.id')
+            ->andWhere('f.parent1 = u.id or f.parent2 = u.id')
+            ->getQuery()->execute();
     }
 }

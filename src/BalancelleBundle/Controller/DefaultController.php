@@ -3,6 +3,8 @@
 namespace BalancelleBundle\Controller;
 
 use BalancelleBundle\Entity\Contact;
+use BalancelleBundle\Entity\Structure;
+use BalancelleBundle\Entity\User;
 use Swift_Message;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -38,6 +40,7 @@ class DefaultController extends Controller implements FamilleInterface
             $this->get('session')->get('famille') !== null) {
             return $this->redirectToRoute('famille_tableauDeBord');
         }
+
         return $this->render('@Balancelle/Default/index.html.twig', array(
             'famille' => $this->get('session')->get('famille')
         ));

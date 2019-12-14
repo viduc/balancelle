@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use BalancelleBundle\Form\PermanenceType;
 use Swift_Message;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Permanence controller.
@@ -446,5 +447,34 @@ class PermanenceController extends Controller implements FamilleInterface
                 'structure' => $structure
             )
         );
+    }
+
+    public function rappelAction(Request $request, Permanence $permanence)
+    {
+        $url = $this->generateUrl(
+            'permanence_inscription',
+            array('id' => $permanence->getId()),
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+        $structure = $permanence->getSemaine()->getCalendrier()->getStructure();
+        $sujet = 'Rappel permamanence ';
+        $sujet .= $structure->getNom();
+        $message = 'Bonjour à tous. </br>';
+        $message .= 'Il n\'y a toujours pas d\'inscrit pour la permanence de ';
+        $message .= $permanence->getDebut()->format('d/m/Y H:i:s') . '.</br>';
+        $message .= 'Je vous rappelle que votre présence est primordiale ';
+        $message .= 'pour assurer  un acceuil de qualité à vos enfants.</br>';
+        $message .= 'Vous pouvez vous inscrire sur le site internet en cliquant';
+        $message .= ' sur ce  <a href="'. $url . '">lien</a> ';
+        $message .= 'ou appeler la structure directement. </br>';
+        $message .= 'Je vous remercie d\'avance';
+
+        $this->get('communication')->envoyerMailStructure(
+            $structure,
+            $sujet,
+            $message
+        );
+
+        return new JsonResponse('ok');
     }
 }

@@ -47,3 +47,8 @@ admin_permanence_creer:
     path:     /admin/creerPermanence/{semaineId}/{date}
     defaults: { _controller: "BalancelleBundle:Permanence:creerPermanence", semaineId: null, date: null}
     methods:  [GET, POST]
+
+admin_permanence_rappel:
+    path:     /admin/rappel/{id}
+    defaults: { _controller: "BalancelleBundle:Permanence:rappel" }
+    methods:  [GET, POST]
