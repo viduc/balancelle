@@ -6,6 +6,9 @@ tristan.fleury@labalancelle.yo.fr
 **Site intranet de l'association La Balancelle**    
 
 ------------
+## [15/12/2019] [v0.0.2][task65]
+    - envoie d'un mail à la structure lors d'une proposition d'échange et acceptation
+    
 ## [14/12/2019] [v0.0.2][task62]
     - ajout d'un bouton de rappel pour les permanences non inscrites.
     - envoie un mail formaté avec le lien de la permanence

@@ -198,11 +198,11 @@ class PermanenceController extends Controller implements FamilleInterface
             array('id' => $permanence->getId()),
             UrlGeneratorInterface::ABSOLUTE_URL
         );
+        $to[] = $permanence->getSemaine()->getCalendrier()->getStructure()->getEmail();
         if ($action !== 'false' && $action !== 'accept') {
             $reponse = "Votre permanence a été proposée à l'échange";
             $permanence->setEchange(1);
-            $to[] = $permanence->getSemaine()->getCalendrier()->getStructure()->getEmail();
-            $message = 'La famille: ' + $permanence->getFamille()->getNom();
+            $message = 'La famille: ' . $permanence->getFamille()->getNom();
             $message .= ' a proposé sa permanence du ';
             $message .= '<a href="'. $url . '">lien';
             $message .= $permanence->getDebut()->format('d/m/Y H:i:s');
@@ -219,25 +219,22 @@ class PermanenceController extends Controller implements FamilleInterface
                 ->findByFamille($this->getUser()->getId());
             $reponse = "Vous êtes désormais inscrit à cette permanence";
 
-            $sujet = "Echange d'une permanence";
-            $to = $permanence->getSemaine()->getCalendrier()->getStructure()->getEmail();
-            $mail = Swift_Message::newInstance()
-                ->setSubject($sujet)
-                ->setFrom('comptes@labalancelle.yo.fr')
-                ->setTo($to)
-                ->setContentType('text/html')
-                ->setBody(
-                    $this->renderView(
-                        '@Balancelle/Permanence/Admin/echange_email.html.twig',
-                        array(
-                            'famille1' => $permanence->getFamille()->getNom(),
-                            'famille2' => $famille->getNom(),
-                            'datePerm' => $permanence->getDebut(),
-                            'id' => $permanence->getId()
-                        )
+            $this->get('communication')->envoyerMail(
+                $to,
+                'Echange d\'une permanence',
+                null,
+                null,
+                null,
+                $this->renderView(
+                    '@Balancelle/Communication/echange_email.html.twig',
+                    array(
+                        'famille1' => $permanence->getFamille()->getNom(),
+                        'famille2' => $famille->getNom(),
+                        'datePerm' => $permanence->getDebut(),
+                        'id' => $permanence->getId()
                     )
-                );
-            $this->get('mailer')->send($mail);
+                )
+            );
             $permanence->setFamille($famille);
         }
         $em->flush();
