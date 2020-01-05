@@ -193,24 +193,14 @@ class PermanenceController extends Controller implements FamilleInterface
         $permanence->setEchange(0);
         $reponse = "Votre permanence n'est plus proposée à l'échange";
         $action = $request->get('action');
-        $url = $this->generateUrl(
-            'permanence_inscription',
-            array('id' => $permanence->getId()),
-            UrlGeneratorInterface::ABSOLUTE_URL
-        );
-        $to[] = $permanence->getSemaine()->getCalendrier()->getStructure()->getEmail();
+
+
         if ($action !== 'false' && $action !== 'accept') {
             $reponse = "Votre permanence a été proposée à l'échange";
             $permanence->setEchange(1);
-            $message = 'La famille: ' . $permanence->getFamille()->getNom();
-            $message .= ' a proposé sa permanence du ';
-            $message .= '<a href="'. $url . '">lien';
-            $message .= $permanence->getDebut()->format('d/m/Y H:i:s');
-            $message .= '</a> à l\'échange';
-            $this->get('communication')->envoyerMail(
-                $to,
-                'Permanence proposée à l\'échange',
-                $message
+            $this->get('Communication')->envoyerMailEchangePermanence(
+                $permanence,
+                'propose'
             );
         }
         elseif ($action === 'accept') {
@@ -219,22 +209,11 @@ class PermanenceController extends Controller implements FamilleInterface
                 ->findByFamille($this->getUser()->getId());
             $reponse = "Vous êtes désormais inscrit à cette permanence";
 
-            $this->get('communication')->envoyerMail(
-                $to,
-                'Echange d\'une permanence',
-                null,
-                null,
-                null,
-                $this->renderView(
-                    '@Balancelle/Communication/echange_email.html.twig',
-                    array(
-                        'famille1' => $permanence->getFamille()->getNom(),
-                        'famille2' => $famille->getNom(),
-                        'datePerm' => $permanence->getDebut(),
-                        'id' => $permanence->getId()
-                    )
-                )
+            $this->get('Communication')->envoyerMailEchangePermanence(
+                $permanence,
+                'accepte'
             );
+
             $permanence->setFamille($famille);
         }
         $em->flush();

@@ -51,4 +51,23 @@ class FamilleRepository extends EntityRepository
             ->execute()
             ;
     }
+
+    /**
+     * Récupère les parents (user) d'une famille !!! a implémenter !!!
+     * @param $famille
+     * @return mixed
+     */
+    public function getParentsEmail($famille)
+    {
+        return $this
+            ->createQueryBuilder('a')
+            ->select(['user1.email','user2.email'])
+            ->where('a.id = :id')
+            ->join('a.parent1', 'user1')
+            ->join('a.parent2', 'user2')
+            ->setParameter('id', $famille->getId())
+            ->getQuery()
+            ->execute()
+            ;
+    }
 }

@@ -15,6 +15,14 @@ class DefaultController extends Controller implements FamilleInterface
 {
     public function indexAction()
     {
+        $em = $this->getDoctrine()->getManager();
+        $famille = $em
+            ->getRepository('BalancelleBundle:Famille')
+            ->find(1);
+
+        var_dump($em
+                     ->getRepository('BalancelleBundle:Famille')
+                     ->getParentsEmail($famille));
     /*    $t = microtime(true);
         $client = new InfluxDB\Client('localhost');
         $database = $client->selectDB('bench');
