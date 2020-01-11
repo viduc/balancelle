@@ -169,12 +169,28 @@ class StructureController extends Controller implements FamilleInterface
         if ($form->isSubmitted() && $form->isValid()) {
             $documents = $form->getData()['documents'];
             array_pop($documents);
-            $this->get('communication')->envoyerMailStructure(
-                $structure,
-                $form->getData()['sujet'],
-                $form->getData()['message'],
-                $documents
-            );
+
+            if (!$structure) {
+                $em = $this->getDoctrine()->getManager();
+                $structures = $em
+                    ->getRepository('BalancelleBundle:Structure')
+                    ->findBy(array('active' => 1));
+                foreach ($structures as $str) {
+                    $this->get('communication')->envoyerMailStructure(
+                        $str,
+                        $form->getData()['sujet'],
+                        $form->getData()['message'],
+                        $documents
+                    );
+                }
+            } else {
+                $this->get('communication')->envoyerMailStructure(
+                    $structure,
+                    $form->getData()['sujet'],
+                    $form->getData()['message'],
+                    $documents
+                );
+            }
             $succes = 'Votre email a bien été envoyé aux parents';
             $this->addFlash('success', $succes);
             if ($structure !== null) {

@@ -6,6 +6,13 @@ tristan.fleury@labalancelle.yo.fr
 **Site intranet de l'association La Balancelle**    
 
 ------------
+## [11/01/2020] [v0.0.2][task64]
+    - envoie d'un mail aux parents d'une structure lorsqu'une permanence est 
+        proposée à léchange
+    - envoie d'un mail à la structure
+    - envoie d'un mail à la famille qui propose si une famille à acceptée 
+        l'échange
+    
 ## [15/12/2019] [v0.0.2][task65]
     - envoie d'un mail à la structure lors d'une proposition d'échange et acceptation
     

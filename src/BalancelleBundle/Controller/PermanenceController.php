@@ -193,14 +193,20 @@ class PermanenceController extends Controller implements FamilleInterface
         $permanence->setEchange(0);
         $reponse = "Votre permanence n'est plus proposée à l'échange";
         $action = $request->get('action');
-
+        $url = $this->generateUrl(
+            'permanence_inscription',
+            array('id' => $permanence->getId()),
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
 
         if ($action !== 'false' && $action !== 'accept') {
             $reponse = "Votre permanence a été proposée à l'échange";
             $permanence->setEchange(1);
-            $this->get('Communication')->envoyerMailEchangePermanence(
+            $this->get('communication')->envoyerMailEchangePermanence(
                 $permanence,
-                'propose'
+                'propose',
+                null,
+                $url
             );
         }
         elseif ($action === 'accept') {
@@ -209,9 +215,11 @@ class PermanenceController extends Controller implements FamilleInterface
                 ->findByFamille($this->getUser()->getId());
             $reponse = "Vous êtes désormais inscrit à cette permanence";
 
-            $this->get('Communication')->envoyerMailEchangePermanence(
+            $this->get('communication')->envoyerMailEchangePermanence(
                 $permanence,
-                'accepte'
+                'accepte',
+                $famille,
+                $url
             );
 
             $permanence->setFamille($famille);

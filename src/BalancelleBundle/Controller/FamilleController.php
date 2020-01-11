@@ -389,7 +389,7 @@ class FamilleController extends Controller implements FamilleInterface
     }
 
     /**
-     * Envoie un mail aux parents de la structure
+     * Envoie un mail aux parents de la famille
      * @param Request $request
      * @param Famille $famille - la famille concernée
      * @return Response
@@ -420,7 +420,6 @@ class FamilleController extends Controller implements FamilleInterface
                     $tabMails[] = $fam->getParent2()->getEmail();
                 }
             }
-
             $this->get('communication')->envoyerMail(
                 $tabMails,
                 $form->getData()['sujet'],

@@ -2,6 +2,7 @@
 
 namespace BalancelleBundle\Repository;
 
+use BalancelleBundle\Entity\Famille;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 
@@ -53,21 +54,20 @@ class FamilleRepository extends EntityRepository
     }
 
     /**
-     * Récupère les parents (user) d'une famille !!! a implémenter !!!
-     * @param $famille
-     * @return mixed
+     * Récupère les mails des parents (user) d'une famille !!!
+     * @param Famille $famille
+     * @return null | array
      */
     public function getParentsEmail($famille)
     {
-        return $this
-            ->createQueryBuilder('a')
-            ->select(['user1.email','user2.email'])
-            ->where('a.id = :id')
-            ->join('a.parent1', 'user1')
-            ->join('a.parent2', 'user2')
-            ->setParameter('id', $famille->getId())
-            ->getQuery()
-            ->execute()
-            ;
+        $tabRetour = null;
+        if ($famille->getParent1()) {
+            $tabRetour[] = $famille->getParent1()->getEmail();
+        }
+        if ($famille->getParent2()) {
+            $tabRetour[] = $famille->getParent2()->getEmail();
+        }
+
+        return $tabRetour;
     }
 }

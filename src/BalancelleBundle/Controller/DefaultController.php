@@ -18,7 +18,7 @@ class DefaultController extends Controller implements FamilleInterface
         $em = $this->getDoctrine()->getManager();
         $famille = $em
             ->getRepository('BalancelleBundle:Famille')
-            ->find(1);
+            ->find(3);
 
         var_dump($em
                      ->getRepository('BalancelleBundle:Famille')

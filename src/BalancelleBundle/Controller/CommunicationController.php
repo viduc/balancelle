@@ -50,10 +50,8 @@ class CommunicationController extends Controller
         foreach ($listeUser as $user) {
             $listeMail[] = $user->getEmail();
         }
-        $from = null;
-        if ($structure !== null) {
-            $from = $structure->getEmail();
-        }
+        $from = $structure->getEmail();
+        $listeMail[] = $structure->getEmail();
         return $this->envoyerMail(
             $listeMail,
             $sujet,
@@ -121,13 +119,9 @@ class CommunicationController extends Controller
     public function envoyerMailEchangePermanence(
         $permanence,
         $action,
-        $famille = null)
-    {
-        $url = $this->generateUrl(
-            'permanence_inscription',
-            array('id' => $permanence->getId()),
-            UrlGeneratorInterface::ABSOLUTE_URL
-        );
+        $famille = null,
+        $url = null
+    ) {
         $structure = $permanence->getSemaine()->getCalendrier()->getStructure();
         $to[] = $structure->getEmail();
 
@@ -135,7 +129,7 @@ class CommunicationController extends Controller
             $sujet = 'Permanence proposée à l\'échange';
             $message = 'La famille: ' . $permanence->getFamille()->getNom();
             $message .= ' a proposé sa permanence du ';
-            $message .= '<a href="'. $url . '">lien';
+            $message .= '<a href="'. $url . '">';
             $message .= $permanence->getDebut()->format('d/m/Y H:i:s');
             $message .= '</a> à l\'échange';
             $this->envoyerMail($to,$sujet,$message);
@@ -152,28 +146,33 @@ class CommunicationController extends Controller
             $this->envoyerMailStructure($structure,$sujet,$message);
         } elseif ($action === "accepte") {
             $sujet = 'Echange d\'une permanence';
+            $message = 'La permanence du:  <a href="'. $url . '">';
+            $message .= $permanence->getDebut()->format('d/m/Y H:i:s');
+            $message .= '</a> a été échangé entre la famille ';
+            $message .= $permanence->getFamille()->getNom();
+            $message .= ' et la famille ';
+            $message .= $famille->getNom();
             $this->envoyerMail(
                 $to,
                 $sujet,
-                null,
-                null,
-                null,
-                $this->renderView(
-                    '@Balancelle/Communication/echange_email.html.twig',
-                    array(
-                        'famille1' => $permanence->getFamille()->getNom(),
-                        'famille2' => $famille->getNom(),
-                        'datePerm' => $permanence->getDebut(),
-                        'id' => $permanence->getId()
-                    )
-                )
+                $message
             );
+            /* envoie d'un mail à la famille qui avait proposé l'échange */
             $message = 'La permanence du: ';
             $message .= $permanence->getDebut()->format('d/m/Y H:i:s');
-            $message .= ' que vous aviez proposée à l\'échange ';
+            $message .= ' que vous aviez proposé à l\'échange ';
             $message .= 'vient d\'être acceptée par une autre famille. </br>';
             $message .= 'Vous n\'êtes donc plus inscrit à cette permanence';
-            //$this->envoyerMail($permanence->getFamille()->getEmail,$sujet,$message); !!!! récupérer parent + mail
+            $sujet = 'Votre permanence proposé à l\'échange a été accepté par ';
+            $sujet .= 'une autre famille';
+
+            $this->envoyerMail(
+                $this->em
+                    ->getRepository('BalancelleBundle:Famille')
+                    ->getParentsEmail($permanence->getFamille()),
+                $sujet,
+                $message
+            );
         }
     }
 
