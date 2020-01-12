@@ -61,10 +61,10 @@ class FamilleRepository extends EntityRepository
     public function getParentsEmail($famille)
     {
         $tabRetour = null;
-        if ($famille->getParent1()) {
+        if ($famille !== null && $famille->getParent1()) {
             $tabRetour[] = $famille->getParent1()->getEmail();
         }
-        if ($famille->getParent2()) {
+        if ($famille !== null && $famille->getParent2()) {
             $tabRetour[] = $famille->getParent2()->getEmail();
         }
 
