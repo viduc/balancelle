@@ -139,6 +139,7 @@ class CalendarListener
                 $titre .= ' ' . $permanence->getFamille()->getNom();
                 if ($permanence->getEchange()) {
                     $titre .= ' !! ECHANGE !!';
+                    $backgroundColor = '#DC143C';
                 }
             }
             elseif (// la permanence est attribuée à la famille connectée
