@@ -103,10 +103,7 @@ class CalendarListener
             }
         }
         if ($this->security->isGranted('ROLE_ADMIN')) {
-            /*$calendrier = $this->em->getRepository(Calendrier::class)
-               ->findBy(['structure' => $structureId, 'active' => 1]);*/
             try {
-                //$this->genererPermanenceAjouter($calendrier, $calendar);
                 $this->genererPermanenceAjouter($tabPermanencesJour, $calendar);
             } catch (Exception $e) {
             }
@@ -140,8 +137,11 @@ class CalendarListener
         if ($permanence->getFamille() !== null) {
             if ($this->security->isGranted('ROLE_ADMIN')) {
                 $titre .= ' ' . $permanence->getFamille()->getNom();
+                if ($permanence->getEchange()) {
+                    $titre .= ' !! ECHANGE !!';
+                }
             }
-            elseif (
+            elseif (// la permanence est attribuée à la famille connectée
                 $this->famille &&
                 ($permanence->getFamille()->getId() === $this->famille->getId())
             ) {

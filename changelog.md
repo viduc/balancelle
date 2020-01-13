@@ -12,6 +12,7 @@ tristan.fleury@labalancelle.yo.fr
     - envoie d'un mail à la structure
     - envoie d'un mail à la famille qui propose si une famille à acceptée 
         l'échange
+    - ajout d'une information ECHANGE dans le titre d'une permanence pour les admins
     
 ## [15/12/2019] [v0.0.2][task65]
     - envoie d'un mail à la structure lors d'une proposition d'échange et acceptation
