@@ -6,6 +6,9 @@ tristan.fleury@labalancelle.yo.fr
 **Site intranet de l'association La Balancelle**    
 
 ------------
+## [13/01/2020] [v0.0.2][task50]
+    - ordone la liste des familles pour l'ajout à une permanence par ordre alpha
+    
 ## [11/01/2020] [v0.0.2][task64]
     - envoie d'un mail aux parents d'une structure lorsqu'une permanence est 
         proposée à léchange

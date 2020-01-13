@@ -77,7 +77,7 @@ class PermanenceController extends Controller implements FamilleInterface
         }
         $listeFamilles = $em
             ->getRepository('BalancelleBundle:Famille')
-            ->findBy(['active' => 1]);
+            ->findBy(['active' => 1],['nom' => 'ASC']);
 
         return $this->render(
             '@Balancelle/Permanence/inscription.html.twig',
