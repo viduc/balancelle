@@ -3,7 +3,6 @@
 namespace BalancelleBundle\Controller;
 
 use BalancelleBundle\Entity\Structure;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 //use Symfony\Bundle\MakerBundle\Str;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -16,7 +15,7 @@ use BalancelleBundle\Form\MailType;
  * Structure controller.
  *
  */
-class StructureController extends Controller implements FamilleInterface
+class StructureController extends AppController implements FamilleInterface
 {
     private $view = 'structure';
 

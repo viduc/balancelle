@@ -172,7 +172,7 @@
                                     <h5 class="title">Permanences</h5>
                                     <h6 class="card-subtitle mb-2 text-muted">
                                         <div class="progress-perm">
-                                            <div id="progessBarPermanence" class="progress-bar-perm"></div>
+                                            <div id="progessBarPermanence0" class="progress-bar-perm"></div>
                                         </div>
                                     </h6>
                                     <p class="card-text">
@@ -235,7 +235,8 @@
     <input type="hidden" id="idFamille" value="{{ familleAdmin.id }}">
     {% if permanences is defined and permanences is not null %}
     <script type="text/javascript">
-        var pourcentagePermanenceFaite = "{{  permanences.pourcentage }}";
+        var pourcentagePermanenceFaite = [];
+        pourcentagePermanenceFaite[0] = "{{  permanences.pourcentage }}";
     </script>
     {% endif %}
 {% endblock %}

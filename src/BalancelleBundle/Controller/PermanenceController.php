@@ -7,7 +7,6 @@ use BalancelleBundle\Entity\Semaine;
 use BalancelleBundle\Entity\Structure;
 use BalancelleBundle\Form\PermanenceCreerType;
 use DateTime;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +19,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * Permanence controller.
  *
  */
-class PermanenceController extends Controller implements FamilleInterface
+class PermanenceController extends AppController implements FamilleInterface
 {
     /** ------------------------------ FAMILLE ----------------------------- **/
     /**

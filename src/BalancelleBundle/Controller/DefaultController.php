@@ -7,11 +7,10 @@ use BalancelleBundle\Entity\Structure;
 use BalancelleBundle\Entity\User;
 use Swift_Message;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use BalancelleBundle\Form\ContactType;
 //use InfluxDB;
 
-class DefaultController extends Controller implements FamilleInterface
+class DefaultController extends AppController implements FamilleInterface
 {
     public function indexAction()
     {

@@ -35,6 +35,17 @@ class PermanenceRepository extends EntityRepository
             ->execute();
     }
 
+    public function recupererLesPermanencesInscrite($famille)
+    {
+        return $this
+            ->createQueryBuilder('p')
+            ->where('p.famille = :famille')
+            ->setParameter('famille', $famille)
+            ->orderBy('p.debut', 'ASC')
+            ->getQuery()
+            ->execute();
+    }
+
     /**
      * Récupère toutes les permanences pour une structure entre deux dates
      * @param $structure - la structure (nomCourt)
@@ -119,5 +130,45 @@ class PermanenceRepository extends EntityRepository
         return $qb->orderBy('p.debut', 'ASC')
                   ->getQuery()
                   ->execute();
+    }
+
+    /**
+     * Récupère les informations sur les permanences d'une famille
+     * @param Famille $famille
+     * @return mixed
+     */
+    public function getInformationPermanenceFamille(Famille $famille)
+    {
+        $permanence['faite'] = $this->recupererLesPermanencesRealisees(
+            $famille
+        );
+        $permanence['aFaire'] = $famille->getNombrePermanence();
+        $permanence['inscrit'] = $this->recupererLesPermanencesInscrite($famille);
+        $permanence['pourcentage'] = 0;
+        if ($permanence['aFaire']) {
+            $permanence['pourcentage'] =
+                count($permanence['faite'])*100/$permanence['aFaire'];
+        }
+        if ($permanence['pourcentage']>100) {
+            $permanence['pourcentage'] = 100;
+        }
+
+        return $permanence;
+    }
+
+    /**
+     * Formate la liste des permanences réalisée.
+     * @param $permanences - la tableau des information de permanences
+     * @return array
+     */
+    public function formaterListePermanence($permanences)
+    {
+        $retour = [];
+        foreach ($permanences['inscrit'] as $perm) {
+            $perm->realise = in_array($perm, $permanences['faite'], true);
+            $retour[] = $perm;
+        }
+
+        return $retour;
     }
 }

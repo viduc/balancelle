@@ -2,6 +2,10 @@ balancelle_famille:
     resource: "@BalancelleBundle/Resources/config/routing/famille.yml"
     prefix:   /famille
 
+balancelle_famille_admin:
+  resource: "@BalancelleBundle/Resources/config/routing/familleAdmin.yml"
+  prefix:   /admin/famille
+
 balancelle_user:
     resource: "@BalancelleBundle/Resources/config/routing/user.yml"
     prefix:   /user/admin

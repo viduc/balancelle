@@ -70,24 +70,27 @@ if (typeof load !== "undefined") {
 function progessBar()
 {
     if (typeof pourcentagePermanenceFaite !== "undefined") {
-        var color = '#fff6f8';
-        if (pourcentagePermanenceFaite <= 5) {
-            color = '#f63a0f';
-        } else if (pourcentagePermanenceFaite <= 25) {
-            color = '#f27011';
-        } else if (pourcentagePermanenceFaite <= 50) {
-            color = '#f2b01e';
-        } else if (pourcentagePermanenceFaite <= 75) {
-            color = '#f2d31b';
-        } else if (pourcentagePermanenceFaite < 100) {
-            color = '#b1e02c';
-        } else if (pourcentagePermanenceFaite <= 100) {
-            color = '#46e035';
+        for (let i in pourcentagePermanenceFaite) {
+            console.log(pourcentagePermanenceFaite[i]); // affiche 0, 1, 2, "toto" dans la console
+            var color = '#fff6f8';
+            if (pourcentagePermanenceFaite[i] <= 5) {
+                color = '#f63a0f';
+            } else if (pourcentagePermanenceFaite[i] <= 25) {
+                color = '#f27011';
+            } else if (pourcentagePermanenceFaite[i] <= 50) {
+                color = '#f2b01e';
+            } else if (pourcentagePermanenceFaite[i] <= 75) {
+                color = '#f2d31b';
+            } else if (pourcentagePermanenceFaite[i] < 100) {
+                color = '#b1e02c';
+            } else if (pourcentagePermanenceFaite[i] <= 100) {
+                color = '#46e035';
+            }
+            $('#progessBarPermanence'+i).css({
+                'width': pourcentagePermanenceFaite[i] + '%',
+                'background-color': color
+            })
         }
-        $('#progessBarPermanence').css({
-            'width': pourcentagePermanenceFaite + '%',
-            'background-color': color
-        })
     }
 }
 

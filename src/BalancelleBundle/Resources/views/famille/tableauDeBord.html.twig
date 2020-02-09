@@ -1,8 +1,12 @@
 {% extends '@Balancelle/Default/layout.html.twig' %}
 {% block title %}BalancelleBundle:Famille:tableauDeBord{% endblock %}
 {% block body %}
-
-<h1> Tableau de bord de ma Famille</h1>
+<script type="text/javascript">
+    var pourcentagePermanenceFaite = [];
+</script>
+{% set i = 0 %}
+{% for famille in familles %}
+    <h1> Tableau de bord de ma Famille "{{ famille['famille'].nom }}"</h1>
     <div class="main-content-inner">
         <div class="card-area">
             <div class="row">
@@ -11,52 +15,51 @@
                         <div class="card-body">
                             <h5 class="title">Parent 1:</h5>
                             <h6 class="card-subtitle mb-2 text-muted">
-                                {{ parents['parent1'].prenom }}
-                                {{ parents['parent1'].nom }}
+                                {{ famille['famille'].parent1.prenom }}
+                                {{ famille['famille'].parent1.nom }}
                             </h6>
                             <p class="card-text">
-                                {{ parents['parent1'].email }}
+                                {{ famille['famille'].parent1.email }}
                             </p>
                         </div>
                     </div>
                 </div>
-                {% if parents['parent2'] %}
-                <div class="col-lg-3 col-md-3 mt-5">
-                    <div class="card card-bordered">
-                        <div class="card-body">
-                            <h5 class="title">Parent 2:</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">
-                                {{ parents['parent2'].prenom }}
-                                {{ parents['parent2'].nom }}
-                            </h6>
-                            <p class="card-text">
-                                {{ parents['parent2'].email }}
-                            </p>
+                {% if famille['famille'].parent2 %}
+                    <div class="col-lg-3 col-md-3 mt-5">
+                        <div class="card card-bordered">
+                            <div class="card-body">
+                                <h5 class="title">Parent 2:</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">
+                                    {{ famille['famille'].parent2.prenom }}
+                                    {{ famille['famille'].parent2.nom }}
+                                </h6>
+                                <p class="card-text">
+                                    {{ famille['famille'].parent2.email }}
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
                 {% endif %}
             </div>
-            <div class="row">
-                {% for enfant in famille.enfants %}
-                <div class="col-lg-3 col-md-3 mt-5">
-                    <div class="card card-bordered">
-                        <div class="card-body">
-                            <h5 class="title">Enfant:</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">
-                                {{ enfant.prenom }}
-                                {{ enfant.nom }}
-
-                            </h6>
-                            <p class="card-text">
-                                {{ enfant.naissance|date('d/m/Y') }}
-                            </p>
-                            <h6>
-                                {{ enfant.structure.nom }}
-                            </h6>
+            <div class="row">{{ dump(famille['famille'].enfants) }}
+                {% for enfant in famille['famille'].enfants %}
+                    <div class="col-lg-3 col-md-3 mt-5">
+                        <div class="card card-bordered">
+                            <div class="card-body">
+                                <h5 class="title">Enfant:</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">
+                                    {{ enfant.prenom }}
+                                    {{ enfant.nom }}
+                                </h6>
+                                <p class="card-text">
+                                    {{ enfant.naissance|date('d/m/Y') }}
+                                </p>
+                                <h6>
+                                    {{ enfant.structure.nom }}
+                                </h6>
+                            </div>
                         </div>
                     </div>
-                </div>
                 {% endfor %}
             </div>
             <div class="row">
@@ -66,16 +69,16 @@
                             <h5 class="title">Mes permanences</h5>
                             <h6 class="card-subtitle mb-2 text-muted">
                                 <div class="progress-perm">
-                                    <div id="progessBarPermanence" class="progress-bar-perm"></div>
+                                    <div id="progessBarPermanence{{ i }}" class="progress-bar-perm"></div>
                                 </div>
                             </h6>
                             <p class="card-text">
-                                Vous avez effectué {{ permanences.faite|length }} permanence(s) sur {{ permanences.aFaire }} à réaliser.
+                                Vous avez effectué {{ famille['permanences'].faite|length }} permanence(s) sur {{ famille['permanences'].aFaire }} à réaliser.
                             </p>
                             <p class="card-text">
-                                Vous êtes inscrit à {{ permanences.inscrit|length - permanences.faite|length }} permanence(s).
+                                Vous êtes inscrit à {{ famille['permanences'].inscrit|length - famille['permanences'].faite|length }} permanence(s).
                             </p>
-                            {% if listePermanence|length %}
+                            {% if famille['listePermanence']|length %}
 
                                 <div class="card">
                                     <div class="card-body">
@@ -93,21 +96,21 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    {% for permanence in listePermanence %}
-                                                    <tr>
-                                                        <th scope="row">{{ permanence.debut|date('d/m/Y') }}</th>
-                                                        <td>{{ permanence.titre }}</td>
-                                                        <td>{{ permanence.commentaire }}</td>
-                                                        {% if(permanence.realise) %}
-                                                            <td><span class="status-p bg-success">réalisée</span></td>
-                                                        {% else %}
-                                                            <td><span class="status-p bg-primary">a faire</span></td>
-                                                        {% endif %}
-                                                        <td>
-                                                            <a href="{{ path('permanence_inscription', { 'id': permanence.id }) }}">
-                                                                <i class="ti-eye"></i></a>
-                                                        </td>
-                                                    </tr>
+                                                    {% for permanence in famille['listePermanence'] %}
+                                                        <tr>
+                                                            <th scope="row">{{ permanence.debut|date('d/m/Y') }}</th>
+                                                            <td>{{ permanence.titre }}</td>
+                                                            <td>{{ permanence.commentaire }}</td>
+                                                            {% if(permanence.realise) %}
+                                                                <td><span class="status-p bg-success">réalisée</span></td>
+                                                            {% else %}
+                                                                <td><span class="status-p bg-primary">a faire</span></td>
+                                                            {% endif %}
+                                                            <td>
+                                                                <a href="{{ path('permanence_inscription', { 'id': permanence.id }) }}">
+                                                                    <i class="ti-eye"></i></a>
+                                                            </td>
+                                                        </tr>
                                                     {% endfor %}
                                                     </tbody>
                                                 </table>
@@ -122,8 +125,10 @@
             </div>
         </div>
     </div>
-
     <script type="text/javascript">
-        var pourcentagePermanenceFaite = "{{  permanences.pourcentage }}";
+        pourcentagePermanenceFaite[{{ i }}] = "{{ famille.permanences.pourcentage }}";
     </script>
+    {% set i = i+1 %}
+{% endfor %}
+
 {% endblock %}

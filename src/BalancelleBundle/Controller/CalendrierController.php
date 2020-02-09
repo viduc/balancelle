@@ -9,7 +9,6 @@ use BalancelleBundle\Entity\Structure;
 use DateTime;
 use Exception;
 use phpDocumentor\Reflection\Types\Boolean;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +19,7 @@ use BalancelleBundle\Form\CalendrierType;
  * Calendrier controller.
  *
  */
-class CalendrierController extends Controller
+class CalendrierController extends AppController
 {
     /**
      * Liste tout les calendriers

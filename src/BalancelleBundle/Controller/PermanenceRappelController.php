@@ -5,13 +5,12 @@ namespace BalancelleBundle\Controller;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Swift_Message;
 use Symfony\Component\Form\Extension\Templating\TemplatingRendererEngine;
 use Twig\Environment;
 use BalancelleBundle\Controller\CommunicationController;
 
-class PermanenceRappelController extends Controller
+class PermanenceRappelController extends AppController
 {
     /**
      * @var \Swift_Mailer

@@ -8,7 +8,6 @@ namespace BalancelleBundle\Controller;
 use BalancelleBundle\Entity\User;
 use BalancelleBundle\Form\MailType;
 use Exception;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +20,7 @@ use BalancelleBundle\Form\UserType;
  * User controller.
  *
  */
-class UserController extends Controller implements FamilleInterface
+class UserController extends AppController //implements FamilleInterface
 {
     public static $roles = [
         'ROLE_USER',

@@ -12,26 +12,26 @@ use AppBundle\Entity\Revuepresse;
 use AppBundle\Form\RevuepresseType;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminController extends Controller
+class AdminController extends Controller implements MenuInterface
 {
     /**
      * Index de la partie admin
      * @param CommunicationController $communication
      * @return Response
      */
-    public function indexAction(CommunicationController $communication)
+    /*public function indexAction(CommunicationController $communication)
     {
         $structure = $this->getDoctrine()->getRepository(Structure::class)->find(1);
         return $this->render('@Balancelle/Default/index.html.twig', array(
             'test' => 'test'
         ));
-    }
+    }*/
  
     /**
      * Gestion des évènements
      * @return Response
      */
-    public function evenementsListeAction()
+    /*public function evenementsListeAction()
     {
         $repository = $this->getDoctrine()->getRepository(Evenements::class);
 
@@ -47,7 +47,7 @@ class AdminController extends Controller
      * @param Request $request - null - id de l'évènement - form
      * @return Response
      */
-    public function evenementsSaveAction(Request $request)
+    /*public function evenementsSaveAction(Request $request)
     {
         $image = new File('./evenements/noimage.png');
         if (!$request->attributes->get('idevenement')) {
@@ -68,7 +68,7 @@ class AdminController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /* si on a une image de tramnsmise on la récupère */
-            if ($evenement->getImage() !== null) {
+     /*       if ($evenement->getImage() !== null) {
                 $file = $evenement->getImage();
                 $fileName = $this->generateUniqueFileName().'.';
                 $fileName.= $file->guessExtension();
@@ -100,7 +100,7 @@ class AdminController extends Controller
      * Gestion de la revue de presse
      * @return Response
      */
-    public function revuepresseListeAction()
+    /*public function revuepresseListeAction()
     {
         $repository = $this->getDoctrine()->getRepository(Revuepresse::class);
 
@@ -116,7 +116,7 @@ class AdminController extends Controller
      * @param Request $request - null - id de la revue de presse - form
      * @return Response
      */
-    public function revuepresseSaveAction(Request $request)
+    /*public function revuepresseSaveAction(Request $request)
     {
         $image = new File('./revuepresse/noimage.png');
         $scan = new File('./revuepresse/scan/noscan.pdf');
@@ -142,7 +142,7 @@ class AdminController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /* si on a une image de tramnsmise on la récupère */
-            if ($revuepresse->getImage() !== null) {
+     /*       if ($revuepresse->getImage() !== null) {
                 $file = $revuepresse->getImage();
                 $fileName = $this->generateUniqueFileName().'.';
                 $fileName.= $file->guessExtension();
@@ -157,7 +157,7 @@ class AdminController extends Controller
                 $revuepresse->setImage($image);
             }
             /* si on a un scan de tramnsmise on la récupère */
-            if ($revuepresse->getScan() !== null) {
+     /*       if ($revuepresse->getScan() !== null) {
                 $file = $revuepresse->getScan();
                 $fileName = $this->generateUniqueFileName().'.';
                 $fileName.= $file->guessExtension();

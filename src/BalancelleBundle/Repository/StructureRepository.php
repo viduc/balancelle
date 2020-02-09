@@ -2,6 +2,7 @@
 
 namespace BalancelleBundle\Repository;
 
+use BalancelleBundle\Entity\Calendrier;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -18,7 +19,7 @@ class StructureRepository extends EntityRepository
      * Récupère les enfants non liés à une famille
      * @return mixed
      */
-    public function coutStructure()
+    public function countStructure()
     {
         try {
             return $this
@@ -41,5 +42,25 @@ class StructureRepository extends EntityRepository
             ->getQuery()
             ->execute()
             ;
+    }
+
+    public function getStructuresAvecCalendrier()
+    {
+        $structures = [];
+        foreach ($this->getStructureActive() as $structure) {
+            if ($this->verifieSiStructureAunCalendrier($structure)) {
+                $structures[] = $structure;
+            }
+        }
+
+        return $structures;
+    }
+
+    public function verifieSiStructureAunCalendrier($structure)
+    {
+        $calendriers = $this->getEntityManager()->getRepository(Calendrier::class)
+            ->findBy(['structure' => $structure, 'active' => 1]);
+
+        return count($calendriers);
     }
 }

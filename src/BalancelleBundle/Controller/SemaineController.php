@@ -3,7 +3,6 @@
 namespace BalancelleBundle\Controller;
 
 use BalancelleBundle\Entity\Semaine;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Semaine controller.
  *
  */
-class SemaineController extends Controller
+class SemaineController extends AppController
 {
     /**
      * Lists all semaine entities.

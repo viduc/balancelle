@@ -212,6 +212,45 @@ class User extends BaseUser
     }
 
     /**
+     * Détermine si l'utilisateur a le rôle parent
+     * @return Boolean
+     */
+    public function isroleParent()
+    {
+        return $this->hasRole('ROLE_PARENT');
+    }
+
+    /**
+     * Enregistre le role parent
+     * @return User
+     */
+    public function setRoleParent()
+    {
+        $this->addRole('ROLE_PARENT');
+
+        return $this;
+    }
+
+    /**
+     * Supprime le role parent
+     * @return User
+     */
+    public function removeRoleParent()
+    {
+        $this->removeRole('ROLE_PARENT');
+
+        return $this;
+    }
+    /**
+     * Récupère le role admin
+     * @return Boolean
+     */
+    public function getRoleParent()
+    {
+        return $this->hasRole('ROLE_PARENT');
+    }
+
+    /**
      * représente l'objet en string
      * @return string
      */

@@ -14,98 +14,41 @@
         <div class="menu-inner">
             <nav>
                 <ul class="metismenu" id="menu">
-                    {% if famille is defined and famille != null%}
-                        <li class="active">
-                            <a
-                                href="{{ path('famille_tableauDeBord') }}"
-                                aria-expanded="true">
-                                <i class="ti-home"></i>
-                                <span>Ma Famille</span>
-                            </a>
-                        </li>
-                        {% if app.session.get('menuPermanence') is defined %}
-                            {% for menu in app.session.get('menuPermanence') %}
-                                <li >
-                                    <a
-                                        href="{{ path('permanence_index', { 'structure': menu }) }}"
+
+                    {% if app.session.get('menus') is defined %}
+                        {% for menu in app.session.get('menus') %}
+                            {% if menu.getType == 'menu' %}
+                            <li >
+                                <a
+                                    href="{{ path(menu.path) }}"
                                         aria-expanded="true">
-                                        <i class="ti-home"></i>
-                                        <span>Permanence {{ menu }}</span>
-                                    </a>
+                                    <i class="{{ menu.icon }}"></i>
+                                    <span>{{ menu.libelle }}</span>
+                                </a>
+                            </li>
+                            {% else %}
+                                <li>
+                                    <a href="javascript:void(0)" aria-expanded="true">
+                                        <i class="{{ menu.icon }}"></i>
+                                        <span>{{ menu.libelle }}</span></a>
+                                    <ul class="collapse">
+                                        {% for menuOuvrant in menu.getMenus %}
+                                            <li class="active">
+                                                <a
+                                                    href="{{ path(
+                                                        menuOuvrant.path,
+                                                        menuOuvrant.parametre
+                                                    ) }}"
+                                                    aria-expanded="true">
+                                                    <i class="{{ menuOuvrant.icon }}"></i>
+                                                    <span>{{ menuOuvrant.libelle }}</span>
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
                                 </li>
-                            {% endfor %}
-                        {% endif %}
-                    {% endif %}
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <li class="active">
-                            <a
-                                href="{{ path('user_index') }}"
-                                aria-expanded="true">
-                                <i class="fa fa-user"></i>
-                                <span>Utilisateurs</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="{{ path('famille_index') }}"
-                                aria-expanded="true">
-                                <i class="fa fa-group"></i>
-                                <span>Familles</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="{{ path('structure_index') }}"
-                                aria-expanded="true">
-                                <i class="fa fa-sitemap"></i>
-                                <span>Structures</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="{{ path('calendrier_index') }}"
-                                aria-expanded="true">
-                                <i class="fa fa-calendar-check-o"></i>
-                                <span>Calendriers</span>
-                            </a>
-                        </li>
-                        <li class="active">
-                            <a href="javascript:void(0)" aria-expanded="true"><i class="ti-agenda"></i><span>Permanences</span></a>
-                            <ul class="collapse">
-                                <li class="active">
-                                    <a
-                                        href="{{ path('admin_permanence_index') }}"
-                                        aria-expanded="true">
-                                        <i class="ti-dashboard"></i>
-                                        <span>Tableau de bord</span>
-                                    </a>
-                                </li>
-                                {% for menu in app.session.get('menuPermanence') %}
-                                    <li >
-                                        <a
-                                            href="{{ path('admin_permanence_structure', { 'structure': menu }) }}"
-                                            aria-expanded="true">
-                                            <i class="ti-layout-list-thumb-alt"></i>
-                                            <span>Permanence {{ menu }}</span>
-                                        </a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)" aria-expanded="true"><i class="ti-briefcase"></i><span>Outils</span></a>
-                            <ul class="collapse">
-                                <li class="active">
-                                    <a
-                                            href="https://labalancelle.yo.fr/qdpm/index.php"
-                                            aria-expanded="true"
-                                            target="_blank">
-                                        <i class="ti-dashboard"></i>
-                                        <span>Projets</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                            {% endif %}
+                        {% endfor %}
                     {% endif %}
                 </ul>
             </nav>

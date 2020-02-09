@@ -5,12 +5,11 @@ namespace BalancelleBundle\Controller;
 use Swift_Message;
 use BalancelleBundle\Entity\Structure;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use BalancelleBundle\Entity\User;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
-class CommunicationController extends Controller
+class CommunicationController extends AppController
 {
     protected $em;
     protected $mailer;
