@@ -18,4 +18,8 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
+
+    # google captcha
+    google_public_key: publickey
+    google_private_key: privatekey
 #

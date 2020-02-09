@@ -43,9 +43,16 @@
                     </div>
                     <div class="form-gp">
                         <label for="message">Message</label>
-                        {{ form_widget(form.message) }}
+                        {{ form_widget(form.message,{ 'attr': {'cols': '40'} }) }}
                     </div>
                     <div class="row mb-4 rmber-area">
+                        {{ form_widget(form.recaptcha, { 'attr': {
+                            'options' : {
+                                'theme': 'light',
+                                'type': 'image',
+                                'size': 'normal'
+                            },
+                        } }) }}
                     </div>
                     <div class="submit-btn-area">
                         {{ form_widget(form) }}

@@ -20,7 +20,8 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new BalancelleBundle\BalancelleBundle(),
             new CalendarBundle\CalendarBundle(),
-            new FOS\CKEditorBundle\FOSCKEditorBundle()
+            new FOS\CKEditorBundle\FOSCKEditorBundle(),
+            new EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle()
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
