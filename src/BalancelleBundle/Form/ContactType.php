@@ -9,6 +9,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use BalancelleBundle\Entity\Contact;
+use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
+use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
 
 class ContactType extends AbstractType
 {
@@ -22,7 +24,21 @@ class ContactType extends AbstractType
             ->add('prenom', TextType::class, ['required' => true])
             ->add('email', EmailType::class)
             ->add('sujet', TextType::class, ['required' => true])
-            ->add('message', TextareaType::class, []);
+            ->add('message', TextareaType::class, [])
+            ->add('recaptcha', EWZRecaptchaType::class, array(
+                'language' => 'fr',
+                'attr'        => array(
+                    'options' => array(
+                        'theme' => 'light',
+                        'type'  => 'image',
+                        'size'  => 'normal'
+                    )
+                ),
+                'mapped'      => false,
+                'constraints' => array(
+                    new RecaptchaTrue()
+                )
+            ));
     }/**
      * {@inheritdoc}
      */
