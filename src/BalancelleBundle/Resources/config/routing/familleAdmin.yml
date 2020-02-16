@@ -1,0 +1,48 @@
+famille_index:
+    path:     /
+    defaults: { _controller: "BalancelleBundle:FamilleAdmin:index" }
+    methods:  GET
+
+famille_new:
+    path:     /new
+    defaults: { _controller: "BalancelleBundle:FamilleAdmin:new" }
+    methods:  [GET, POST]
+
+famille_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BalancelleBundle:FamilleAdmin:edit" }
+    methods:  [GET, POST]
+
+famille_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BalancelleBundle:FamilleAdmin:delete" }
+    methods:  DELETE
+
+famille_ajouterEnfant:
+    path:     /ajouterEnfant
+    defaults: { _controller: "BalancelleBundle:FamilleAdmin:ajouterEnfant" }
+    methods:  [POST]
+
+famille_creerEnfant:
+    path:     /creerEnfant
+    defaults: { _controller: "BalancelleBundle:FamilleAdmin:creerEnfant" }
+    methods:  [POST]
+
+famille_supprimerEnfant:
+    path:     /supprimerEnfant/{idEnfant}/{idFamille}
+    defaults: { _controller: "BalancelleBundle:FamilleAdmin:supprimerEnfant" }
+
+famille_autocomplete:
+    path:     /autocomplete
+    defaults: { _controller: "BalancelleBundle:FamilleAdmin:autocomplete" }
+    methods:  [POST]
+
+famille_envoi_mail:
+    path:     /{id}/envoyerMail
+    defaults: { _controller: "BalancelleBundle:FamilleAdmin:envoyerMail" }
+    methods:  [GET, POST]
+
+famille_envoi_mail_general:
+    path:     /envoyerMailGeneral
+    defaults: { _controller: "BalancelleBundle:FamilleAdmin:envoyerMail" }
+    methods:  [GET, POST]
