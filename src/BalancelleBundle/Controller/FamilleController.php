@@ -76,7 +76,9 @@ class FamilleController extends AppController implements FamilleInterface
         $repositoryPermanence = $this->em->getRepository(
             'BalancelleBundle:Permanence'
         );
+        $repository = $this->getDoctrine()->getRepository(Famille::class);
         foreach ($familles as $famille) {
+            $famille = $repository->findOneBy(['id' =>$famille->getId()]);
             $tableauFamilles[$id]['famille'] = $famille;
             $tableauFamilles[$id]['permanences'] =
                 $repositoryPermanence->getInformationPermanenceFamille($famille);

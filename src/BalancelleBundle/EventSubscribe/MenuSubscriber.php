@@ -3,6 +3,9 @@
 namespace BalancelleBundle\EventSubscribe;
 
 use BalancelleBundle\Controller\MenuInterface;
+use BalancelleBundle\Entity\Calendrier;
+use BalancelleBundle\Entity\Enfant;
+use BalancelleBundle\Entity\Famille;
 use BalancelleBundle\Entity\Menu;
 use BalancelleBundle\Entity\MenuOuvrant;
 use BalancelleBundle\Entity\Structure;
@@ -106,7 +109,11 @@ class MenuSubscriber implements EventSubscriberInterface
     {
         $this->menus[] = new Menu('user_index', 'Utilisateurs', 'fa fa-user');
         $this->menus[] = new Menu('famille_index', 'Familles', 'fa fa-group');
-        $this->menus[] = new Menu('structure_index', 'Structures', 'fa fa-sitemap');
+        $this->menus[] = new Menu(
+            'structure_index',
+            'Structures',
+            'fa fa-sitemap'
+        );
         $this->menus[] = new Menu(
             'calendrier_index',
             'Calendriers',
@@ -116,7 +123,11 @@ class MenuSubscriber implements EventSubscriberInterface
 
     private function genererMenuParent()
     {
-        $this->menus[] = new Menu('famille_tableauDeBord', 'Ma famille', 'ti-home');
+        $this->menus[] = new Menu(
+            'famille_tableauDeBord',
+            'Ma famille',
+            'ti-home'
+        );
     }
 
     /**
@@ -144,6 +155,8 @@ class MenuSubscriber implements EventSubscriberInterface
                     ['structure' => $structure->getNom()]);
                 $permanences->addMenu($menu);
             }
+        } elseif ($this->security->isGranted('ROLE_PARENT')) {
+            $this->menuPermanenceFamille($permanences);
         }
 
         return $permanences;
@@ -155,38 +168,43 @@ class MenuSubscriber implements EventSubscriberInterface
      * @param $famille
      * @return array
      */
-    /*private function menuPermanence($familles)
+    private function menuPermanenceFamille($permanences)
     {
+        $familles = $this->session->get('familles');
         $menuPerm = [];
+        $emFamille = $this->entityManager->getRepository(Famille::class);
+        $emEnfant = $this->entityManager->getRepository(Enfant::class);
+        $emStructure = $this->entityManager->getRepository(Structure::class);
         if ($familles !== null) {
             foreach ($familles as $famille) {
+                $famille = $emFamille->findOneBy(['id' => $famille->getId()]);
                 foreach ($famille->getEnfants() as $enfant) {
+                    $enfant = $emEnfant->findOneBy(['id' => $enfant->getId()]);
+                    $structure = $emStructure->findOneBy(['id' => $enfant->getStructure()->getId()]);
+
                     if (
                         $this->verifieSiStructureAunCalendrier(
-                            $enfant->getStructure()
+                            $structure
                         ) &&
                         !in_array(
-                            $enfant->getStructure()->getNomCourt(),
+                            $structure->getNomCourt(),
                             $menuPerm,
                             true
                         )
                     ) {
-                        $menuPerm[] = $enfant->getStructure()->getNomCourt();
+                        $menuPerm[] = $structure->getNomCourt();
+                        $menu = new Menu(
+                            'permanence_index',
+                            'Permanence ' . $structure->getNom(),
+                            'ti-layout-list-thumb-alt',
+                            ['structure' => $structure->getNom()]);
+                        $permanences->addMenu($menu);
                     }
-                }
-            }
-        } else {
-            $listeStructures = $this->entityManager->getRepository(
-                Structure::class
-            )->findBy(['active' => 1]);
-            foreach ($listeStructures as $structure) {
-                if ($this->verifieSiStructureAunCalendrier($structure)) {
-                    $menuPerm[] = $structure->getNomCourt();
                 }
             }
         }
 
-        return $menuPerm;
+        return $permanences;
     }
 
 
@@ -194,7 +212,6 @@ class MenuSubscriber implements EventSubscriberInterface
     {
         $calendriers = $this->entityManager->getRepository(Calendrier::class)
             ->findBy(['structure' => $structure, 'active' => 1]);
-
         return count($calendriers);
-    }*/
+    }
 }

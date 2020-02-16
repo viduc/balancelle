@@ -44,7 +44,7 @@ class CalendrierController extends AppController
     public function newAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        if (!$em->getRepository(Structure::class)->coutStructure()) {
+        if (!$em->getRepository(Structure::class)->countStructure()) {
             $message = 'Vous ne pouvez pas créer de calendrier si aucune ';
             $message .= " structre n'est disponible.";
             return $this->render(

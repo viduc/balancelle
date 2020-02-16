@@ -109,6 +109,7 @@ class FamilleSubscriber implements EventSubscriberInterface
             ->createQueryBuilder('b')
             ->Where('b.parent1 = :user')
             ->orWhere('b.parent2 = :user')
+            ->join('b.enfants', 'e')
             ->setParameter('user', $this->security->getUser())
             ->getQuery()
             ->execute()

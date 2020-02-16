@@ -40,8 +40,8 @@ class DefaultController extends AppController implements FamilleInterface
         } catch (InfluxDB\Exception $e) {//TODO gérer l'erreur ici
         }
 */
-        if ($this->get('session')->get('famille') &&
-            $this->get('session')->get('famille') !== null) {
+        if ($this->get('session')->get('familles') &&
+            $this->get('session')->get('familles') !== null) {
             return $this->redirectToRoute('famille_tableauDeBord');
         }
 
