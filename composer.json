@@ -22,7 +22,7 @@
         ]
     },
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.0",
         "ext-fileinfo": "*",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/orm": "^2.5",
@@ -40,18 +40,18 @@
         "twig/twig": "^1.0||^2.0"
     },
     "require-dev": {
-        "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0",
-        "phpunit/phpunit": "^5|^6|^7",
-        "mayflower/php-codebrowser": "~1.1",
-        "phing/phing": "2.*",
-        "pdepend/pdepend" : "2.5.0",
-        "phpmd/phpmd" : "@stable",
-        "sebastian/phpcpd" : "3.0.1",
-        "phploc/phploc": "~4.0",
-        "squizlabs/php_codesniffer": "3.*",
         "friendsofphp/php-cs-fixer": "~2.14",
-        "influxdb/influxdb-php": "1.*"
+        "influxdb/influxdb-php": "1.*",
+        "mayflower/php-codebrowser": "~1.1",
+        "pdepend/pdepend": "2.5.0",
+        "phing/phing": "2.*",
+        "phploc/phploc": "~4.0",
+        "phpmd/phpmd": "@stable",
+        "phpunit/phpunit": "^5|^6|^7",
+        "sebastian/phpcpd": "3.0.1",
+        "sensio/generator-bundle": "^3.0",
+        "squizlabs/php_codesniffer": "3.*",
+        "symfony/phpunit-bridge": "^5.0"
     },
     "scripts": {
         "symfony-scripts": [
