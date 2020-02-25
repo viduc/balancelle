@@ -78,20 +78,6 @@ class CalendarListener
             ['nomCourt' => $this->structure]
         );
 
-        $test = new Permanence();
-        $test->setCommentaire('test');
-        $test->setActive(true);
-        $test->setDebut(new DateTime());
-        $test->setFin(new DateTime());
-        $test->setTitre('test');
-
-        $permanenceEvent =new Event(
-            'test',
-            new DateTime(),
-            new DateTime()
-        );
-        $calendar->addEvent($permanenceEvent);
-
         $permanences = $this->em->getRepository(Permanence::class)
             ->createQueryBuilder('b')
             ->from(Calendrier::class, 'c')
@@ -109,10 +95,16 @@ class CalendarListener
         $tabPermanencesJour = [];
         foreach ($permanences as $permanence) {
             try {
-                $permanenceEvent = $this->formatPermanence($permanence);
+                /*$permanenceEvent = $this->formatPermanence($permanence);
                 $calendar->addEvent($permanenceEvent);
                 $tabPermanencesJour[$permanence->getDebut()->format('Y-m-d')] =
-                    $permanence;
+                    $permanence;*/
+                $permanenceEvent =new Event(
+                    $permanence->getId(),
+                    $permanence->getDebut(),
+                    $permanence->getFin()
+                );
+                $calendar->addEvent($permanenceEvent);
             } catch (Exception $e) {
             }
         }
