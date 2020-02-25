@@ -43,7 +43,7 @@ class CalendarListener
     /**
      * @var Security
      */
-    //private $security;
+    private $security;
 
     /**
      * @var mixed
