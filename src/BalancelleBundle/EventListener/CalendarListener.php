@@ -93,7 +93,7 @@ class CalendarListener
             ->getQuery()->getResult();
 
         $permanenceEvent =new Event(
-            $structureId,
+            $this->structure,
             new DateTime(),
             new DateTime()
         );
