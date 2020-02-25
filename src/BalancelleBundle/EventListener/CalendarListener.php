@@ -83,13 +83,13 @@ class CalendarListener
             ->from(Calendrier::class, 'c')
             ->from(Semaine::class, 's')
             ->andWhere('b.debut BETWEEN :startDate and :endDate')
-            ->andWhere('c.structure = :structureId')
-            ->andWhere('s.calendrier = c.id')
-            ->andWhere('b.semaine = s.id')
-            ->andWhere('c.active = 1')
+            //->andWhere('c.structure = :structureId')
+            //->andWhere('s.calendrier = c.id')
+            //->andWhere('b.semaine = s.id')
+            //->andWhere('c.active = 1')
             ->setParameter('startDate', $startDate->format('Y-m-d H:i:s'))
             ->setParameter('endDate', $endDate->format('Y-m-d H:i:s'))
-            ->setParameter('structureId', $structureId)
+            //->setParameter('structureId', $structureId)
             ->getQuery()->getResult();
 
         $permanenceEvent =new Event(
