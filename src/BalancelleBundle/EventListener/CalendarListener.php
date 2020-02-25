@@ -78,6 +78,8 @@ class CalendarListener
             ['nomCourt' => $this->structure]
         );
 
+        $test = 'test';$calendar->addEvent($test);
+
         $permanences = $this->em->getRepository(Permanence::class)
             ->createQueryBuilder('b')
             ->from(Calendrier::class, 'c')
