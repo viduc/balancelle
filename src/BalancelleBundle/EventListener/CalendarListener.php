@@ -75,7 +75,7 @@ class CalendarListener
         $filters = $calendar->getFilters();
 
         $structureId = $this->em->getRepository(Structure::class)->findOneBy(
-            ['nomCourt' => $this->structure]
+            ['nom' => $this->structure]
         );
 
         $permanences = $this->em->getRepository(Permanence::class)
@@ -92,12 +92,12 @@ class CalendarListener
             ->setParameter('structureId', $structureId)
             ->getQuery()->getResult();
 
-        $permanenceEvent =new Event(
+        /*$permanenceEvent =new Event(
             $this->structure,
             new DateTime(),
             new DateTime()
         );
-        $calendar->addEvent($permanenceEvent);
+        $calendar->addEvent($permanenceEvent);*/
         $tabPermanencesJour = [];
         foreach ($permanences as $permanence) {
             try {
