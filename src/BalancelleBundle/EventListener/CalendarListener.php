@@ -78,8 +78,8 @@ class CalendarListener
             ['nomCourt' => $this->structure]
         );
 
-        $test = new Permanence();
-        $calendar->addEvent($test);
+        /*$test = new Permanence();
+        $calendar->addEvent($test);*/
 
         $permanences = $this->em->getRepository(Permanence::class)
             ->createQueryBuilder('b')
