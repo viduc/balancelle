@@ -19,7 +19,7 @@ $(document).ready(function(){
 /**
  * Chargement des évènements du calendrier
  */
-if (typeof load !== "undefined") {console.log('ici')
+if (typeof load !== "undefined") {console.log(load)
     document.addEventListener('DOMContentLoaded', () => {
         var calendarEl = document.getElementById('calendar-holder');
         var calendar = new FullCalendar.Calendar(calendarEl, {
