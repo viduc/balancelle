@@ -84,7 +84,13 @@ class CalendarListener
         $test->setDebut(new DateTime());
         $test->setFin(new DateTime());
         $test->setTitre('test');
-        $calendar->addEvent($test);
+
+        $permanenceEvent =new Event(
+            'test',
+            new DateTime(),
+            new DateTime()
+        );
+        $calendar->addEvent($permanenceEvent);
 
         $permanences = $this->em->getRepository(Permanence::class)
             ->createQueryBuilder('b')
