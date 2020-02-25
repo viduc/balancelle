@@ -92,19 +92,19 @@ class CalendarListener
             ->setParameter('structureId', $structureId)
             ->getQuery()->getResult();
 
+        $permanenceEvent =new Event(
+            count($permanences),
+            new DateTime(),
+            new DateTime()
+        );
+        $calendar->addEvent($permanenceEvent);
         $tabPermanencesJour = [];
         foreach ($permanences as $permanence) {
             try {
-                /*$permanenceEvent = $this->formatPermanence($permanence);
+                $permanenceEvent = $this->formatPermanence($permanence);
                 $calendar->addEvent($permanenceEvent);
                 $tabPermanencesJour[$permanence->getDebut()->format('Y-m-d')] =
-                    $permanence;*/
-                $permanenceEvent =new Event(
-                    $permanence->getId(),
-                    $permanence->getDebut(),
-                    $permanence->getFin()
-                );
-                $calendar->addEvent($permanenceEvent);
+                    $permanence;
             } catch (Exception $e) {
             }
         }
