@@ -43,7 +43,7 @@ class CalendarListener
     /**
      * @var Security
      */
-    //private $security;
+    private $security;
 
     /**
      * @var mixed
@@ -75,7 +75,7 @@ class CalendarListener
         $filters = $calendar->getFilters();
 
         $structureId = $this->em->getRepository(Structure::class)->findOneBy(
-            ['nomCourt' => $this->structure]
+            ['nom' => $this->structure]
         );
 
         $permanences = $this->em->getRepository(Permanence::class)
