@@ -1,0 +1,19 @@
+magasin_index:
+    path:     /
+    defaults: { _controller: "BalancelleBundle:Magasin:index" }
+    methods:  [GET]
+
+magasin_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BalancelleBundle:Magasin:edit" }
+    methods:  [GET, POST]
+
+magasin_new:
+    path:     /new
+    defaults: { _controller: "BalancelleBundle:Magasin:new" }
+    methods:  [GET, POST]
+
+magasin_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BalancelleBundle:Magasin:delete" }
+    methods:  DELETE

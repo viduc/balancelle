@@ -30,6 +30,10 @@ balancelle_calendrier:
   resource: "@BalancelleBundle/Resources/config/routing/calendrier.yml"
   prefix:   /calendrier
 
+balancelle_magasinr:
+  resource: "@BalancelleBundle/Resources/config/routing/magasin.yml"
+  prefix:   /magasin
+
 balancelle_homepage:
     path:     /
     defaults: { _controller: BalancelleBundle:Default:index }

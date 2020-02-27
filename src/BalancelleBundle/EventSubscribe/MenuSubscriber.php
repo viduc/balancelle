@@ -119,6 +119,15 @@ class MenuSubscriber implements EventSubscriberInterface
             'Calendriers',
             'fa fa-calendar-check-o'
         );
+
+        $courses = new MenuOuvrant('Courses', 'fa fa-shopping-cart');
+        $menu = new Menu(
+            'magasin_index',
+            'Liste des magasins',
+            'fa fa-university'
+        );
+        $courses->addMenu($menu);
+        $this->menus[] = $courses;
     }
 
     private function genererMenuParent()
