@@ -48,15 +48,21 @@ class CourseTest extends TestCase
 
     public function testGetDate()
     {
-        $this->course->setDate(new \DateTime());
-        $this->assertInstanceOf(\DateTime::class, $this->course->getDate());
+        $this->course->setDateDebut(new \DateTime());
+        $this->assertInstanceOf(\DateTime::class, $this->course->getDateDebut());
+        $this->course->setDateFin(new \DateTime());
+        $this->assertInstanceOf(\DateTime::class, $this->course->getDateFin());
     }
 
     public function testSetDate()
     {
         $this->assertInstanceOf(
             Course::class,
-            $this->course->setDate(new \DateTime())
+            $this->course->setDateDebut(new \DateTime())
+        );
+        $this->assertInstanceOf(
+            Course::class,
+            $this->course->setDateFin(new \DateTime())
         );
     }
 

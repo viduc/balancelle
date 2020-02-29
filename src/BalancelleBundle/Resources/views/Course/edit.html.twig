@@ -7,8 +7,21 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-ml-12">
             <div class="card" style="background-color: #bbbbbb">
                 <div class="card-body" >
-                    <h4 class="header-title">Information sur le calendrier</h4>
+                    <h4 class="header-title">Information sur la course</h4>
                     {{ form_start(form) }}
+                    <div class="form-row align-items-center" >
+                        <div class="form-group col-xl-4 col-lg-4 col-md-6 col-sm-12 my-1">
+                            <label for="structure">Structure</label>
+                            {{ form_widget(form.structure, {'attr': {'class': 'form-control',
+                                'placeholder': "structure"}}) }}
+                        </div>
+                        <div class="form-group col-xl-4 col-lg-4 col-md-6 col-sm-12 my-1">
+                            <label for="magasin">Magasin</label>
+                            {{ form_widget(form.magasin, {'attr': {'class': 'form-control',
+                                'placeholder': "magasin"}}) }}
+                        </div>
+
+                    </div>
                     <div class="form-row align-items-center" >
                         <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-12 my-1">
                             <label for="dateDebut">Date de début</label>
@@ -20,46 +33,24 @@
                             {{ form_widget(form.dateFin, {'attr': {
                                 'placeholder': "date de fin"}}) }}
                         </div>
+                        <div class="form-group col-xl-4 col-lg-4 col-md-6 col-sm-12 my-1">
+                            <label for="famille">Famille</label>
+                            {{ form_widget(form.famille, {'attr': {'class': 'form-control',
+                                'placeholder': "famille"}}) }}
+                        </div>
                     </div>
                     <div class="form-row align-items-center" >
-                        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 my-1">
+                        <div class="form-group col-xl-8 col-lg-8 col-md-11 col-sm-12 my-1">
                             <label for="commentaire">Commentaire</label>
                             {{ form_widget(form.commentaire, {'attr': {'class': 'form-control',
-                                'placeholder': "Commentaire"}}) }}
+                                'placeholder': "commentaire"}}) }}
                         </div>
-                    </div>
-                    <div class="form-row align-items-center" >
-                        <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 my-1">
-                            <label for="structure">Structure</label>
-                            {{ form_widget(form.structure, {'attr': {'class': 'form-control',
-                                'placeholder': "Structure"}}) }}
-                        </div>
-                        <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 my-1">
-                            <label for="active">Actif</label>
+                        <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-12 my-1">
+                            <label for="active">Active</label>
                             {{ form_widget(form.active, {'attr': {'class': 'form-control',
-                                'placeholder': "Actif"}}) }}
+                                'placeholder': "active"}}) }}
                         </div>
                     </div>
-                    <div class="form-row align-items-center" >
-                        <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 my-1">
-                            <label for="permMatin">Nombre de permanence le matin</label>
-                            {{ form_widget(
-                                form.nbrPermanenceMatin,
-                                {'attr': {'class': 'form-control',
-                                    'placeholder': "Nombre de permanence le matin"}}
-                            ) }}
-                        </div>
-                        <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 my-1">
-                            <label for="permAM">Nombre de permanence l'AM</label>
-                            {{ form_widget(
-                                form.nbrPermanenceAM,
-                                {'attr': {'class': 'form-control',
-                                    'placeholder': "Nombre de permanence l'AM"}}
-                            ) }}
-                        </div>
-                    </div>
-
-                    <br>
                     <div class="form-row align-items-center ml-3">
                         <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
                             {{ form_widget(form) }}
@@ -83,7 +74,4 @@
             </div>
         </div>
     </div>
-    {% for semaine in calendrier.semaines %}
-        {# dump(semaine) #}
-    {% endfor %}
 {% endblock %}

@@ -24,6 +24,11 @@ class Course
     private $famille;
 
     /**
+     * @ORM\ManyToOne(targetEntity="BalancelleBundle\Entity\Structure", inversedBy="courses")
+     */
+    private $structure;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
@@ -35,9 +40,16 @@ class Course
     /**
      * @var DateTime|null
      *
-     * @ORM\Column(name="date", type="date", nullable=false)
+     * @ORM\Column(name="date_debut", type="date", nullable=false)
      */
-    private $date;
+    private $dateDebut;
+
+    /**
+     * @var DateTime|null
+     *
+     * @ORM\Column(name="date_fin", type="date", nullable=false)
+     */
+    private $dateFin;
 
     /**
      * @var string|null
@@ -105,11 +117,31 @@ class Course
     }
 
     /**
+     * @return Structure
+     */
+    public function getStructure()
+    {
+        return $this->structure;
+    }
+
+    /**
+     * @param mixed $structure
+     *
+     * @return Course
+     */
+    public function setStructure($structure)
+    {
+        $this->structure = $structure;
+
+        return $this;
+    }
+
+    /**
      * @return DateTime|null
      */
-    public function getDate()
+    public function getDateDebut()
     {
-        return $this->date;
+        return $this->dateDebut;
     }
 
     /**
@@ -117,9 +149,29 @@ class Course
      *
      * @return Course
      */
-    public function setDate($date)
+    public function setDateDebut($date)
     {
-        $this->date = $date;
+        $this->dateDebut = $date;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getDateFin()
+    {
+        return $this->dateFin;
+    }
+
+    /**
+     * @param DateTime|null $date
+     *
+     * @return Course
+     */
+    public function setDateFin($date)
+    {
+        $this->dateFin = $date;
 
         return $this;
     }

@@ -127,6 +127,12 @@ class MenuSubscriber implements EventSubscriberInterface
             'fa fa-university'
         );
         $courses->addMenu($menu);
+        $menu = new Menu(
+            'course_index',
+            'Liste des courses',
+            'fa fa-shopping-bag '
+        );
+        $courses->addMenu($menu);
         $this->menus[] = $courses;
     }
 
