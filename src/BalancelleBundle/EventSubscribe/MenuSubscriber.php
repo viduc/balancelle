@@ -183,7 +183,6 @@ class MenuSubscriber implements EventSubscriberInterface
                     $structure = $emStructure->findOneBy(
                         ['id' => $enfant->getStructure()->getId()]
                     );
-                    var_dump($structure);
                     if (
                         $this->verifieSiStructureAunCalendrier(
                             $structure
