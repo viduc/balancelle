@@ -180,8 +180,10 @@ class MenuSubscriber implements EventSubscriberInterface
                 $famille = $emFamille->findOneBy(['id' => $famille->getId()]);
                 foreach ($famille->getEnfants() as $enfant) {
                     $enfant = $emEnfant->findOneBy(['id' => $enfant->getId()]);
-                    $structure = $emStructure->findOneBy(['id' => $enfant->getStructure()->getId()]);
-
+                    $structure = $emStructure->findOneBy(
+                        ['id' => $enfant->getStructure()->getId()]
+                    );
+                    var_dump($structure);
                     if (
                         $this->verifieSiStructureAunCalendrier(
                             $structure
