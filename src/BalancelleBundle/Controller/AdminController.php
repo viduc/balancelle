@@ -2,6 +2,8 @@
 
 namespace BalancelleBundle\Controller;
 
+use BalancelleBundle\Entity\Course;
+use BalancelleBundle\Entity\Permanence;
 use BalancelleBundle\Entity\Structure;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +16,34 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdminController extends Controller implements MenuInterface
 {
+    public function tableauDeBordAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $familles = $em
+            ->getRepository('BalancelleBundle:Famille')
+            ->findAll();
+        $repository = $this->getDoctrine()->getRepository(Permanence::class);
+        foreach ($familles as $famille) {
+            $famille->permFaite = $repository->recupererLesPermanencesRealisees(
+                $famille
+            );
+            $famille->nbPermanenceAFaire = $famille->getNombrePermanence();
+            $famille->permanenceInscrit = $repository->findByFamille($famille);
+            $famille->pourcentagePermanenceFaite = 0;
+            $famille->course = $em
+                ->getRepository(Course::class)
+                ->recupererLesCoursesDuneFamille($famille);
+            if ($famille->nbPermanenceAFaire) {
+                $famille->pourcentagePermanenceFaite = count(
+                        $famille->permFaite
+                    )*100/$famille->nbPermanenceAFaire;
+            }
+        }
+        return $this->render(
+            '@Balancelle/Admin/index.html.twig',
+            array('familles' => $familles)
+        );
+    }
     /**
      * Index de la partie admin
      * @param CommunicationController $communication

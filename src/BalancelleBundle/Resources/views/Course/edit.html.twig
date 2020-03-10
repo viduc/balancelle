@@ -12,57 +12,92 @@
                     <div class="form-row align-items-center" >
                         <div class="form-group col-xl-4 col-lg-4 col-md-6 col-sm-12 my-1">
                             <label for="structure">Structure</label>
-                            {{ form_widget(form.structure, {'attr': {'class': 'form-control',
-                                'placeholder': "structure"}}) }}
+                            {{ form_widget(form.structure, {'attr':
+                                {
+                                    'class': 'form-control',
+                                    'placeholder': "structure",
+                                    'disabled': is_granted('ROLE_PARENT')
+                                }
+                            }) }}
                         </div>
                         <div class="form-group col-xl-4 col-lg-4 col-md-6 col-sm-12 my-1">
                             <label for="magasin">Magasin</label>
-                            {{ form_widget(form.magasin, {'attr': {'class': 'form-control',
-                                'placeholder': "magasin"}}) }}
+                            {{ form_widget(form.magasin, {'attr':
+                                {
+                                    'class': 'form-control',
+                                    'placeholder': "magasin",
+                                    'disabled': is_granted('ROLE_PARENT')
+                                }
+                            }) }}
                         </div>
-
                     </div>
                     <div class="form-row align-items-center" >
                         <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-12 my-1">
                             <label for="dateDebut">Date de début</label>
-                            {{ form_widget(form.dateDebut, {'attr': {
-                                'placeholder': "date de début"}}) }}
+                            {{ form_widget(form.dateDebut, {'attr':
+                                {
+                                    'placeholder': "date de début",
+                                    'disabled': is_granted('ROLE_PARENT')
+                                }
+                            }) }}
                         </div>
                         <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-12 my-1">
                             <label for="dateFin">Date de fin</label>
-                            {{ form_widget(form.dateFin, {'attr': {
-                                'placeholder': "date de fin"}}) }}
+                            {{ form_widget(form.dateFin, {'attr':
+                                {
+                                    'placeholder': "date de fin",
+                                    'disabled': is_granted('ROLE_PARENT')
+                                }
+                            }) }}
                         </div>
                         <div class="form-group col-xl-4 col-lg-4 col-md-6 col-sm-12 my-1">
                             <label for="famille">Famille</label>
-                            {{ form_widget(form.famille, {'attr': {'class': 'form-control',
-                                'placeholder': "famille"}}) }}
+                            {{ form_widget(form.famille, {'attr':
+                                {
+                                    'class': 'form-control',
+                                    'placeholder': "famille",
+                                    'disabled': is_granted('ROLE_PARENT')
+                                }
+                            }) }}
                         </div>
                     </div>
                     <div class="form-row align-items-center" >
                         <div class="form-group col-xl-8 col-lg-8 col-md-11 col-sm-12 my-1">
                             <label for="commentaire">Commentaire</label>
-                            {{ form_widget(form.commentaire, {'attr': {'class': 'form-control',
-                                'placeholder': "commentaire"}}) }}
+                            {{ form_widget(form.commentaire, {'attr':
+                                {
+                                    'class': 'form-control',
+                                    'placeholder': "commentaire",
+                                    'disabled': is_granted('ROLE_PARENT')
+                                }
+                            }) }}
                         </div>
                         <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-12 my-1">
-                            <label for="active">Active</label>
-                            {{ form_widget(form.active, {'attr': {'class': 'form-control',
-                                'placeholder': "active"}}) }}
+                            {% if is_granted('ROLE_ADMIN') %}<label for="active">Active</label>{% endif %}
+                            {{ form_widget(form.active, {'attr':
+                                {
+                                    'class': 'form-control',
+                                    'placeholder': "active",
+                                    'disabled': is_granted('ROLE_PARENT'),
+                                    'hidden': is_granted('ROLE_PARENT')
+                                }
+                            }) }}
                         </div>
                     </div>
                     <div class="form-row align-items-center ml-3">
                         <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
                             {{ form_widget(form) }}
-                            {% if 'new' in action %}
-                                <input type="submit" value="créer" class="btn btn-rounded btn-success mb-3"/>
-                            {% endif %}
-                            {% if 'edit' in action %}
-                                <input type="submit" value="enregister" class="btn btn-rounded btn-success mb-3"/>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                {% if 'new' in action %}
+                                    <input type="submit" value="créer" class="btn btn-rounded btn-success mb-3"/>
+                                {% endif %}
+                                {% if 'edit' in action %}
+                                    <input type="submit" value="enregister" class="btn btn-rounded btn-success mb-3"/>
+                                {% endif %}
                             {% endif %}
                             {{ form_end(form) }}
                         </div>
-                        {% if delete_form is defined %}
+                        {% if delete_form is defined and is_granted('ROLE_ADMIN') %}
                             <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
                                 {{ form_start(delete_form) }}
                                 <input type="submit" value="supprimer" class="btn btn-rounded btn-danger mb-3"/>

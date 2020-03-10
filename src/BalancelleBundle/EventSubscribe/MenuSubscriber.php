@@ -107,6 +107,11 @@ class MenuSubscriber implements EventSubscriberInterface
      */
     private function genererMenuAdmin()
     {
+        $this->menus[] = new Menu(
+            'admin_tableaudebord',
+            'Tableau de bord ',
+            'ti-dashboard'
+        );
         $this->menus[] = new Menu('user_index', 'Utilisateurs', 'fa fa-user');
         $this->menus[] = new Menu('famille_index', 'Familles', 'fa fa-group');
         $this->menus[] = new Menu(
@@ -154,12 +159,6 @@ class MenuSubscriber implements EventSubscriberInterface
         $permanences = new MenuOuvrant('Permanences', 'ti-agenda');
 
         if ($this->security->isGranted('ROLE_ADMIN')) {
-            $menu = new Menu(
-                'admin_permanence_index',
-                'Tableau de bord ',
-                'ti-dashboard'
-            );
-            $permanences->addMenu($menu);
             $structures = $this->entityManager->getRepository(Structure::class)
                 ->getStructuresAvecCalendrier();
             foreach ($structures as $structure) {
@@ -195,8 +194,9 @@ class MenuSubscriber implements EventSubscriberInterface
                 $famille = $emFamille->findOneBy(['id' => $famille->getId()]);
                 foreach ($famille->getEnfants() as $enfant) {
                     $enfant = $emEnfant->findOneBy(['id' => $enfant->getId()]);
-                    $structure = $emStructure->findOneBy(['id' => $enfant->getStructure()->getId()]);
-
+                    $structure = $emStructure->findOneBy(
+                        ['id' => $enfant->getStructure()->getId()]
+                    );
                     if (
                         $this->verifieSiStructureAunCalendrier(
                             $structure

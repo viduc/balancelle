@@ -16,9 +16,10 @@ class CourseController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $courses = $em->getRepository('BalancelleBundle:Course')->findAll();
-        return $this->render('@Balancelle/Course/index.html.twig', array(
-            'courses' => $courses,
-        ));
+        return $this->render(
+            '@Balancelle/Course/index.html.twig',
+            array('courses' => $courses)
+        );
     }
 
     /**
