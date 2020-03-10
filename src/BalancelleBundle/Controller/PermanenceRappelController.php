@@ -9,8 +9,9 @@ use Swift_Message;
 use Symfony\Component\Form\Extension\Templating\TemplatingRendererEngine;
 use Twig\Environment;
 use BalancelleBundle\Controller\CommunicationController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class PermanenceRappelController extends AppController
+class PermanenceRappelController extends Controller
 {
     /**
      * @var \Swift_Mailer
