@@ -1,0 +1,4 @@
+admin_tableaudebord:
+    path:     /admin
+    defaults: { _controller: "BalancelleBundle:Admin:tableauDeBord" }
+    methods:  GET
