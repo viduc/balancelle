@@ -22,11 +22,11 @@ class PermanenceRappelCommand extends ContainerAwareCommand
         $this
             ->setName('balancelle:permanence_rappel_command')
             ->setDescription($description)
-            ->addArgument(
+            /*->addArgument(
                 'nbrJour',
                 InputArgument::REQUIRED,
                 'Relancer les familles qui ont une permanence dans combien de jours?'
-            )
+            )*/
         ;
     }
 
@@ -39,7 +39,7 @@ class PermanenceRappelCommand extends ContainerAwareCommand
             'BalancelleBundle\Controller\PermanenceRappelController'
         );
         try {
-            $output->writeln($controller->rappel($input->getArgument('nbrJour')));
+            $output->writeln($controller->rappel(3));//$input->getArgument('nbrJour')));
         } catch (LoaderError $e) {
         } catch (RuntimeError $e) {
         } catch (SyntaxError $e) {
