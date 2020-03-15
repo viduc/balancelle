@@ -15,6 +15,7 @@
                                 <th>inscrit</th>
                                 <th>réserve</th>
                                 <th>Progression</th>
+                                <th>Nombre de Courses</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -37,42 +38,9 @@
                                             <div id="progessBarPermanence{{ famille.id }}" class="progress-bar-perm"></div>
                                         </div>
                                     </td>
+                                    <td>{{ famille.courses|length }}</td>
                                     <td><a href="{{ path('famille_edit', { 'id': famille.id }) }}">Voir</a></td>
                                 </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-12 mt-5">
-                <div class="card">
-                    <div class="data-tables">
-                        <table id="dataTable2" name="dataTable2" class="text-center">
-                            <thead class="bg-light text-capitalize">
-                            <tr>
-                                <th>Structure</th>
-                                <th>Magasin</th>
-                                <th>debut</th>
-                                <th>fin</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for famille in familles %}
-                                {% if famille.courses|length > 0 %}
-                                    {{ dump(famille.courses) }} //TODO boucler sur la collection -> course.
-                                <tr>
-                                    <td>{{ famille.courses.course.structure.nom }}</td>
-                                    <td>{{ famille.courses.course.magasin.nom }}</td>
-                                    <td>{{ famille.courses.course.dateDebut|date('d/m/Y') }}</td>
-                                    <td>{{ famille.courses.course.dateFin|date('d/m/Y') }}</td>
-                                    <td><a href="{{ path('famille_edit', { 'id': famille.id }) }}">Voir</a></td>
-                                </tr>
-                                {% endif %}
                             {% endfor %}
                             </tbody>
                         </table>
