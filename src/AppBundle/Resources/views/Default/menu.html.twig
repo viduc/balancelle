@@ -1,5 +1,6 @@
 <ul id="stickymenu" class="solidblockmenu">
-    {% if  app.request.attributes.get('_route') == 'app_revuepresse' %}
+    {% if  app.request.attributes.get('_route') == 'app_revuepresse' or
+        app.request.attributes.get('_route') == 'app_inscription' %}
         <li>
             <a href="{{ path('app_homepage') }}" class="menuLink current">
                 Retour à l'accueil
@@ -20,6 +21,10 @@
         {% endif %}
         <li><a href="{{ path('app_revuepresse') }}" class="menuLink">
                 Revue de presse
+            </a>
+        </li>
+        <li><a href="{{ path('app_inscription') }}" class="menuLink">
+                Inscription
             </a>
         </li>
         <li><a href="#mail" class="menuLink">Contact</a></li>
