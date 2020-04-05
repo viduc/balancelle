@@ -5,3 +5,7 @@ app_homepage:
 app_revuepresse:
     path:   /rp
     defaults: { _controller: AppBundle:Default:revuePresse }
+
+app_inscription:
+    path:   /inscription
+    defaults: { _controller: AppBundle:Default:inscription }

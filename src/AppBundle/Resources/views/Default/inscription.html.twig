@@ -1,0 +1,47 @@
+{% extends '@App/Default/layout.html.twig' %}
+{% block body %}
+<div id="inscription" class="newsletter" xmlns="http://www.w3.org/1999/html">
+    <div class="container">
+        <div class="col-md-5 w3layouts_newsletter_left">
+            <h3>Inscription 2020/21</h3>
+
+            </br></br>
+            <a href="{{asset('bundles/app/documents/preinscription.doc')}}"
+               style="color:#0B3861">
+                <i class="fa fa-download"
+                   aria-hidden="true"></i>
+                Télécharger le formulaire d'inscription
+            </a>
+            </br>
+            <a href="{{asset('bundles/app/documents/modalites.pdf')}}"
+               style="color:#0B3861">
+                <i class="fa fa-download"
+                   aria-hidden="true"></i>
+                Télécharger les modalités d'inscription
+            </a>
+        </div>
+        <div class="col-md-6 w3layouts_newsletter_right" style="font-size:1.3em;">
+            Bonjour,
+            Voici les documents pour faire le dossier de demande d'admission en crèche. </br></br>
+            Etant donné les circonstances exceptionnelles liées au Coronavirus ,
+            les dates prévues pour la réunion de présentation,
+            le dépôt des dossiers et la commission crèche seront déplacées. </br></br>
+            Nous nous excusons pour cette modification de planning mais
+            l'actualité nous conduit a prendre des mesures exceptionnelles. </br></br>
+            Les bureaux de la Balancelle étant fermés,
+            nous vous invitons a renvoyer les documents par mail sur l'adresse suivante: </br>
+            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+            <a href="mailto:contact@labalancelle.yo.fr" style="color: #721c24">contact@labalancelle.yo.fr</a></br>
+            Si vous ne pouvez pas nous fournir tout les documents justificatifs pour le moment
+            précisez le nous dans votre mail. </br></br>
+            Nous vous recontacterons lorsque nous aurons plus d'informations.
+            Je reste a votre écoute si vous avez des questions
+        </br></br>
+            CATELAN Véronique</br>
+            Directrice en remplacement
+            </br></br></br></br></br></br>
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+</div>
+{% endblock %}
