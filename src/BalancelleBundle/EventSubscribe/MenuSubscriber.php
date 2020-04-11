@@ -107,6 +107,11 @@ class MenuSubscriber implements EventSubscriberInterface
      */
     private function genererMenuAdmin()
     {
+        $this->menus[] = new Menu(
+            'admin_tableaudebord',
+            'Tableau de bord ',
+            'ti-dashboard'
+        );
         $this->menus[] = new Menu('user_index', 'Utilisateurs', 'fa fa-user');
         $this->menus[] = new Menu('famille_index', 'Familles', 'fa fa-group');
         $this->menus[] = new Menu(
@@ -119,6 +124,21 @@ class MenuSubscriber implements EventSubscriberInterface
             'Calendriers',
             'fa fa-calendar-check-o'
         );
+
+        $courses = new MenuOuvrant('Courses', 'fa fa-shopping-cart');
+        $menu = new Menu(
+            'magasin_index',
+            'Liste des magasins',
+            'fa fa-university'
+        );
+        $courses->addMenu($menu);
+        $menu = new Menu(
+            'course_index',
+            'Liste des courses',
+            'fa fa-shopping-bag '
+        );
+        $courses->addMenu($menu);
+        $this->menus[] = $courses;
     }
 
     private function genererMenuParent()
@@ -139,12 +159,6 @@ class MenuSubscriber implements EventSubscriberInterface
         $permanences = new MenuOuvrant('Permanences', 'ti-agenda');
 
         if ($this->security->isGranted('ROLE_ADMIN')) {
-            $menu = new Menu(
-                'admin_permanence_index',
-                'Tableau de bord ',
-                'ti-dashboard'
-            );
-            $permanences->addMenu($menu);
             $structures = $this->entityManager->getRepository(Structure::class)
                 ->getStructuresAvecCalendrier();
             foreach ($structures as $structure) {

@@ -14,7 +14,6 @@
         <div class="menu-inner">
             <nav>
                 <ul class="metismenu" id="menu">
-
                     {% if app.session.get('menus') is defined %}
                         {% for menu in app.session.get('menus') %}
                             {% if menu.getType == 'menu' %}

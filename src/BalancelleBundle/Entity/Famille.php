@@ -32,9 +32,15 @@ class Famille
      */
     private $enfants;
 
+    /**
+     * @ORM\OneToMany(targetEntity="BalancelleBundle\Entity\Course", cascade={"persist", "remove"}, mappedBy="famille")
+     */
+    private $courses;
+
     public function __construct()
     {
         $this->enfants = new ArrayCollection();
+        $this->courses = new ArrayCollection();
     }
 
     /**
@@ -189,6 +195,16 @@ class Famille
     }
 
     /**
+     * Get active
+     *
+     * @return bool
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
      * Set parent1
      *
      * @param User $parent1
@@ -268,6 +284,42 @@ class Famille
     public function getEnfants()
     {
         return $this->enfants;
+    }
+
+    /**
+     * Add course.
+     *
+     * @param Course $course
+     *
+     * @return Famille
+     */
+    public function addCourse(Course $course)
+    {
+        $this->courses[] = $course;
+
+        return $this;
+    }
+
+    /**
+     * Remove course.
+     *
+     * @param Course $course
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeCourse(Course $course)
+    {
+        return $this->courses->removeElement($course);
+    }
+
+    /**
+     * Get courses.
+     *
+     * @return Collection
+     */
+    public function getCourses()
+    {
+        return $this->courses;
     }
 
     /**

@@ -268,6 +268,7 @@ class Calendrier
     {
         return $this->structure;
     }
+
     /**
      * Constructor
      */

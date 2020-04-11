@@ -70,4 +70,14 @@ class FamilleRepository extends EntityRepository
 
         return $tabRetour;
     }
+
+    public function getFamilleActive()
+    {
+        return $this
+            ->createQueryBuilder('a')
+            ->where('a.active = 1')
+            ->getQuery()
+            ->execute()
+            ;
+    }
 }

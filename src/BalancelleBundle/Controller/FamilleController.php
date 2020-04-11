@@ -2,6 +2,7 @@
 
 namespace BalancelleBundle\Controller;
 
+use BalancelleBundle\Entity\Course;
 use BalancelleBundle\Entity\Enfant;
 use BalancelleBundle\Entity\Famille;
 use BalancelleBundle\Entity\Permanence;
@@ -73,10 +74,10 @@ class FamilleController extends AppController implements FamilleInterface
             );
         }
         $id = 0;
-        $repositoryPermanence = $this->em->getRepository(
-            'BalancelleBundle:Permanence'
-        );
-        $repository = $this->getDoctrine()->getRepository(Famille::class);
+        $repositoryPermanence = $this->em->getRepository(Permanence::class);
+        $repositoryCourse = $this->em->getRepository(Course::class);
+
+        $repository = $this->em->getRepository(Famille::class);
         foreach ($familles as $famille) {
             $famille = $repository->findOneBy(['id' =>$famille->getId()]);
             $tableauFamilles[$id]['famille'] = $famille;
@@ -86,6 +87,8 @@ class FamilleController extends AppController implements FamilleInterface
                 $repositoryPermanence->formaterListePermanence(
                     $tableauFamilles[$id]['permanences']
                 );
+            $tableauFamilles[$id]['courses'] = $repositoryCourse
+                ->recupererLesCoursesDuneFamille($famille);
             $id++;
         }
 

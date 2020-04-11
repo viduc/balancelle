@@ -253,21 +253,7 @@ class PermanenceController extends AppController implements FamilleInterface
         }
         return $this->render(
             '@Balancelle/Permanence/Admin/index.html.twig',
-            array(
-                'familles' => $familles,
-                /*'toutesLesPermanencesArealiser' =>
-                    $repository->recupererToutesLesPermanences(
-                        'JEE',
-                        date('Y-m-d H:i:s'),
-                        null
-                    ),
-                'toutesLesPermanencesArealiserLibre' =>
-                    $repository->recupererToutesLesPermanencesLibre(
-                        'JEE',
-                        date('Y-m-d H:i:s'),
-                        null
-                    )*/
-            )
+            array('familles' => $familles)
         );
     }
 
@@ -453,6 +439,9 @@ class PermanenceController extends AppController implements FamilleInterface
      * @param Request $request
      * @param Permanence $permanence
      * @return JsonResponse
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function rappelAction(Request $request, Permanence $permanence)
     {

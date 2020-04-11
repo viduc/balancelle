@@ -2,6 +2,7 @@
 
 namespace BalancelleBundle\Entity;
 
+use BalancelleBundle\Form\CourseType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,6 +27,11 @@ class Structure
      * @ORM\OneToMany(targetEntity="BalancelleBundle\Entity\Enfant", cascade={"persist", "remove"}, mappedBy="structure")
      */
     private $enfants;
+
+    /**
+     * @ORM\OneToMany(targetEntity="BalancelleBundle\Entity\Course", cascade={"persist", "remove"}, mappedBy="structure")
+     */
+    private $courses;
 
     /**
      * @var int
@@ -107,6 +113,7 @@ class Structure
     {
         $this->calendriers = new ArrayCollection();
         $this->enfants = new ArrayCollection();
+        $this->courses = new ArrayCollection();
     }
 
     /**
@@ -318,6 +325,42 @@ class Structure
     public function getEnfants()
     {
         return $this->enfants;
+    }
+
+    /**
+     * Add course.
+     *
+     * @param Course $course
+     *
+     * @return Structure
+     */
+    public function addCourse(Course $course)
+    {
+        $this->courses[] = $course;
+
+        return $this;
+    }
+
+    /**
+     * Remove course.
+     *
+     * @param Course $course
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeCourse(Course $course)
+    {
+        return $this->enfants->removeElement($course);
+    }
+
+    /**
+     * Get courses.
+     *
+     * @return Collection
+     */
+    public function getCourses()
+    {
+        return $this->courses;
     }
 
     /**
