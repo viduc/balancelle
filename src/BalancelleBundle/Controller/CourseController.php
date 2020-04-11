@@ -25,7 +25,7 @@ class CourseController extends Controller
     /**
      * Modification d'une course
      * @param Request $request
-     * @param Magasin $course
+     * @param Course $course
      * @return RedirectResponse|Response
      */
     public function editAction(Request $request, Course $course)
@@ -73,8 +73,10 @@ class CourseController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($course);
             $em->flush();
-            $succes = 'La course  ';
-            $succes .= ' a bien été enregistrée';
+
+            $this->get('communication')->envoyerMailCourse($course);
+            $succes = 'La course  a bien été enregistrée, un email a été envoyé';
+            $succes .= ' aux parents';
             $this->addFlash('success', $succes);
 
             return $this->redirectToRoute(

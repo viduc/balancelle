@@ -74,10 +74,16 @@
                         </div>
                         <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-12 my-1">
                             {% if is_granted('ROLE_ADMIN') %}<label for="active">Active</label>{% endif %}
+                            {% if 'new' in action %}
+                                {% set checked = true %}
+                            {% else %}
+                                {% set checked = form.active.vars.checked %}
+                            {% endif %}
                             {{ form_widget(form.active, {'attr':
                                 {
                                     'class': 'form-control',
                                     'placeholder': "active",
+                                    'checked': checked,
                                     'disabled': is_granted('ROLE_PARENT'),
                                     'hidden': is_granted('ROLE_PARENT')
                                 }
