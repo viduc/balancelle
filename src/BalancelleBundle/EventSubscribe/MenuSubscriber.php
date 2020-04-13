@@ -67,7 +67,6 @@ class MenuSubscriber implements EventSubscriberInterface
          * If it is a class, it comes in array format
          */
         if (!is_array($controller)) {
-
             return;
         }
 
@@ -166,7 +165,8 @@ class MenuSubscriber implements EventSubscriberInterface
                     'admin_permanence_structure',
                     'Permanence ' . $structure->getNom(),
                     'ti-layout-list-thumb-alt',
-                    ['structure' => $structure->getNom()]);
+                    ['structure' => $structure->getNom()]
+                );
                 $permanences->addMenu($menu);
             }
         } elseif ($this->security->isGranted('ROLE_PARENT')) {
@@ -197,10 +197,9 @@ class MenuSubscriber implements EventSubscriberInterface
                     $structure = $emStructure->findOneBy(
                         ['id' => $enfant->getStructure()->getId()]
                     );
-                    if (
-                        $this->verifieSiStructureAunCalendrier(
-                            $structure
-                        ) &&
+                    if ($this->verifieSiStructureAunCalendrier(
+                        $structure
+                    ) &&
                         !in_array(
                             $structure->getNomCourt(),
                             $menuPerm,
@@ -212,7 +211,8 @@ class MenuSubscriber implements EventSubscriberInterface
                             'permanence_index',
                             'Permanence ' . $structure->getNom(),
                             'ti-layout-list-thumb-alt',
-                            ['structure' => $structure->getNom()]);
+                            ['structure' => $structure->getNom()]
+                        );
                         $permanences->addMenu($menu);
                     }
                 }
