@@ -2,6 +2,7 @@
 
 namespace BalancelleBundle\Repository;
 
+use BalancelleBundle\Entity\Enfant;
 use BalancelleBundle\Entity\Famille;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -76,6 +77,23 @@ class FamilleRepository extends EntityRepository
         return $this
             ->createQueryBuilder('a')
             ->where('a.active = 1')
+            ->getQuery()
+            ->execute()
+            ;
+    }
+
+    /**
+     * Permet de récupérer les familles d'une structure
+     * @param int $structureId - l'id de la structure
+     * @return int|mixed|string
+     */
+    public function getFamilleDuneStructure($structureId)
+    {
+        return $this
+            ->createQueryBuilder('a')
+            ->from(Enfant::class, 'e')
+            ->where('e.famille = a')
+            ->andWhere('e.structure =' . $structureId)
             ->getQuery()
             ->execute()
             ;

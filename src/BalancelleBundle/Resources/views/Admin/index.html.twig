@@ -1,10 +1,26 @@
 {% extends '@Balancelle/Default/layout.html.twig' %}
 {% block body %}
+    <script type="text/javascript">
+        var pathSelectStructure = "{{ path('admin_tableaudebord') }}";
+    </script>
     <div class="main-content-inner">
         <!-- pie chart start -->
         <div class="row">
             <div class="col-lg-12 mt-5">
                 <div class="card">
+                    <div>
+                        <select name="structures" id="structures">
+                            <option value='all'>--Choisissez une structure--</option>
+                            {% for structure in structures %}
+                                {% if structureSelectionnee != 'toutes' and structureSelectionnee == structure.id %}
+                                    <option selected value={{ structure.id }}>{{ structure.nom }}</option>
+                                {% else %}
+                                    <option value={{ structure.id }}>{{ structure.nom }}</option>
+                                {% endif %}
+                            {% endfor %}
+                            <option value='all'>-- Toutes --</option>
+                        </select>
+                    </div>
                     <div class="data-tables">
                         <table id="dataTable2" name="dataTable2" class="text-center">
                             <thead class="bg-light text-capitalize">
@@ -54,5 +70,9 @@
     <script
             type="text/javascript"
             src="{{ asset('bundles/balancelle/js/balancelle_permanences_admin.js') }}" >
+    </script>
+    <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/admin.js') }}" >
     </script>
 {% endblock %}

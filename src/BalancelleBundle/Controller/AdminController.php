@@ -16,12 +16,21 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdminController extends Controller implements MenuInterface
 {
-    public function tableauDeBordAction()
+    public function tableauDeBordAction($structureId)
     {
         $em = $this->getDoctrine()->getManager();
-        $familles = $em
-            ->getRepository('BalancelleBundle:Famille')
-            ->findAll();
+        if ($structureId === null || $structureId === 'all') {
+            $familles = $em
+                ->getRepository('BalancelleBundle:Famille')
+                ->findAll();
+            $structureSelectionnee = 'toutes';
+        } else {
+            $familles = $em
+                ->getRepository('BalancelleBundle:Famille')
+                ->getFamilleDuneStructure($structureId);
+            $structureSelectionnee = $structureId;
+        }
+
         $repository = $this->getDoctrine()->getRepository(Permanence::class);
         foreach ($familles as $famille) {
             $famille->permFaite = $repository->recupererLesPermanencesRealisees(
@@ -35,15 +44,21 @@ class AdminController extends Controller implements MenuInterface
                 ->recupererLesCoursesDuneFamille($famille);
             if ($famille->nbPermanenceAFaire) {
                 $famille->pourcentagePermanenceFaite = count(
-                        $famille->permFaite
-                    )*100/$famille->nbPermanenceAFaire;
+                    $famille->permFaite
+                )*100/$famille->nbPermanenceAFaire;
             }
         }
+        $structures = $em->getRepository(Structure::class)->findBy(['active' => 1]);
         return $this->render(
             '@Balancelle/Admin/index.html.twig',
-            array('familles' => $familles)
+            array(
+                'familles' => $familles,
+                'structures' => $structures,
+                'structureSelectionnee' => $structureSelectionnee
+            )
         );
     }
+
     /**
      * Index de la partie admin
      * @param CommunicationController $communication
@@ -98,38 +113,38 @@ class AdminController extends Controller implements MenuInterface
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /* si on a une image de tramnsmise on la récupère */
-     /*       if ($evenement->getImage() !== null) {
-                $file = $evenement->getImage();
-                $fileName = $this->generateUniqueFileName().'.';
-                $fileName.= $file->guessExtension();
-                // moves the file to the directory where images are stored
-                move_uploaded_file(
-                    $file,
-                    './evenements/'.$fileName
-                ) or die('Unable to rename.');
-                $evenement->setImage(new File('./evenements/'.$fileName));
-            } else { //si pas d'image de transmise on enregistre soit la noimage,
-                // soit l'image déjà enregistrée en base si présente
-                $evenement->setImage($image);
-            }
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($evenement);
-            $entityManager->flush();
-                $this->addFlash(
-                    'success',
-                    "L'évènement a été enregistré"
-            );
-        }
-        return $this->render(
-            '@Balancelle/Admin/evenementsAdd.html.twig',
-            array('form' => $form->createView(), 'evenement' => $evenement)
-        );
+    /*       if ($evenement->getImage() !== null) {
+               $file = $evenement->getImage();
+               $fileName = $this->generateUniqueFileName().'.';
+               $fileName.= $file->guessExtension();
+               // moves the file to the directory where images are stored
+               move_uploaded_file(
+                   $file,
+                   './evenements/'.$fileName
+               ) or die('Unable to rename.');
+               $evenement->setImage(new File('./evenements/'.$fileName));
+           } else { //si pas d'image de transmise on enregistre soit la noimage,
+               // soit l'image déjà enregistrée en base si présente
+               $evenement->setImage($image);
+           }
+           $entityManager = $this->getDoctrine()->getManager();
+           $entityManager->persist($evenement);
+           $entityManager->flush();
+               $this->addFlash(
+                   'success',
+                   "L'évènement a été enregistré"
+           );
+       }
+       return $this->render(
+           '@Balancelle/Admin/evenementsAdd.html.twig',
+           array('form' => $form->createView(), 'evenement' => $evenement)
+       );
     }
 
     /**
-     * Gestion de la revue de presse
-     * @return Response
-     */
+    * Gestion de la revue de presse
+    * @return Response
+    */
     /*public function revuepresseListeAction()
     {
         $repository = $this->getDoctrine()->getRepository(Revuepresse::class);
@@ -172,52 +187,52 @@ class AdminController extends Controller implements MenuInterface
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /* si on a une image de tramnsmise on la récupère */
-     /*       if ($revuepresse->getImage() !== null) {
-                $file = $revuepresse->getImage();
-                $fileName = $this->generateUniqueFileName().'.';
-                $fileName.= $file->guessExtension();
-                // moves the file to the directory where images are stored
-                move_uploaded_file(
-                    $file,
-                    './revuepresse/'.$fileName
-                ) or die('Unable to rename.');
-                $revuepresse->setImage(new File('./revuepresse/'.$fileName));
-            } else { //si pas d'image de transmise on enregistre soit la noimage,
-                // soit l'image déjà enregistrée en base si présente
-                $revuepresse->setImage($image);
-            }
-            /* si on a un scan de tramnsmise on la récupère */
-     /*       if ($revuepresse->getScan() !== null) {
-                $file = $revuepresse->getScan();
-                $fileName = $this->generateUniqueFileName().'.';
-                $fileName.= $file->guessExtension();
-                // moves the file to the directory where images are stored
-                move_uploaded_file(
-                    $file,
-                    './revuepresse/scan/'.$fileName
-                ) or die('Unable to rename.');
-                $revuepresse->setScan(new File('./revuepresse/scan/'.$fileName));
-            } else { //si pas d'image de transmise on enregistre soit la noimage,
-                // soit l'image déjà enregistrée en base si présente
-                $revuepresse->setScan($scan);
-            }
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($revuepresse);
-            $entityManager->flush();
-                $this->addFlash(
-                    'success',
-                    'La revue de presse a été enregistré'
-            );
-        }
-        return $this->render(
-            '@Balancelle/Admin/revuepresseAdd.html.twig',
-            array('form' => $form->createView(), 'revuepresse' => $revuepresse)
-        );
+    /*       if ($revuepresse->getImage() !== null) {
+               $file = $revuepresse->getImage();
+               $fileName = $this->generateUniqueFileName().'.';
+               $fileName.= $file->guessExtension();
+               // moves the file to the directory where images are stored
+               move_uploaded_file(
+                   $file,
+                   './revuepresse/'.$fileName
+               ) or die('Unable to rename.');
+               $revuepresse->setImage(new File('./revuepresse/'.$fileName));
+           } else { //si pas d'image de transmise on enregistre soit la noimage,
+               // soit l'image déjà enregistrée en base si présente
+               $revuepresse->setImage($image);
+           }
+           /* si on a un scan de tramnsmise on la récupère */
+    /*       if ($revuepresse->getScan() !== null) {
+               $file = $revuepresse->getScan();
+               $fileName = $this->generateUniqueFileName().'.';
+               $fileName.= $file->guessExtension();
+               // moves the file to the directory where images are stored
+               move_uploaded_file(
+                   $file,
+                   './revuepresse/scan/'.$fileName
+               ) or die('Unable to rename.');
+               $revuepresse->setScan(new File('./revuepresse/scan/'.$fileName));
+           } else { //si pas d'image de transmise on enregistre soit la noimage,
+               // soit l'image déjà enregistrée en base si présente
+               $revuepresse->setScan($scan);
+           }
+           $entityManager = $this->getDoctrine()->getManager();
+           $entityManager->persist($revuepresse);
+           $entityManager->flush();
+               $this->addFlash(
+                   'success',
+                   'La revue de presse a été enregistré'
+           );
+       }
+       return $this->render(
+           '@Balancelle/Admin/revuepresseAdd.html.twig',
+           array('form' => $form->createView(), 'revuepresse' => $revuepresse)
+       );
     }
-    
+
     /**
-     * @return string
-     */
+    * @return string
+    */
     private function generateUniqueFileName()
     {
         // md5() reduces the similarity of the file names generated by
