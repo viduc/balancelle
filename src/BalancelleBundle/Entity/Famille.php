@@ -17,12 +17,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Famille
 {
     /**
-     * @ORM\OneToOne(targetEntity="BalancelleBundle\Entity\User", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="BalancelleBundle\Entity\User", cascade={"persist"}, fetch="EAGER")
      */
     private $parent1;
 
     /**
-     * @ORM\OneToOne(targetEntity="BalancelleBundle\Entity\User", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="BalancelleBundle\Entity\User", cascade={"persist"}, fetch="EAGER")
      * @Assert\Expression("value !== this.getParent1() or value === null",message = "les deux parents doivent être différents")
      */
     private $parent2;

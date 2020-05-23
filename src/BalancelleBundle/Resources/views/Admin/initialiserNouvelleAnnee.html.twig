@@ -1,0 +1,60 @@
+{% extends '@Balancelle/Default/layout.html.twig' %}
+{% block body %}
+    <div class="main-content-inner">
+        <div class="row">
+            <div class="col-lg-12 mt-5">
+                <div class="card">
+                    {{ form_start(form) }}
+                    <h4 class="header-title">Liste des familles</h4>
+                    <div class="single-table">
+                        <div class="table-responsive">
+                            <table class="table text-center">
+                                <thead class="text-uppercase bg-primary">
+                                    <tr class="text-white">
+                                        <th scope="col">nom</th>
+                                        <th scope="col">parent 1</th>
+                                        <th scope="col">parent 2</th>
+                                        <th scope="col">
+                                            <span id="permAll" class="spanClicable">
+                                                Permanences restantes
+                                            </span>&emsp;
+                                            <i class="fa fa-undo spanClicable" id="permAllUndo"></i>
+                                        </th>
+                                        <th scope="col">
+                                            <span id="deleteAll" class="spanClicable">
+                                                supprimer
+                                            </span>&emsp;
+                                            <i class="fa fa-undo spanClicable" id="deleteAllUndo"></i>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for famille in familles %}
+                                        <tr>
+                                            <th scope="row">{{ famille.nom }}</th>
+                                            <td>{{ famille.parent1.nom }} {{ famille.parent1.prenom }}</td>
+                                            <td>{{ famille.parent2.nom }} {{ famille.parent2.prenom }}</td>
+                                            <td>
+                                                {{ famille.permanenceRestantAfaire }}
+                                                <input type="checkbox" id="perm_famille_{{ famille.id }}" name="perm_famille_{{ famille.id }}">
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" id="delete_famille_{{ famille.id }}" name="delete_famille_{{ famille.id }}">
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <input type="submit" value="enregister" class="btn btn-rounded btn-success mb-3"/>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script
+            type="text/javascript"
+            src="{{ asset('bundles/balancelle/js/balancelle_initialiser_annee.js') }}" >
+    </script>
+{% endblock %}

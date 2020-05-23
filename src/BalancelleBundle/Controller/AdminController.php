@@ -5,17 +5,23 @@ namespace BalancelleBundle\Controller;
 use BalancelleBundle\Entity\Course;
 use BalancelleBundle\Entity\Permanence;
 use BalancelleBundle\Entity\Structure;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\File\File;
-use AppBundle\Entity\Evenements;
-use AppBundle\Form\EvenementsType;
-use AppBundle\Entity\Revuepresse;
-use AppBundle\Form\RevuepresseType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdminController extends Controller implements MenuInterface
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     public function tableauDeBordAction($structureId)
     {
         $em = $this->getDoctrine()->getManager();
@@ -39,13 +45,13 @@ class AdminController extends Controller implements MenuInterface
             $famille->nbPermanenceAFaire = $famille->getNombrePermanence();
             $famille->permanenceInscrit = $repository->findByFamille($famille);
             $famille->pourcentagePermanenceFaite = 0;
-            $famille->course = $em
-                ->getRepository(Course::class)
-                ->recupererLesCoursesDuneFamille($famille);
             if ($famille->nbPermanenceAFaire) {
                 $famille->pourcentagePermanenceFaite = count(
                     $famille->permFaite
                 )*100/$famille->nbPermanenceAFaire;
+                $famille->course = $em
+                ->getRepository(Course::class)
+                ->recupererLesCoursesDuneFamille($famille);
             }
         }
         $structures = $em->getRepository(Structure::class)->findBy(['active' => 1]);
@@ -59,6 +65,58 @@ class AdminController extends Controller implements MenuInterface
         );
     }
 
+    public function initialiserNouvelleAnneeAction(Request $request)
+    {
+        $defaultData = [];
+        $form = $this->createFormBuilder($defaultData)
+                     ->add('familles', HiddenType::class, [
+                        'attr'   =>  array('class'   => 'select')
+                     ])
+                     ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            var_dump($data);
+        }
+
+        $familles = $this
+            ->entityManager
+            ->getRepository('BalancelleBundle:Famille')
+            ->findAll();
+        $familles = $this->calculerLesPermanencesPourLesFamilles($familles);
+        return $this->render(
+            '@Balancelle/Admin/initialiserNouvelleAnnee.html.twig',
+            array('familles' => $familles, 'form' => $form->createView())
+        );
+    }
+
+    /**
+     * @param array $familles
+     * @return array
+     */
+    public function calculerLesPermanencesPourLesFamilles(array $familles)
+    {
+        $repository = $this->entityManager->getRepository(Permanence::class);
+        foreach ($familles as $famille) {
+            $famille->permFaite = $repository->recupererLesPermanencesRealisees(
+                $famille
+            );
+            $famille->nbPermanenceAFaire = $famille->getNombrePermanence();
+            $famille->permanenceInscrit = $repository->findByFamille($famille);
+            $famille->pourcentagePermanenceFaite = 0;
+            $famille->permanenceRestantAfaire = $famille->nbPermanenceAFaire -
+                count($famille->permFaite);
+            if ($famille->nbPermanenceAFaire) {
+                $famille->pourcentagePermanenceFaite = count(
+                    $famille->permFaite
+                ) * 100 / $famille->nbPermanenceAFaire;
+            }
+        }
+
+        return $familles;
+    }
     /**
      * Index de la partie admin
      * @param CommunicationController $communication

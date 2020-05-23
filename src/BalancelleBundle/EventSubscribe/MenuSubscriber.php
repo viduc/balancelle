@@ -106,11 +106,20 @@ class MenuSubscriber implements EventSubscriberInterface
      */
     private function genererMenuAdmin()
     {
-        $this->menus[] = new Menu(
+        $admin = new MenuOuvrant('Administration', 'fa fa-desktop');
+        $menu = new Menu(
             'admin_tableaudebord',
             'Tableau de bord ',
             'ti-dashboard'
         );
+        $admin->addMenu($menu);
+        $menu = new Menu(
+            'admin_initialisernouvelleannee',
+            'Initialiser une nouvelle année ',
+            'ti-control-forward'
+        );
+        $admin->addMenu($menu);
+        $this->menus[] = $admin;
         $this->menus[] = new Menu('user_index', 'Utilisateurs', 'fa fa-user');
         $this->menus[] = new Menu('famille_index', 'Familles', 'fa fa-group');
         $this->menus[] = new Menu(

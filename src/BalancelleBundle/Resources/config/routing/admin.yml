@@ -1,4 +1,9 @@
 admin_tableaudebord:
-    path:     /admin/{structureId}
+    path:     /tableaudebord/{structureId}
     defaults: { _controller: "BalancelleBundle:Admin:tableauDeBord", structureId: null }
     methods:  GET
+
+admin_initialisernouvelleannee:
+    path:     /initialiser
+    defaults: { _controller: "BalancelleBundle:Admin:initialiserNouvelleAnnee" }
+    methods:  [GET, POST]
