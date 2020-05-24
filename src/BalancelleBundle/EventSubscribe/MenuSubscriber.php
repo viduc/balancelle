@@ -56,7 +56,6 @@ class MenuSubscriber implements EventSubscriberInterface
 
     /**
      * @param FilterControllerEvent $event
-     * @throws NonUniqueResultException
      */
     public function onKernelController(FilterControllerEvent $event)
     {
@@ -67,14 +66,19 @@ class MenuSubscriber implements EventSubscriberInterface
          * If it is a class, it comes in array format
          */
         if (!is_array($controller)) {
-
             return;
         }
 
         if (($controller[0] instanceof MenuInterface)
-            && !$this->session->has('menus')) {
+            && (!$this->session->has('menus')
+                || ($this->session->has('rebootmenu')
+                    && $this->session->get('rebootmenu')
+                )
+            )
+        ) {
             $this->genererMenus();
             $this->session->set('menus', $this->menus);
+            $this->session->set('rebootmenu', false);
         }
     }
 
@@ -128,6 +132,14 @@ class MenuSubscriber implements EventSubscriberInterface
             'Ma famille',
             'ti-home'
         );
+
+        if ($this->security->getUser()->getPreference()->getCovid()) {
+            $this->menus[] = new Menu(
+                'preference_index',
+                'Liste des familles',
+                'ti-email'
+            );
+        }
     }
 
     /**
