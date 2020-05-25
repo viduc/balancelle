@@ -12,8 +12,4 @@ use Doctrine\ORM\EntityRepository;
  */
 class PreferenceRepository extends EntityRepository
 {
-    public function recupererLesPreferencesDunUtilisateur($user)
-    {
-
-    }
 }

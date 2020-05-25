@@ -1,0 +1,43 @@
+{% extends '@Balancelle/Default/layout.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+
+    <div class="main-content-inner">
+        <div class="row">
+            <div class="col-10 mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="header-title">Liste des familles</h4>
+                        <div class="data-tables">
+                            <table id="dataTable" name="dataTable" class="text-center">
+                                <thead class="bg-light text-capitalize">
+                                <tr>
+                                    <th>Nom de la famille</th>
+                                    <th>Prénom de(s) (l')enfant(s)</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for user in users %}
+                                    <tr>
+                                        <td>{{ user.famille.nom }}</td>
+                                        <td>
+                                            {% for enfant in user.famille.enfants %}
+                                                {{ enfant.prenom }} - ({{ enfant.structure.nom }}) </br>
+                                            {% endfor %}
+                                        </td>
+                                        <td>
+                                            <a href="{{ path('famille_envoi_mail_covid', {'id': user.famille.id }) }}" class="btn btn-flat btn-primary mb-3"><i class="fa fa-envelope"></i> Envoyer un mail à la famille</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

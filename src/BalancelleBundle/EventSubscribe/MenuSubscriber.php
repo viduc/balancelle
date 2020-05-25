@@ -135,7 +135,7 @@ class MenuSubscriber implements EventSubscriberInterface
 
         if ($this->security->getUser()->getPreference()->getCovid()) {
             $this->menus[] = new Menu(
-                'preference_index',
+                'famille_liste',
                 'Liste des familles',
                 'ti-email'
             );
