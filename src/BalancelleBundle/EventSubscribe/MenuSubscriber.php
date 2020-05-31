@@ -36,7 +36,15 @@ class MenuSubscriber implements EventSubscriberInterface
      */
     private $entityManager;
 
+    /**
+     * @var
+     */
     private $menu;
+
+    /**
+     * @var UserPreferenceController
+     */
+    private $userPreferenceController;
 
     /**
      * FamilleSubscriber constructor.
@@ -47,12 +55,14 @@ class MenuSubscriber implements EventSubscriberInterface
     public function __construct(
         ContainerInterface $container,
         Security $security,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        UserPreferenceController $userPreferenceController
     ) {
         $this->session = $container->get('session');
         $this->security = $security;
         $this->entityManager = $entityManager;
         $this->menus = [];
+        $this->userPreferenceController = $userPreferenceController;
     }
 
     /**
@@ -126,7 +136,7 @@ class MenuSubscriber implements EventSubscriberInterface
         );
     }
 
-    private function genererMenuParent(UserPreferenceController $userPreferenceController)
+    private function genererMenuParent()
     {
         $this->menus[] = new Menu(
             'famille_tableauDeBord',
@@ -134,8 +144,8 @@ class MenuSubscriber implements EventSubscriberInterface
             'ti-home'
         );
 
-        $userPreferenceController->recupererLesPreferencesUtilisateur();
-        if ($this->security->getUser()->getPreference()->getCovid()) {
+        $pref = $this->userPreferenceController->recupererLesPreferencesUtilisateur();
+        if ($pref->getCovid()) {
             $this->menus[] = new Menu(
                 'famille_liste',
                 'Liste des familles',
