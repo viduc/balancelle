@@ -3,6 +3,7 @@
 namespace BalancelleBundle\EventSubscribe;
 
 use BalancelleBundle\Controller\MenuInterface;
+use BalancelleBundle\Controller\UserPreferenceController;
 use BalancelleBundle\Entity\Calendrier;
 use BalancelleBundle\Entity\Enfant;
 use BalancelleBundle\Entity\Famille;
@@ -125,7 +126,7 @@ class MenuSubscriber implements EventSubscriberInterface
         );
     }
 
-    private function genererMenuParent()
+    private function genererMenuParent(UserPreferenceController $userPreferenceController)
     {
         $this->menus[] = new Menu(
             'famille_tableauDeBord',
@@ -133,6 +134,7 @@ class MenuSubscriber implements EventSubscriberInterface
             'ti-home'
         );
 
+        $userPreferenceController->recupererLesPreferencesUtilisateur();
         if ($this->security->getUser()->getPreference()->getCovid()) {
             $this->menus[] = new Menu(
                 'famille_liste',
