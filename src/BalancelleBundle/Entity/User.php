@@ -18,6 +18,11 @@ use Doctrine\ORM\Mapping as ORM;
 class User extends BaseUser
 {
     /**
+     * @ORM\OneToOne(targetEntity=Preference::class, cascade={"persist", "remove"})
+     */
+    protected $preference;
+
+    /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -241,6 +246,7 @@ class User extends BaseUser
 
         return $this;
     }
+
     /**
      * Récupère le role admin
      * @return Boolean
@@ -248,6 +254,24 @@ class User extends BaseUser
     public function getRoleParent()
     {
         return $this->hasRole('ROLE_PARENT');
+    }
+
+    /**
+     * Enregistre les préférences
+     * @param Preference $preference
+     */
+    public function setPreference(Preference $preference)
+    {
+        $this->preference = $preference;
+    }
+
+    /**
+     * Récupère les préférences
+     * @return mixed
+     */
+    public function getPreference()
+    {
+        return $this->preference;
     }
 
     /**

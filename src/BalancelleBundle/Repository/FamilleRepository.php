@@ -27,11 +27,10 @@ class FamilleRepository extends EntityRepository
                 ->createQueryBuilder('a')
                 ->where('a.parent1 = :userId')
                 ->orWhere('a.parent2 = :userId')
-                ->setParameter('userId', "$userId")
+                ->setParameter('userId', (string)$userId)
                 ->andWhere('a.active = true')
                 ->getQuery()
-                ->getOneOrNullResult()
-                ;
+                ->setMaxResults(1)->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             return null;
         }

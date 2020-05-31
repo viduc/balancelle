@@ -42,6 +42,10 @@ balancelle_admin:
   resource: "@BalancelleBundle/Resources/config/routing/admin.yml"
   prefix:   /admin
 
+balancelle_preference:
+  resource: "@BalancelleBundle/Resources/config/routing/preference.yml"
+  prefix:   /preference
+
 balancelle_homepage:
     path:     /
     defaults: { _controller: BalancelleBundle:Default:index }

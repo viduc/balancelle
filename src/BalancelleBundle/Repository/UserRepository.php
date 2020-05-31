@@ -2,6 +2,7 @@
 
 namespace BalancelleBundle\Repository;
 
+use BalancelleBundle\Entity\Preference;
 use BalancelleBundle\Entity\Structure;
 use Doctrine\ORM\EntityRepository;
 use BalancelleBundle\Entity\Famille;
@@ -41,6 +42,21 @@ class UserRepository extends EntityRepository
             ->setParameter('structure', $structure)
             ->andWhere('e.famille = f.id')
             ->andWhere('f.parent1 = u.id or f.parent2 = u.id')
+            ->getQuery()->execute();
+    }
+
+    /**
+     * récupère les utilisateurs qui ont activés la paramètre covid
+     * @return int|mixed|string
+     */
+    public function recupererLesUtilisateursCovid()
+    {
+        return $this
+            ->createQueryBuilder('u')
+            ->from(Preference::class, 'p')
+            ->where('p.covid = :covid')
+            ->setParameter('covid', true)
+            ->andWhere('u.preference = p')
             ->getQuery()->execute();
     }
 }
