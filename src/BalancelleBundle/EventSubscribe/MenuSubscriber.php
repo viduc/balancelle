@@ -3,6 +3,7 @@
 namespace BalancelleBundle\EventSubscribe;
 
 use BalancelleBundle\Controller\MenuInterface;
+use BalancelleBundle\Controller\UserPreferenceController;
 use BalancelleBundle\Entity\Calendrier;
 use BalancelleBundle\Entity\Enfant;
 use BalancelleBundle\Entity\Famille;
@@ -35,7 +36,15 @@ class MenuSubscriber implements EventSubscriberInterface
      */
     private $entityManager;
 
+    /**
+     * @var
+     */
     private $menu;
+
+    /**
+     * @var UserPreferenceController
+     */
+    private $userPreferenceController;
 
     /**
      * FamilleSubscriber constructor.
@@ -46,17 +55,18 @@ class MenuSubscriber implements EventSubscriberInterface
     public function __construct(
         ContainerInterface $container,
         Security $security,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        UserPreferenceController $userPreferenceController
     ) {
         $this->session = $container->get('session');
         $this->security = $security;
         $this->entityManager = $entityManager;
         $this->menus = [];
+        $this->userPreferenceController = $userPreferenceController;
     }
 
     /**
      * @param FilterControllerEvent $event
-     * @throws NonUniqueResultException
      */
     public function onKernelController(FilterControllerEvent $event)
     {
@@ -71,9 +81,15 @@ class MenuSubscriber implements EventSubscriberInterface
         }
 
         if (($controller[0] instanceof MenuInterface)
-            && !$this->session->has('menus')) {
+            && (!$this->session->has('menus')
+                || ($this->session->has('rebootmenu')
+                    && $this->session->get('rebootmenu')
+                )
+            )
+        ) {
             $this->genererMenus();
             $this->session->set('menus', $this->menus);
+            $this->session->set('rebootmenu', false);
         }
     }
 
@@ -156,6 +172,15 @@ class MenuSubscriber implements EventSubscriberInterface
             'Ma famille',
             'ti-home'
         );
+
+        $pref = $this->userPreferenceController->recupererLesPreferencesUtilisateur();
+        if ($pref->getCovid()) {
+            $this->menus[] = new Menu(
+                'famille_liste',
+                'Liste des familles',
+                'ti-email'
+            );
+        }
     }
 
     /**
