@@ -19,7 +19,7 @@ class Famille
     /**
      * @ORM\ManyToOne(targetEntity="BalancelleBundle\Entity\Annee", inversedBy="familles")
      */
-    //private $annee;
+    private $annee;
 
     /**
      * @ORM\OneToOne(targetEntity="BalancelleBundle\Entity\User", cascade={"persist"}, fetch="EAGER")
@@ -358,7 +358,7 @@ class Famille
      *
      * @return Famille
      */
-   /* public function setAnnee(Annee $annee = null)
+    public function setAnnee(Annee $annee = null)
     {
         $this->annee = $annee;
 
@@ -370,8 +370,8 @@ class Famille
      *
      * @return Annee
      */
-    /*public function getAnnee()
+    public function getAnnee()
     {
         return $this->annee;
-    }*/
+    }
 }
