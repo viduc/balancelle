@@ -17,6 +17,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Famille
 {
     /**
+     * @ORM\ManyToOne(targetEntity="BalancelleBundle\Entity\Annee", inversedBy="familles")
+     */
+    //private $annee;
+
+    /**
      * @ORM\OneToOne(targetEntity="BalancelleBundle\Entity\User", cascade={"persist"}, fetch="EAGER")
      */
     private $parent1;
@@ -345,4 +350,28 @@ class Famille
     {
         return $this->nombrePermanence;
     }
+
+    /**
+     * Set annee
+     *
+     * @param Annee $annee
+     *
+     * @return Famille
+     */
+   /* public function setAnnee(Annee $annee = null)
+    {
+        $this->annee = $annee;
+
+        return $this;
+    }
+
+    /**
+     * Get annee
+     *
+     * @return Annee
+     */
+    /*public function getAnnee()
+    {
+        return $this->annee;
+    }*/
 }

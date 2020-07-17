@@ -4,7 +4,6 @@
         <div class="row">
             <div class="col-lg-12 mt-5">
                 <div class="card">
-                    {{ form_start(form) }}
                     <h4 class="header-title">Liste des familles</h4>
                     <div class="single-table">
                         <div class="table-responsive">
@@ -15,10 +14,9 @@
                                         <th scope="col">parent 1</th>
                                         <th scope="col">parent 2</th>
                                         <th scope="col">
-                                            <span id="permAll" class="spanClicable">
+                                            <span id="permAll" class="">
                                                 Permanences restantes
-                                            </span>&emsp;
-                                            <i class="fa fa-undo spanClicable" id="permAllUndo"></i>
+                                            </span>
                                         </th>
                                         <th scope="col">
                                             <span id="deleteAll" class="spanClicable">
@@ -31,12 +29,24 @@
                                 <tbody>
                                     {% for famille in familles %}
                                         <tr>
+                                            <input type="hidden" name="familleId_{{ famille.id }}" value="{{ famille.id }}">
                                             <th scope="row">{{ famille.nom }}</th>
                                             <td>{{ famille.parent1.nom }} {{ famille.parent1.prenom }}</td>
                                             <td>{{ famille.parent2.nom }} {{ famille.parent2.prenom }}</td>
                                             <td>
-                                                {{ famille.permanenceRestantAfaire }}
-                                                <input type="checkbox" id="perm_famille_{{ famille.id }}" name="perm_famille_{{ famille.id }}">
+                                                <input type="hidden" id="perm_init_{{ famille.id }}" value="{{ famille.permanenceRestantAfaire }}">
+                                                <input type="button" name="removePerm_{{ famille.id }}" value="-">
+                                                <input type="text" id="perm_{{ famille.id }}" name="perm_{{ famille.id }}"
+                                                    value="{{ famille.permanenceRestantAfaire }}"
+                                                    style="width: 10%; text-align: center"
+                                                >
+                                                <input type="button" name="addPerm_{{ famille.id }}" value="+">
+                                                <input type="button" name="reinitPerm_{{ famille.id }}"
+                                                    value="&#xf0e2" class="fa fa-undo"
+                                                    style="height: 30px;
+                                                    width: 30px;
+                                                    background-color: #0a6aa1;
+                                                    color: white">
                                             </td>
                                             <td>
                                                 <input type="checkbox" id="delete_famille_{{ famille.id }}" name="delete_famille_{{ famille.id }}">
@@ -47,12 +57,19 @@
                             </table>
                         </div>
                     </div>
-                    <input type="submit" value="enregister" class="btn btn-rounded btn-success mb-3"/>
-                    {{ form_end(form) }}
+                    <input type="button" value="enregister"
+                        class="btn btn-rounded btn-success" style="width: 15%"
+                        id="validerPermanence"
+                    />
                 </div>
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        var pathPurgerAnnee = "{{ path('admin_purgeranneeanterieure') }}";
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script
             type="text/javascript"
             src="{{ asset('bundles/balancelle/js/balancelle_initialiser_annee.js') }}" >

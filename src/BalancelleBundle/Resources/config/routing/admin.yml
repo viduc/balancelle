@@ -6,4 +6,9 @@ admin_tableaudebord:
 admin_initialisernouvelleannee:
     path:     /initialiser
     defaults: { _controller: "BalancelleBundle:Admin:initialiserNouvelleAnnee" }
-    methods:  [GET, POST]
+    methods:  [GET]
+
+admin_purgeranneeanterieure:
+    path: /purger
+    defaults: { _controller: "BalancelleBundle:Admin:purgerAnneeAnterieure" }
+    methods:  [POST]

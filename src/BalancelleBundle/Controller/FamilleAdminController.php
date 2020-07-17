@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
 
-
 /**
  * Famille controller.
  *
@@ -69,7 +68,8 @@ class FamilleAdminController extends AdminController
             return $this->redirectToRoute(
                 'famille_edit',
                 array('id' => $famille->getId()
-            ));
+            )
+            );
         }
 
         return $this->render('@Balancelle/famille/edit.html.twig', array(
@@ -182,7 +182,8 @@ class FamilleAdminController extends AdminController
             ->setAction($this->generateUrl(
                 'famille_delete',
                 array('id' => $famille->getId()
-            )))
+            )
+            ))
             ->setMethod('DELETE')
             ->getForm()
         ;

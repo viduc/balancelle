@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -65,22 +66,8 @@ class AdminController extends Controller implements MenuInterface
         );
     }
 
-    public function initialiserNouvelleAnneeAction(Request $request)
+    public function initialiserNouvelleAnneeAction()
     {
-        $defaultData = [];
-        $form = $this->createFormBuilder($defaultData)
-                     ->add('familles', HiddenType::class, [
-                        'attr'   =>  array('class'   => 'select')
-                     ])
-                     ->getForm();
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            var_dump($data);
-        }
-
         $familles = $this
             ->entityManager
             ->getRepository('BalancelleBundle:Famille')
@@ -88,8 +75,21 @@ class AdminController extends Controller implements MenuInterface
         $familles = $this->calculerLesPermanencesPourLesFamilles($familles);
         return $this->render(
             '@Balancelle/Admin/initialiserNouvelleAnnee.html.twig',
-            array('familles' => $familles, 'form' => $form->createView())
+            array('familles' => $familles)
         );
+    }
+
+    public function purgerAnneeAnterieureAction(Request $request)
+    {
+        $purge = $request->get('purge');
+        foreach ($purge as $id => $value) {
+            if ($value !== '' && $value === 'delete') {
+                //TODO methode delete famille
+            } elseif ($value !== '') {
+                //TODO methode sauvegarde famille + perm
+            }
+        }
+        return new JsonResponse(true);
     }
 
     /**
@@ -117,6 +117,9 @@ class AdminController extends Controller implements MenuInterface
 
         return $familles;
     }
+
+
+    //----------------------> parametrage site vitrine <----------------------//
     /**
      * Index de la partie admin
      * @param CommunicationController $communication
