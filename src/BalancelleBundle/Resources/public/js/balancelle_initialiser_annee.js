@@ -1,15 +1,16 @@
 jQuery(document).ready(
     function () {
-        $("#deleteAll").on(
+        barreDeProgressionEtape();
+        $("#renouvellerAll").on(
             'click',
             function () {
-                $("input[name*='delete_famille']").prop('checked', true);
+                $("input[name*='renouveller_famille']").prop('checked', true);
             }
         );
-        $("#deleteAllUndo").on(
+        $("#renouvellerAllUndo").on(
             'click',
             function () {
-                $("input[name*='delete_famille']").prop('checked', false);
+                $("input[name*='renouveller_famille']").prop('checked', false);
             }
         );
         $("input[name*='removePerm_']").on(
@@ -63,6 +64,18 @@ jQuery(document).ready(
     }
 );
 
+function barreDeProgressionEtape()
+{
+    if (etape === '1') {
+        $("#li-annee").addClass("completed");
+    } else if (etape === '2') {
+        $("#li-famille").addClass("completed");
+    } else if (etape === '') {
+        $("#li-permanence").addClass("completed");
+    }
+}
+
+
 /**
  * Modifie la valeur de l'input des permanences
  * Permet d'ajouter, de supprimer (min 0) ou de réinitialiser la valeur d'origine
@@ -108,10 +121,10 @@ function purgerAnneeAnterieure()
     $("input[name*='familleId_']").each(
         function () {
             let id = $(this).val();
-            if ($("#delete_famille_"+id).is(':checked')) {
-                tableauPurge[id] = 'delete';
-            } else {
+            if ($("#renouveller_famille_"+id).is(':checked')) {
                 tableauPurge[id] = $("#perm_"+id).val()
+            } else {
+                tableauPurge[id] = 'delete';
             }
         }
     )

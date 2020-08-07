@@ -46,6 +46,10 @@ balancelle_preference:
   resource: "@BalancelleBundle/Resources/config/routing/preference.yml"
   prefix:   /preference
 
+balancelle_annee:
+  resource: "@BalancelleBundle/Resources/config/routing/annee.yml"
+  prefix:   /annee
+
 balancelle_homepage:
     path:     /
     defaults: { _controller: BalancelleBundle:Default:index }

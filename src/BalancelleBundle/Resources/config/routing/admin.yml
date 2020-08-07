@@ -4,11 +4,21 @@ admin_tableaudebord:
     methods:  GET
 
 admin_initialisernouvelleannee:
-    path:     /initialiser
-    defaults: { _controller: "BalancelleBundle:Admin:initialiserNouvelleAnnee" }
+    path:     /initialiser/{etape}
+    defaults: { _controller: "BalancelleBundle:Admin:initialiserNouvelleAnnee", etape: null }
     methods:  [GET]
 
-admin_purgeranneeanterieure:
+admin_etapeChangementAnnee:
+    path:     /etapeChangementAnnee
+    defaults: { _controller: "BalancelleBundle:Admin:etapeChangementAnnee" }
+    methods:  [GET,POST]
+
+admin_etapeGestionDesFamilles:
+    path:     /etapeGestionDesFamilles
+    defaults: { _controller: "BalancelleBundle:Admin:etapeGestionDesFamilles" }
+    methods:  [GET,POST]
+
+admin_purgerAnneeAnterieure:
     path: /purger
     defaults: { _controller: "BalancelleBundle:Admin:purgerAnneeAnterieure" }
     methods:  [POST]

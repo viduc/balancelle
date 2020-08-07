@@ -1,0 +1,56 @@
+{% extends '@Balancelle/Default/layout.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="main-content-inner">
+        <div class="row">
+            <div class="col-2 pt-50">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <a href="{{ path('annee_new') }}" >
+                                <img src="{{ asset('bundles/balancelle/images/add.svg') }}" alt="ajouter" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- data table start -->
+            <div class="col-10 mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="header-title">Liste des années</h4>
+                        <div class="data-tables">
+                            <table id="dataTable" name="dataTable" class="text-center">
+                                <thead class="bg-light text-capitalize">
+                                <tr>
+                                    <th>Année</th>
+                                    <th>Active</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for annee in annees %}
+                                    <tr>
+                                        <td>{{ annee.annee }}</td>
+                                        <td>
+                                            {% if annee.active %}
+                                                <img src="{{asset('bundles/balancelle/images/on.png')}}" alt="actif" />
+                                            {%  else %}
+                                                <img src="{{asset('bundles/balancelle/images/off.png')}}" alt="inactif" />
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="{{ path('annee_edit', { 'id': annee.id }) }}"><i class="fa fa-eye"></i> Voir</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
