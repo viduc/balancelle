@@ -26,4 +26,18 @@ class AnneeRepository extends EntityRepository
             ->getQuery()
             ->execute();
     }
+
+    /**
+     * Récupère l'année courante
+     * @return mixed
+     */
+    public function getAnneeCourante()
+    {
+        $annee = $this->createQueryBuilder('a')
+            ->where('a.active = 1')
+            ->getQuery()
+            ->execute();
+
+        return $annee[0];
+    }
 }

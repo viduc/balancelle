@@ -70,8 +70,8 @@ function barreDeProgressionEtape()
         $("#li-annee").addClass("completed");
     } else if (etape === '2') {
         $("#li-famille").addClass("completed");
-    } else if (etape === '') {
-        $("#li-permanence").addClass("completed");
+    } else if (etape === '3') {
+        $("#li-fin").addClass("completed");
     }
 }
 
@@ -134,7 +134,7 @@ function purgerAnneeAnterieure()
         dataType : 'json',
         data: {purge: tableauPurge},
         success: function (result) {
-            alert(result)
+            $( location ).attr("href", result);
         }
     });
 }

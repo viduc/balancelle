@@ -92,6 +92,12 @@ class Famille
      */
     private $nombrePermanence;
 
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="solde_permanence", type="integer", nullable=true)
+     */
+    private $soldePermanence;
 
     /**
      * Get id
@@ -349,6 +355,30 @@ class Famille
     public function getNombrePermanence()
     {
         return $this->nombrePermanence;
+    }
+
+    /**
+     * Set soldePermanence.
+     *
+     * @param int $soldePermanence
+     *
+     * @return Famille
+     */
+    public function setSoldePermanence($soldePermanence)
+    {
+        $this->soldePermanence = $soldePermanence;
+
+        return $this;
+    }
+
+    /**
+     * Get soldePermanence.
+     *
+     * @return int
+     */
+    public function getSoldePermanence()
+    {
+        return $this->soldePermanence;
     }
 
     /**

@@ -90,6 +90,9 @@ class AdminController extends Controller implements MenuInterface
             case 2:
                 return $this->redirectToRoute('admin_etapeGestionDesFamilles');
                 break;
+            case 3:
+                return $this->redirectToRoute('admin_etapeFin');
+                break;
         }
     }
 
@@ -175,7 +178,7 @@ class AdminController extends Controller implements MenuInterface
         $familles = $this
             ->entityManager
             ->getRepository('BalancelleBundle:Famille')
-            ->findAll();
+            ->findBy(['active' => 1]);
         $familles = $this->calculerLesPermanencesPourLesFamilles($familles);
         $familles = $this->recupererLesStructuresDesFamilles($familles);
         return $this->render(
@@ -192,22 +195,50 @@ class AdminController extends Controller implements MenuInterface
     public function purgerAnneeAnterieureAction(Request $request)
     {
         $purge = $request->get('purge');
-        foreach ($purge as $id => $value) {
-            if ($id !== 0 && $value !== '') {
-                if ($value === 'delete') {
+        $anne = $this->entityManager->getRepository(
+            Annee::class
+        )->getAnneeCourante();
+        if ($purge !== null) {
+            foreach ($purge as $id => $value) {
+                if ($id !== 0 && $value !== '') {
                     $famille = $this->entityManager->getRepository(
                         Famille::class
                     )->find($id);
-                    $famille->setActive(false);
-                    $this->entityManager->persist($famille);
-                    $this->entityManager->flush();
-                } else {
-                    return new JsonResponse($value);
-                    //TODO methode sauvegarde famille + perm
+                    if ($value === 'delete') {
+                        $famille->setActive(false);
+                        $this->entityManager->persist($famille);
+                    } else {
+                        $tabFamille = $this->calculerLesPermanencesPourLesFamilles(
+                            [$famille]
+                        );
+                        $famille->setSoldePermanence(
+                            $tabFamille[0]->permanenceRestantAfaire
+                        );
+                        $famille->setNombrePermanence(0);
+                        $famille->setAnnee($anne);
+                        $this->entityManager->persist($famille);
+                    }
                 }
             }
+            $this->entityManager->flush();
         }
-        return new JsonResponse(true);
+
+        $this->gestionEtapeNouvelleAnnee(3);
+        return new JsonResponse(
+            $this->generateUrl('admin_initialisernouvelleannee')
+        );
+    }
+
+    public function etapeFinAction(Request $request)
+    {
+        $this->gestionEtapeNouvelleAnnee(0);
+        $annee = $this->entityManager->getRepository(
+            Annee::class
+        )->getAnneeCourante();
+        return $this->render(
+            '@Balancelle/Admin/NouvelleAnnee/etape3.html.twig',
+            array('annee' => $annee)
+        );
     }
 
     /**
