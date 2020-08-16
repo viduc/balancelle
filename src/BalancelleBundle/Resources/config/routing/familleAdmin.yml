@@ -1,6 +1,6 @@
 famille_index:
-    path:     /
-    defaults: { _controller: "BalancelleBundle:FamilleAdmin:index" }
+    path:     /index/{active}
+    defaults: { _controller: "BalancelleBundle:FamilleAdmin:index", active: 1 }
     methods:  GET
 
 famille_new:

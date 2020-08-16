@@ -1,0 +1,24 @@
+admin_initialisernouvelleannee:
+    path:     /initialiser/{etape}
+    defaults: { _controller: "BalancelleBundle:NouvelleAnnee:initialiserNouvelleAnnee", etape: null }
+    methods:  [GET]
+
+admin_etapeChangementAnnee:
+    path:     /etapeChangementAnnee
+    defaults: { _controller: "BalancelleBundle:NouvelleAnnee:etapeChangementAnnee" }
+    methods:  [GET,POST]
+
+admin_etapeGestionDesFamilles:
+    path:     /etapeGestionDesFamilles
+    defaults: { _controller: "BalancelleBundle:NouvelleAnnee:etapeGestionDesFamilles" }
+    methods:  [GET,POST]
+
+admin_purgerAnneeAnterieure:
+    path: /purger
+    defaults: { _controller: "BalancelleBundle:NouvelleAnnee:purgerAnneeAnterieure" }
+    methods:  [POST]
+
+admin_etapeFin:
+    path:     /etapeFin
+    defaults: { _controller: "BalancelleBundle:NouvelleAnnee:etapeFin" }
+    methods:  [GET,POST]

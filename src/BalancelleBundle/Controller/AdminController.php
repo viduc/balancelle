@@ -2,27 +2,18 @@
 
 namespace BalancelleBundle\Controller;
 
-use BalancelleBundle\Entity\Annee;
 use BalancelleBundle\Entity\Course;
-use BalancelleBundle\Entity\Famille;
 use BalancelleBundle\Entity\Permanence;
 use BalancelleBundle\Entity\Structure;
-use BalancelleBundle\Repository\FamilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AdminController extends Controller implements MenuInterface
 {
-    private $entityManager;
-    private $session;
+    public $entityManager;
+    public $session;
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -32,214 +23,48 @@ class AdminController extends Controller implements MenuInterface
         $this->session = $session;
     }
 
-    public function tableauDeBordAction($structureId)
+    /**
+     * @param $structureId
+     * @param bool $active
+     * @return Response|null
+     */
+    public function tableauDeBordAction($structureId, $active = true)
     {
-        $em = $this->getDoctrine()->getManager();
+        $checked = '';
+        if ($active) {
+            $checked = 'checked';
+        }
         if ($structureId === null || $structureId === 'all') {
-            $familles = $em
-                ->getRepository('BalancelleBundle:Famille')
-                ->findAll();
+            $familles = $this->entityManager->getRepository(
+                'BalancelleBundle:Famille'
+            )->findBy(['active' => 1]);
+            if (!$active) {
+                $familles = $this->entityManager->getRepository(
+                    'BalancelleBundle:Famille'
+                )->findAll();
+            }
             $structureSelectionnee = 'toutes';
         } else {
-            $familles = $em
+            $familles = $this->entityManager
                 ->getRepository('BalancelleBundle:Famille')
-                ->getFamilleDuneStructure($structureId);
+                ->getFamilleDuneStructure($structureId, $active);
             $structureSelectionnee = $structureId;
         }
-
-        $repository = $this->getDoctrine()->getRepository(Permanence::class);
-        foreach ($familles as $famille) {
-            $famille->permFaite = $repository->recupererLesPermanencesRealisees(
-                $famille
-            );
-            $famille->nbPermanenceAFaire = $famille->getNombrePermanence();
-            $famille->permanenceInscrit = $repository->findByFamille($famille);
-            $famille->pourcentagePermanenceFaite = 0;
-            if ($famille->nbPermanenceAFaire) {
-                $famille->pourcentagePermanenceFaite = count(
-                    $famille->permFaite
-                )*100/$famille->nbPermanenceAFaire;
-                $famille->course = $em
-                ->getRepository(Course::class)
-                ->recupererLesCoursesDuneFamille($famille);
-            }
-        }
-        $structures = $em->getRepository(Structure::class)->findBy(['active' => 1]);
+        $familles = $this->calculerLesPermanencesPourLesFamilles($familles);
+        $structures = $this->entityManager->getRepository(
+            'BalancelleBundle:Structure'
+        )->findBy(['active' => 1]);
         return $this->render(
             '@Balancelle/Admin/index.html.twig',
             array(
                 'familles' => $familles,
                 'structures' => $structures,
-                'structureSelectionnee' => $structureSelectionnee
+                'structureSelectionnee' => $structureSelectionnee,
+                'checked' => $checked
             )
         );
     }
 
-    public function initialiserNouvelleAnneeAction($etape = null)
-    {
-        $this->session->set('etape', $this->gestionEtapeNouvelleAnnee($etape));
-        switch ($this->session->get('etape')) {
-            case 0:
-                return $this->render(
-                    '@Balancelle/Admin/NouvelleAnnee/etape0.html.twig'
-                );
-                break;
-            case 1:
-                return $this->redirectToRoute('admin_etapeChangementAnnee');
-                break;
-            case 2:
-                return $this->redirectToRoute('admin_etapeGestionDesFamilles');
-                break;
-            case 3:
-                return $this->redirectToRoute('admin_etapeFin');
-                break;
-        }
-    }
-
-    /**
-     * Gère les étapes de l'initialisation d'une nouvelle année via un fichier
-     * @param String|null $etape - l'étape à enregistrer dans le fichier. Si null
-     * le fichier sera créé si il n'existe pas, l'étape enregistrée dans le fichier
-     * sera renvoyée
-     * @return string - l'étape enregistrée dans le fichier
-     */
-    public function gestionEtapeNouvelleAnnee($etape = null)
-    {
-        if (file_exists('nouvelleAnnee')) {
-            if ($etape !== null) {
-                file_put_contents('nouvelleAnnee', $etape);
-            }
-        } else {
-            file_put_contents('nouvelleAnnee', '0');
-        }
-
-        return file_get_contents('nouvelleAnnee', true);
-    }
-
-    public function etapeChangementAnneeAction(Request $request)
-    {
-        $annee = date('Y');
-        $annees[$annee-1] = $annee-1;
-        $annees[$annee] = $annee;
-        $annees[$annee+1] = $annee+1;
-        $form = $this->createFormBuilder()
-            ->add('annees', ChoiceType::class, ['choices' => $annees])
-            ->getForm();
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $this->changerAnnee($data['annees']);
-            $this->gestionEtapeNouvelleAnnee(2);
-            return $this->redirectToRoute('admin_initialisernouvelleannee');
-        }
-
-        return $this->render(
-            '@Balancelle/Admin/NouvelleAnnee/etape1.html.twig',
-            array('form' => $form->createView())
-        );
-    }
-
-    /**
-     * Modifie l'année active dans la base
-     * Créée l'année si elle n'existe pas
-     * Désactive toutes les autres années
-     * @param $annee
-     */
-    public function changerAnnee($annee)
-    {
-        $anneeEnBase = $this
-            ->entityManager
-            ->getRepository('BalancelleBundle:Annee')
-            ->findBy(['annee' => $annee]);
-        if (!$anneeEnBase) {
-            $anneeEnBase = new Annee();
-            $anneeEnBase->setAnnee($annee);
-        } else {
-            $anneeEnBase = $anneeEnBase[0];
-        }
-        $anneeEnBase->setActive(true);
-        $this->entityManager->persist($anneeEnBase);
-        $this->entityManager->flush();
-        $this
-            ->entityManager
-            ->getRepository('BalancelleBundle:Annee')
-            ->desactiverLesAnnesNonValide($annee);
-    }
-
-
-    /**
-     * Etape qui gère les familles: renouvellement, permanences
-     * @return Response|null
-     */
-    public function etapeGestionDesFamillesAction()
-    {
-        $familles = $this
-            ->entityManager
-            ->getRepository('BalancelleBundle:Famille')
-            ->findBy(['active' => 1]);
-        $familles = $this->calculerLesPermanencesPourLesFamilles($familles);
-        $familles = $this->recupererLesStructuresDesFamilles($familles);
-        return $this->render(
-            '@Balancelle/Admin/NouvelleAnnee/etape2.html.twig',
-            array('familles' => $familles)
-        );
-    }
-
-    /**
-     * Purge les familles - ajax
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function purgerAnneeAnterieureAction(Request $request)
-    {
-        $purge = $request->get('purge');
-        $anne = $this->entityManager->getRepository(
-            Annee::class
-        )->getAnneeCourante();
-        if ($purge !== null) {
-            foreach ($purge as $id => $value) {
-                if ($id !== 0 && $value !== '') {
-                    $famille = $this->entityManager->getRepository(
-                        Famille::class
-                    )->find($id);
-                    if ($value === 'delete') {
-                        $famille->setActive(false);
-                        $this->entityManager->persist($famille);
-                    } else {
-                        $tabFamille = $this->calculerLesPermanencesPourLesFamilles(
-                            [$famille]
-                        );
-                        $famille->setSoldePermanence(
-                            $tabFamille[0]->permanenceRestantAfaire
-                        );
-                        $famille->setNombrePermanence(0);
-                        $famille->setAnnee($anne);
-                        $this->entityManager->persist($famille);
-                    }
-                }
-            }
-            $this->entityManager->flush();
-        }
-
-        $this->gestionEtapeNouvelleAnnee(3);
-        return new JsonResponse(
-            $this->generateUrl('admin_initialisernouvelleannee')
-        );
-    }
-
-    public function etapeFinAction(Request $request)
-    {
-        $this->gestionEtapeNouvelleAnnee(0);
-        $annee = $this->entityManager->getRepository(
-            Annee::class
-        )->getAnneeCourante();
-        return $this->render(
-            '@Balancelle/Admin/NouvelleAnnee/etape3.html.twig',
-            array('annee' => $annee)
-        );
-    }
 
     /**
      * Récupère les informations sur les permanences des familles
@@ -262,6 +87,9 @@ class AdminController extends Controller implements MenuInterface
                 $famille->pourcentagePermanenceFaite = count(
                     $famille->permFaite
                 ) * 100 / $famille->nbPermanenceAFaire;
+                $famille->course = $this->entityManager
+                    ->getRepository(Course::class)
+                    ->recupererLesCoursesDuneFamille($famille);
             }
         }
 

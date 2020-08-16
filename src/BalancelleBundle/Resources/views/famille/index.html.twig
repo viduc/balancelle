@@ -30,6 +30,10 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="header-title">Liste des familles</h4>
+                        <label class="switch-wrap">
+                            <input type="checkbox" {{ checked }} id="activeCheckbox"/>
+                            <div class="switch"></div>
+                        </label> (voir / masquer les familles inactives)
                         <div class="data-tables">
                             <table id="dataTable" name="dataTable" class="text-center">
                                 <thead class="bg-light text-capitalize">
@@ -68,4 +72,7 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        var pathActiveCheckbox = "{{ path('famille_index') }}";
+    </script>
 {% endblock %}

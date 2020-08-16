@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Famille controller.
@@ -21,25 +20,28 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class FamilleAdminController extends AdminController
 {
-    private $em;
-
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
-    }
-
     /**
      * Liste toutes les familles
+     * @param bool $active
      * @return Response
      */
-    public function indexAction()
+    public function indexAction($active = true)
     {
-        $familles = $this->em->getRepository('BalancelleBundle:Famille')->findAll();
-
+        $checked = 'checked';
+        $familles = $this->entityManager->getRepository(
+            'BalancelleBundle:Famille'
+        )->findBy(['active' => 1]);
+        if (!$active) {
+            $checked = '';
+            $familles = $this->entityManager->getRepository(
+                'BalancelleBundle:Famille'
+            )->findAll();
+        }
         return $this->render(
             '@Balancelle/famille/index.html.twig',
             array(
-                'familles' => $familles
+                'familles' => $familles,
+                'checked' => $checked
             )
         );
     }
@@ -59,16 +61,15 @@ class FamilleAdminController extends AdminController
         if ($form->isSubmitted() && $form->isValid()) {
             $famille->setDateCreation(new DateTime());
             $famille->setDateModification(new DateTime());
-            $this->em->persist($famille);
-            $this->em->flush();
+            $this->entityManager->persist($famille);
+            $this->entityManager->flush();
             $succes = 'La famille ' . $famille->getNom() . ' ';
             $succes .= ' a bien été enregistrée';
             $this->addFlash('success', $succes);
 
             return $this->redirectToRoute(
                 'famille_edit',
-                array('id' => $famille->getId()
-            )
+                array('id' => $famille->getId())
             );
         }
 
@@ -78,7 +79,7 @@ class FamilleAdminController extends AdminController
             'enfants' => null,
             'listeEnfants' => null,
             'errors' => null,
-            'structures' => $this->em->getRepository('BalancelleBundle:Structure')
+            'structures' => $this->entityManager->getRepository('BalancelleBundle:Structure')
                  ->findBy(['active'=>1]),
             'permanences' => null
         ));
@@ -105,10 +106,10 @@ class FamilleAdminController extends AdminController
             $this->addFlash('success', $succes);
             $this->addRoleParent($famille);
         }
-        $structures = $this->em->getRepository(
+        $structures = $this->entityManager->getRepository(
             'BalancelleBundle:Structure'
         )->findBy(['active'=>1]);
-        $repositoryPermanence = $this->em->getRepository(
+        $repositoryPermanence = $this->eentityManager->getRepository(
             'BalancelleBundle:Permanence'
         );
         $permanences = $repositoryPermanence->getInformationPermanenceFamille(
@@ -119,7 +120,7 @@ class FamilleAdminController extends AdminController
             'familleAdmin' => $famille,
             'form' => $editForm->createView(),
             'enfants' => $famille->getEnfants(),
-            'listeEnfants' => $this->em->getRepository(
+            'listeEnfants' => $this->entityManager->getRepository(
                 'BalancelleBundle:Enfant'
             )->getEnfantSansFamille(),
             'delete_form' => $deleteForm->createView(),
@@ -159,8 +160,8 @@ class FamilleAdminController extends AdminController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->em->remove($famille);
-            $this->em->flush();
+            $this->entityManager->remove($famille);
+            $this->entityManager->flush();
             $succes = 'La famille ';
             $succes .= ' a bien été supprimée';
             $this->addFlash('success', $succes);
@@ -197,18 +198,18 @@ class FamilleAdminController extends AdminController
      */
     public function ajouterEnfantAction(Request $request)
     {
-        $enfant = $this->em
+        $enfant = $this->entityManager
             ->getRepository('BalancelleBundle:Enfant')
             ->find($request->get('idEnfant'));
         $type = 'warning';
         $reponse = 'Aucune famille ne correspond à la demande';
         if ($enfant->getFamille() === null) {
-            $famille = $this->em
+            $famille = $this->entityManager
                 ->getRepository('BalancelleBundle:Famille')
                 ->find($request->get('idFamille'));
             $enfant->setFamille($famille);
-            $this->em->persist($enfant);
-            $this->em->flush();
+            $this->entityManager->persist($enfant);
+            $this->entityManager->flush();
             $type = 'success';
             $reponse = "L'enfant ";
             $reponse .= $enfant->getPrenom() . ' ' . $enfant->getNom();
@@ -227,7 +228,7 @@ class FamilleAdminController extends AdminController
      */
     public function creerEnfantAction(Request $request)
     {
-        $famille = $this->em
+        $famille = $this->entityManager
             ->getRepository('BalancelleBundle:Famille')
             ->find($request->get('idFamille'));
 
@@ -248,8 +249,8 @@ class FamilleAdminController extends AdminController
                 $request->get('idStructure')
             )
         );
-        $this->em->persist($enfant);
-        $this->em->flush();
+        $this->entityManager->persist($enfant);
+        $this->entityManager->flush();
         $reponse = "L'enfant ";
         $reponse .= $enfant->getPrenom() . ' ' . $enfant->getNom();
         $reponse .= ' a bien été ajouté à la famille ';
@@ -269,13 +270,13 @@ class FamilleAdminController extends AdminController
     {
         $type = 'warning';
         $reponse = 'Aucune famille ne correspond à la demande';
-        $enfant = $this->em
+        $enfant = $this->entityManager
             ->getRepository('BalancelleBundle:Enfant')
             ->find($idEnfant);
         if ($enfant->getFamille() !== null) {
             $enfant->setFamille(null);
-            $this->em->persist($enfant);
-            $this->em->flush();
+            $this->entityManager->persist($enfant);
+            $this->entityManager->flush();
             $reponse = "L'enfant ";
             $reponse .= $enfant->getPrenom() . ' ' . $enfant->getNom();
             $reponse .= ' a bien été supprimer de la famille ';
@@ -297,13 +298,13 @@ class FamilleAdminController extends AdminController
 
         if ($famille) {
             if ($famille->getParent1() !== null) {
-                $parent['parent1'] = $this->em->getRepository(
+                $parent['parent1'] = $this->entityManager->getRepository(
                     'BalancelleBundle:User'
                 )->findOneById($famille->getParent1()->getId())
                 ;
             }
             if ($famille->getParent2() !== null) {
-                $parent['parent2'] = $this->em->getRepository(
+                $parent['parent2'] = $this->entityManager->getRepository(
                     'BalancelleBundle:User'
                 )->findOneById($famille->getParent2()->getId());
             }
@@ -356,7 +357,7 @@ class FamilleAdminController extends AdminController
             if ($famille !== null) {
                 $tabFamille[] = $famille;
             } else {
-                $tabFamille = $this->em
+                $tabFamille = $this->entityManager
                     ->getRepository('BalancelleBundle:Famille')
                     ->findBy(['active' => 1]);
             }

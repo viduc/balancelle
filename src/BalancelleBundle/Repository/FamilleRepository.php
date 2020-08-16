@@ -71,6 +71,10 @@ class FamilleRepository extends EntityRepository
         return $tabRetour;
     }
 
+    /**
+     * Récupère les familles actives
+     * @return int|mixed|string
+     */
     public function getFamilleActive()
     {
         return $this
@@ -84,15 +88,17 @@ class FamilleRepository extends EntityRepository
     /**
      * Permet de récupérer les familles d'une structure
      * @param int $structureId - l'id de la structure
+     * @param $active - récupère les familles actives ou non
      * @return int|mixed|string
      */
-    public function getFamilleDuneStructure($structureId)
+    public function getFamilleDuneStructure($structureId, $active)
     {
         return $this
             ->createQueryBuilder('a')
             ->from(Enfant::class, 'e')
             ->where('e.famille = a')
             ->andWhere('e.structure =' . $structureId)
+            ->andWhere('a.active =' . $active)
             ->getQuery()
             ->execute()
             ;

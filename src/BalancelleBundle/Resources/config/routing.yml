@@ -50,6 +50,10 @@ balancelle_annee:
   resource: "@BalancelleBundle/Resources/config/routing/annee.yml"
   prefix:   /annee
 
+balancelle_nouvelle_annee:
+  resource: "@BalancelleBundle/Resources/config/routing/nouvelleAnnee.yml"
+  prefix:   /nouvelleAnnee
+
 balancelle_homepage:
     path:     /
     defaults: { _controller: BalancelleBundle:Default:index }
