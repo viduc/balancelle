@@ -31,17 +31,26 @@ class UserController extends AppController //implements FamilleInterface
 
     /**
      * Liste tout les utilisateurs
+     * @param bool $active
      * @return Response
      */
-    public function indexAction()
+    public function indexAction($active = true)
     {
+        $checked = '';
+        if ($active) {
+            $checked = 'checked';
+        }
         $em = $this->getDoctrine()->getManager();
-
-        $users = $em->getRepository('BalancelleBundle:User')->findAll();
+        $users = $em->getRepository(
+            'BalancelleBundle:User'
+        )->findBy(['active' => 1]);
+        if (!$active) {
+            $users = $em->getRepository('BalancelleBundle:User')->findAll();
+        }
 
         return $this->render(
             '@Balancelle/User/index.html.twig',
-            array('users' => $users)
+            array('users' => $users, 'checked' => $checked)
         );
     }
 

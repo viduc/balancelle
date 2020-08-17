@@ -81,8 +81,10 @@ class MenuSubscriber implements EventSubscriberInterface
         }
 
         if (($controller[0] instanceof MenuInterface)
-            && (!$this->session->has('menus')
-                || ($this->session->has('rebootmenu')
+            && (
+                !$this->session->has('menus')
+                || (
+                    $this->session->has('rebootmenu')
                     && $this->session->get('rebootmenu')
                 )
             )
@@ -114,7 +116,10 @@ class MenuSubscriber implements EventSubscriberInterface
         if ($this->security->isGranted('ROLE_PARENT')) {
             $this->genererMenuParent();
         }
-        $this->menus[] = $this->menuPermanences();
+        $menuPermanences = $this->menuPermanences();
+        if ($menuPermanences !== null) {
+            $this->menus[] = $menuPermanences;
+        }
     }
 
     /**
@@ -167,19 +172,22 @@ class MenuSubscriber implements EventSubscriberInterface
 
     private function genererMenuParent()
     {
-        $this->menus[] = new Menu(
-            'famille_tableauDeBord',
-            'Ma famille',
-            'ti-home'
-        );
-
-        $pref = $this->userPreferenceController->recupererLesPreferencesUtilisateur();
-        if ($pref->getCovid()) {
+        $familles = $this->session->get('familles');
+        if (count($familles)>0) {
             $this->menus[] = new Menu(
-                'famille_liste',
-                'Liste des familles',
-                'ti-email'
+                'famille_tableauDeBord',
+                'Ma famille',
+                'ti-home'
             );
+
+            $pref = $this->userPreferenceController->recupererLesPreferencesUtilisateur();
+            if ($pref->getCovid()) {
+                $this->menus[] = new Menu(
+                    'famille_liste',
+                    'Liste des familles',
+                    'ti-email'
+                );
+            }
         }
     }
 
@@ -204,7 +212,12 @@ class MenuSubscriber implements EventSubscriberInterface
                 $permanences->addMenu($menu);
             }
         } elseif ($this->security->isGranted('ROLE_PARENT')) {
-            $this->menuPermanenceFamille($permanences);
+            $familles = $this->session->get('familles');
+            if (count($familles)>0) {
+                $this->menuPermanenceFamille($permanences);
+            } else {
+                $permanences = null;
+            }
         }
 
         return $permanences;
@@ -223,7 +236,7 @@ class MenuSubscriber implements EventSubscriberInterface
         $emFamille = $this->entityManager->getRepository(Famille::class);
         $emEnfant = $this->entityManager->getRepository(Enfant::class);
         $emStructure = $this->entityManager->getRepository(Structure::class);
-        if ($familles !== null) {
+        if ($familles !== null && count($familles)>0) {
             foreach ($familles as $famille) {
                 $famille = $emFamille->findOneBy(['id' => $famille->getId()]);
                 foreach ($famille->getEnfants() as $enfant) {

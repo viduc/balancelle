@@ -57,6 +57,13 @@ class User extends BaseUser
     protected $civilite;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="active", type="boolean")
+     */
+    private $active;
+
+    /**
      * Set prenom
      *
      * @param string $prenom
@@ -150,6 +157,30 @@ class User extends BaseUser
     public function getCivilite()
     {
         return $this->civilite;
+    }
+
+    /**
+     * Set active.
+     *
+     * @param bool $active
+     *
+     * @return User
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active.
+     *
+     * @return bool
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 
     /**

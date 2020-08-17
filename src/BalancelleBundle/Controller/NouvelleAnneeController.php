@@ -157,6 +157,8 @@ class NouvelleAnneeController extends AdminController
                     if ($value === 'delete') {
                         $famille->setActive(false);
                         $this->entityManager->persist($famille);
+                        $this->desactiverLesParentsDuneFamille($famille);
+                        $this->desactiverLesEnfantsDuneFamille($famille);
                     } else {
                         $tabFamille = $this->calculerLesPermanencesPourLesFamilles(
                             [$famille]
@@ -177,6 +179,27 @@ class NouvelleAnneeController extends AdminController
         return new JsonResponse(
             $this->generateUrl('admin_initialisernouvelleannee')
         );
+    }
+
+    /**
+     * Désactive les parents d'une famille
+     * @param Famille $famille
+     */
+    public function desactiverLesParentsDuneFamille(Famille $famille)
+    {
+        $this->entityManager->persist($famille->getParent1()->setActive(false));
+        if ($famille->getParent2()) {
+            $this->entityManager->persist($famille->getParent2()->setActive(false));
+        }
+        $this->entityManager->flush();
+    }
+
+    public function desactiverLesEnfantsDuneFamille(Famille $famille)
+    {
+        foreach ($famille->getEnfants() as $enfant) {
+            $this->entityManager->persist($enfant->setActive(false));
+        }
+        $this->entityManager->flush();
     }
 
     /**

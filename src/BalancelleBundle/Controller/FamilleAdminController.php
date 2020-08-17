@@ -109,7 +109,7 @@ class FamilleAdminController extends AdminController
         $structures = $this->entityManager->getRepository(
             'BalancelleBundle:Structure'
         )->findBy(['active'=>1]);
-        $repositoryPermanence = $this->eentityManager->getRepository(
+        $repositoryPermanence = $this->entityManager->getRepository(
             'BalancelleBundle:Permanence'
         );
         $permanences = $repositoryPermanence->getInformationPermanenceFamille(

@@ -98,7 +98,6 @@ class FamilleSubscriber implements EventSubscriberInterface
     /**
      * Récupère la famille associée à l'utilisateur connecté
      * @return mixed
-     * @throws NonUniqueResultException
      */
     private function getFamilles()
     {
