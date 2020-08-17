@@ -60,6 +60,10 @@ class FamilleController extends AppController implements FamilleInterface
                 $repositoryPermanence->formaterListePermanence(
                     $tableauFamilles[$id]['permanences']
                 );
+            $tableauFamilles[$id]['listePermanenceAnterieure'] =
+                $repositoryPermanence->recupererLesPermanencesRealiseesAnterieures(
+                    $famille
+                );
             $tableauFamilles[$id]['courses'] = $repositoryCourse
                 ->recupererLesCoursesDuneFamille($famille);
             $id++;

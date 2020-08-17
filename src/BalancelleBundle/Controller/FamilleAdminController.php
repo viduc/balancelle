@@ -128,7 +128,11 @@ class FamilleAdminController extends AdminController
             'permanences' => $permanences,
             'listePermanence' => $repositoryPermanence->formaterListePermanence(
                 $permanences
-            )
+            ),
+            'listePermanenceAnterieure' =>
+                $repositoryPermanence->recupererLesPermanencesRealiseesAnterieures(
+                    $famille
+                )
         ));
     }
 

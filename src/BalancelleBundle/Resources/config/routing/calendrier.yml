@@ -1,6 +1,6 @@
 calendrier_index:
-    path:     /
-    defaults: { _controller: "BalancelleBundle:Calendrier:index" }
+    path:     /index/{active}
+    defaults: { _controller: "BalancelleBundle:Calendrier:index", active: 1 }
     methods:  GET
 
 calendrier_new:

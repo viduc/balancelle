@@ -3,6 +3,7 @@
 namespace BalancelleBundle\Controller;
 
 use BalancelleBundle\Entity\Annee;
+use BalancelleBundle\Entity\Calendrier;
 use BalancelleBundle\Entity\Famille;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -174,7 +175,7 @@ class NouvelleAnneeController extends AdminController
             }
             $this->entityManager->flush();
         }
-
+        $this->desactiverLesCalendriers();
         $this->gestionEtapeNouvelleAnnee(3);
         return new JsonResponse(
             $this->generateUrl('admin_initialisernouvelleannee')
@@ -194,10 +195,28 @@ class NouvelleAnneeController extends AdminController
         $this->entityManager->flush();
     }
 
+    /**
+     * Désactive les enfants d'une famille
+     * @param Famille $famille
+     */
     public function desactiverLesEnfantsDuneFamille(Famille $famille)
     {
         foreach ($famille->getEnfants() as $enfant) {
             $this->entityManager->persist($enfant->setActive(false));
+        }
+        $this->entityManager->flush();
+    }
+
+    /**
+     * Désactive les calendriers encore présent
+     */
+    public function desactiverLesCalendriers()
+    {
+        $calendriers = $this->entityManager->getRepository(
+            Calendrier::class
+        )->findBy(['active' => 1]);
+        foreach ($calendriers as $calendrier) {
+            $this->entityManager->persist($calendrier->setActive(false));
         }
         $this->entityManager->flush();
     }

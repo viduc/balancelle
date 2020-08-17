@@ -35,11 +35,32 @@ class PermanenceRepository extends EntityRepository
             ->execute();
     }
 
+    /** Récupère les permanences réalisées des années antérieurs pour une famille
+     * @param Famille $famille
+     * @return mixed
+     */
+    public function recupererLesPermanencesRealiseesAnterieures($famille)
+    {
+        return $this
+            ->createQueryBuilder('p')
+            ->from(Calendrier::class, 'c')
+            ->where('p.famille = :famille')
+            ->andWhere('p.fin < :date')
+            ->andWhere('c.active = 0')
+            ->setParameter('famille', $famille)
+            ->setParameter('date', date('Y-m-d H:i:s'))
+            ->orderBy('p.debut', 'ASC')
+            ->getQuery()
+            ->execute();
+    }
+
     public function recupererLesPermanencesInscrite($famille)
     {
         return $this
             ->createQueryBuilder('p')
+            ->from(Calendrier::class, 'c')
             ->where('p.famille = :famille')
+            ->andWhere('c.active = 1')
             ->setParameter('famille', $famille)
             ->orderBy('p.debut', 'ASC')
             ->getQuery()
@@ -115,7 +136,8 @@ class PermanenceRepository extends EntityRepository
      * @param $fin - la date de fin ($debut + 1 jour)
      * @return array
      */
-    public function recupererToutesLesPermanencesPourRappel($debut, $fin) {
+    public function recupererToutesLesPermanencesPourRappel($debut, $fin)
+    {
         $queryBuilder = $this->createQueryBuilder('p');
         $expr = $queryBuilder->expr();
         $qb = $queryBuilder

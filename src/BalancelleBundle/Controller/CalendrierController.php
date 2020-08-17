@@ -25,14 +25,24 @@ class CalendrierController extends AppController
      * Liste tout les calendriers
      * @return Response
      */
-    public function indexAction()
+    public function indexAction($active = true)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $calendriers = $em->getRepository('BalancelleBundle:Calendrier')->findAll();
+        $checked = '';
+        if ($active) {
+            $checked = 'checked';
+        }
+        $calendriers = $em->getRepository(
+            'BalancelleBundle:Calendrier'
+        )->findBy(['active' => 1]);
+        if (!$active) {
+            $calendriers = $em->getRepository(
+                'BalancelleBundle:Calendrier'
+            )->findAll();
+        }
 
         return $this->render('@Balancelle/Calendrier/index.html.twig', array(
-            'calendriers' => $calendriers,
+            'calendriers' => $calendriers, 'checked' => $checked
         ));
     }
 
