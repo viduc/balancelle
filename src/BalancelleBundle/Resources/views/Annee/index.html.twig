@@ -8,18 +8,8 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <a href="{{ path('famille_new') }}" >
+                            <a href="{{ path('annee_new') }}" >
                                 <img src="{{ asset('bundles/balancelle/images/add.svg') }}" alt="ajouter" />
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <a href="{{ path('famille_envoi_mail_general')}}"
-                               class="btn btn-flat btn-primary mb-3">
-                                <i class="fa fa-envelope"></i> Envoyer un mail </br>à tous les parents
                             </a>
                         </div>
                     </div>
@@ -29,38 +19,29 @@
             <div class="col-10 mt-5">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="header-title">Liste des familles</h4>
-                        <label class="switch-wrap">
-                            <input type="checkbox" {{ checked }} id="activeCheckbox"/>
-                            <div class="switch"></div>
-                        </label> (voir / masquer les familles inactives)
+                        <h4 class="header-title">Liste des années</h4>
                         <div class="data-tables">
                             <table id="dataTable" name="dataTable" class="text-center">
                                 <thead class="bg-light text-capitalize">
                                 <tr>
-                                    <th>Nom de la famille</th>
-                                    <th>Date de création</th>
-                                    <th>Date de modification</th>
+                                    <th>Année</th>
                                     <th>Active</th>
                                     <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for famille in familles %}
+                                {% for annee in annees %}
                                     <tr>
-                                        <td>{{ famille.nom }}</td>
-                                        <td>{{ famille.dateCreation|date('d/m/Y')  }}</td>
-                                        <td>{{ famille.dateModification|date('d/m/Y')  }}</td>
+                                        <td>{{ annee.annee }}</td>
                                         <td>
-                                            {% if famille.active %}
+                                            {% if annee.active %}
                                                 <img src="{{asset('bundles/balancelle/images/on.png')}}" alt="actif" />
                                             {%  else %}
                                                 <img src="{{asset('bundles/balancelle/images/off.png')}}" alt="inactif" />
                                             {% endif %}
                                         </td>
                                         <td>
-                                            <a href="{{ path('famille_edit', { 'id': famille.id }) }}"><i class="fa fa-eye"></i> Voir   -   </a>
-                                            <a href="{{ path('famille_envoi_mail', {'id': famille.id }) }}"> <i class="fa fa-envelope"></i> Envoyer un mail à la famille</a>
+                                            <a href="{{ path('annee_edit', { 'id': annee.id }) }}"><i class="fa fa-eye"></i> Voir</a>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -72,7 +53,4 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        var pathActiveCheckbox = "{{ path('famille_index') }}";
-    </script>
 {% endblock %}

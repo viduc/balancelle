@@ -1,0 +1,26 @@
+{% extends '@Balancelle/Default/layout.html.twig' %}
+{% block body %}
+    <link
+        rel="stylesheet"
+        href="{{ asset('bundles/balancelle/css/etapebar.css') }}"
+        type="text/css"
+        media="screen"
+    />
+    <div class="main-content-inner">
+        <ul class="progress-indicator">
+            <li id="li-annee"> <span class="bubble"></span> Année </li>
+            <li id="li-famille"> <span class="bubble"></span> Gestion des familles </li>
+            <li id="li-fin"> <span class="bubble"></span> Fin </li>
+        </ul>
+    </div>
+    <script type="text/javascript">
+        var pathPurgerAnnee = "{{ path('admin_purgerAnneeAnterieure') }}";
+        var etape = "{{ app.session.get('etape') }}";
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script
+        type="text/javascript"
+        src="{{ asset('bundles/balancelle/js/balancelle_initialiser_annee.js') }}" >
+    </script>
+{% endblock %}

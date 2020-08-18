@@ -2,6 +2,9 @@
 
 namespace BalancelleBundle\Form;
 
+use BalancelleBundle\Entity\User;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,17 +21,7 @@ class FamilleType extends AbstractType
         $builder
             ->add('nom')
             ->add('active')
-            ->add(
-                'parent1')
-                 /*EntityType::class,
-                    [
-                    'class' => User::class,
-                    'query_builder' => function(EntityRepository $userRepository)
-                        {
-                            return $userRepository->findByRoles('ROLE_ADMIN');
-                        }
-                    ]
-            )*/
+            ->add('parent1')
             ->add('parent2')
             ->add('nombrePermanence', ChoiceType::class, [
                 'choices'  => [

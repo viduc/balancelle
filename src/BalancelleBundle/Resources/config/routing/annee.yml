@@ -1,0 +1,19 @@
+annee_index:
+    path:     /
+    defaults: { _controller: "BalancelleBundle:Annee:index" }
+    methods:  [GET]
+
+annee_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BalancelleBundle:Annee:edit" }
+    methods:  [GET, POST]
+
+annee_new:
+    path:     /new
+    defaults: { _controller: "BalancelleBundle:Anne:new" }
+    methods:  [GET, POST]
+
+annee_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BalancelleBundle:Annee:delete" }
+    methods:  DELETE

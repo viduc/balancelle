@@ -1,0 +1,69 @@
+{% extends '@Balancelle/Default/layout.html.twig' %}
+
+{% block body %}
+    {% set action = app.request.attributes.get("_route") %}
+    {{ parent() }}
+    <div class="main-content-inner">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-ml-12">
+            <div class="card" style="background-color: #bbbbbb">
+                <div class="card-body" >
+                    <h4 class="header-title">Information sur le magasin</h4>
+                    {{ form_start(form) }}
+                    <div class="form-row align-items-center" >
+                        <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-12 my-1">
+                            <label for="nom">Nom</label>
+                            {{ form_widget(form.nom, {'attr': {'class': 'form-control',
+                                'placeholder': "nom"}}) }}
+                        </div>
+                        <div class="form-group col-xl-5 col-lg-5 col-md-5 col-sm-12 my-1">
+                            <label for="horaire">Horaire</label>
+                            {{ form_widget(form.horaire, {'attr': {'class': 'form-control',
+                                'placeholder': "horaire"}}) }}
+                        </div>
+                        <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-12 my-1">
+                            <label for="paiement">Paiement</label>
+                            {{ form_widget(form.paiement, {'attr': {'class': 'form-control',
+                                'placeholder': "paiement"}}) }}
+                        </div>
+                    </div>
+                    <div class="form-row align-items-center" >
+                        <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-12 my-1">
+                            <label for="adresse">Adresse</label>
+                            {{ form_widget(form.adresse, {'attr': {'class': 'form-control',
+                                'placeholder': "adresse"}}) }}
+                        </div>
+                        <div class="form-group col-xl-8 col-lg-8 col-md-8 col-sm-12 my-1">
+                            <label for="commentaire">Commentaire</label>
+                            {{ form_widget(form.commentaire, {'attr': {'class': 'form-control',
+                                'placeholder': "commentaire"}}) }}
+                        </div>
+                        <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-12 my-1">
+                            <label for="active">Active</label>
+                            {{ form_widget(form.active, {'attr': {'class': 'form-control',
+                                'placeholder': "active"}}) }}
+                        </div>
+                    </div>
+                    <div class="form-row align-items-center ml-3">
+                        <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
+                            {{ form_widget(form) }}
+                            {% if 'new' in action %}
+                                <input type="submit" value="créer" class="btn btn-rounded btn-success mb-3"/>
+                            {% endif %}
+                            {% if 'edit' in action %}
+                                <input type="submit" value="enregister" class="btn btn-rounded btn-success mb-3"/>
+                            {% endif %}
+                            {{ form_end(form) }}
+                        </div>
+                        {% if delete_form is defined %}
+                            <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1">
+                                {{ form_start(delete_form) }}
+                                <input type="submit" value="supprimer" class="btn btn-rounded btn-danger mb-3"/>
+                                {{ form_end(delete_form) }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

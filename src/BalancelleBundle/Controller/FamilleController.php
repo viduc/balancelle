@@ -33,35 +33,6 @@ class FamilleController extends AppController implements FamilleInterface
     }
 
     /**
-     * Permet de récupérer toutes les finformations des permanences pour une
-     * famille
-     * @param Famille $famille - la famille
-     * @return array|null - un tableau contenant les informations
-     */
-   /* private function getInfoPermanenceFamille(Famille $famille)
-    {
-        $permanence = null;
-        /** @var Famille $famille */
-    /*    if ($famille) {
-            $repository = $this->getDoctrine()->getRepository(Permanence::class);
-            $permanence['faite'] = $repository->recupererLesPermanencesRealisees(
-                $famille
-            );
-            $permanence['aFaire'] = $famille->getNombrePermanence();
-            $permanence['inscrit'] = $repository->findByFamille($famille);
-            $permanence['pourcentage'] = 0;
-            if ($permanence['aFaire']) {
-                $permanence['pourcentage'] =
-                    count($permanence['faite'])*100/$permanence['aFaire'];
-            }
-            if ($permanence['pourcentage']>100) {
-                $permanence['pourcentage'] = 100;
-            }
-        }
-        return $permanence;
-    }*/
-
-    /**
      * Tableau de bord pour les familles
      * @return Response
      */
@@ -88,6 +59,10 @@ class FamilleController extends AppController implements FamilleInterface
             $tableauFamilles[$id]['listePermanence'] =
                 $repositoryPermanence->formaterListePermanence(
                     $tableauFamilles[$id]['permanences']
+                );
+            $tableauFamilles[$id]['listePermanenceAnterieure'] =
+                $repositoryPermanence->recupererLesPermanencesRealiseesAnterieures(
+                    $famille
                 );
             $tableauFamilles[$id]['courses'] = $repositoryCourse
                 ->recupererLesCoursesDuneFamille($famille);

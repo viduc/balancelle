@@ -19,6 +19,10 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="header-title">Liste des utilisateurs</h4>
+                    <label class="switch-wrap">
+                        <input type="checkbox" {{ checked }} id="activeCheckbox"/>
+                        <div class="switch"></div>
+                    </label> (voir / masquer les utilisateurs inactifs)
                     <div class="data-tables">
                         <table id="dataTable" name="dataTable" class="text-center">
                             <thead class="bg-light text-capitalize">
@@ -39,7 +43,7 @@
                                     <td>{{ user.email }}</td>
                                     <td>{{ user.birthday|date('d/m/Y') }}</td>
                                     <td>
-                                        {% if user.enabled %}
+                                        {% if user.active %}
                                             <img src="{{asset('bundles/balancelle/images/on.png')}}" alt="actif" />
                                         {%  else %}
                                             <img src="{{asset('bundles/balancelle/images/off.png')}}" alt="inactif" />
@@ -59,4 +63,7 @@
         </div>
     </div>
 </div>
+    <script type="text/javascript">
+        var pathActiveCheckbox = "{{ path('user_index') }}";
+    </script>
 {% endblock %}

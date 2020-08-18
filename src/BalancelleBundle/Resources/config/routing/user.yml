@@ -1,11 +1,6 @@
 user_index:
-    path:     /
-    defaults: { _controller: "BalancelleBundle:User:index" }
-    methods:  GET
-
-user_show:
-    path:     /{id}/show
-    defaults: { _controller: "BalancelleBundle:User:show" }
+    path:     /index/{active}
+    defaults: { _controller: "BalancelleBundle:User:index", active: 1 }
     methods:  GET
 
 user_new:

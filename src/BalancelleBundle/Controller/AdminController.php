@@ -5,33 +5,75 @@ namespace BalancelleBundle\Controller;
 use BalancelleBundle\Entity\Course;
 use BalancelleBundle\Entity\Permanence;
 use BalancelleBundle\Entity\Structure;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\File\File;
-use AppBundle\Entity\Evenements;
-use AppBundle\Form\EvenementsType;
-use AppBundle\Entity\Revuepresse;
-use AppBundle\Form\RevuepresseType;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AdminController extends Controller implements MenuInterface
 {
-    public function tableauDeBordAction($structureId)
+    public $entityManager;
+    public $session;
+
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        SessionInterface $session
+    ) {
+        $this->entityManager = $entityManager;
+        $this->session = $session;
+    }
+
+    /**
+     * @param $structureId
+     * @param bool $active
+     * @return Response|null
+     */
+    public function tableauDeBordAction($structureId, $active = true)
     {
-        $em = $this->getDoctrine()->getManager();
+        $checked = '';
+        if ($active) {
+            $checked = 'checked';
+        }
         if ($structureId === null || $structureId === 'all') {
-            $familles = $em
-                ->getRepository('BalancelleBundle:Famille')
-                ->findAll();
+            $familles = $this->entityManager->getRepository(
+                'BalancelleBundle:Famille'
+            )->findBy(['active' => 1]);
+            if (!$active) {
+                $familles = $this->entityManager->getRepository(
+                    'BalancelleBundle:Famille'
+                )->findAll();
+            }
             $structureSelectionnee = 'toutes';
         } else {
-            $familles = $em
+            $familles = $this->entityManager
                 ->getRepository('BalancelleBundle:Famille')
-                ->getFamilleDuneStructure($structureId);
+                ->getFamilleDuneStructure($structureId, $active);
             $structureSelectionnee = $structureId;
         }
+        $familles = $this->calculerLesPermanencesPourLesFamilles($familles);
+        $structures = $this->entityManager->getRepository(
+            'BalancelleBundle:Structure'
+        )->findBy(['active' => 1]);
+        return $this->render(
+            '@Balancelle/Admin/index.html.twig',
+            array(
+                'familles' => $familles,
+                'structures' => $structures,
+                'structureSelectionnee' => $structureSelectionnee,
+                'checked' => $checked
+            )
+        );
+    }
 
-        $repository = $this->getDoctrine()->getRepository(Permanence::class);
+
+    /**
+     * Récupère les informations sur les permanences des familles
+     * @param array $familles
+     * @return array
+     */
+    public function calculerLesPermanencesPourLesFamilles(array $familles)
+    {
+        $repository = $this->entityManager->getRepository(Permanence::class);
         foreach ($familles as $famille) {
             $famille->permFaite = $repository->recupererLesPermanencesRealisees(
                 $famille
@@ -39,26 +81,45 @@ class AdminController extends Controller implements MenuInterface
             $famille->nbPermanenceAFaire = $famille->getNombrePermanence();
             $famille->permanenceInscrit = $repository->findByFamille($famille);
             $famille->pourcentagePermanenceFaite = 0;
-            $famille->course = $em
-                ->getRepository(Course::class)
-                ->recupererLesCoursesDuneFamille($famille);
+            $famille->permanenceRestantAfaire = $famille->nbPermanenceAFaire -
+                count($famille->permFaite);
             if ($famille->nbPermanenceAFaire) {
                 $famille->pourcentagePermanenceFaite = count(
                     $famille->permFaite
-                )*100/$famille->nbPermanenceAFaire;
+                ) * 100 / $famille->nbPermanenceAFaire;
+                $famille->course = $this->entityManager
+                    ->getRepository(Course::class)
+                    ->recupererLesCoursesDuneFamille($famille);
             }
         }
-        $structures = $em->getRepository(Structure::class)->findBy(['active' => 1]);
-        return $this->render(
-            '@Balancelle/Admin/index.html.twig',
-            array(
-                'familles' => $familles,
-                'structures' => $structures,
-                'structureSelectionnee' => $structureSelectionnee
-            )
-        );
+
+        return $familles;
     }
 
+    /**
+     * Récupère les structures des familles pour affichage
+     * @param $familles
+     * @return mixed
+     */
+    public function recupererLesStructuresDesFamilles($familles)
+    {
+        $repository = $this->entityManager->getRepository(Structure::class);
+        foreach ($familles as $famille) {
+            $getStructures = $repository->getStructuresDuneFamille(
+                $famille->getId()
+            );
+            $structures = [];
+            foreach ($getStructures as $structure) {
+                $structures[] = $structure->getNomCourt();
+            }
+            $famille->structures = $structures;
+        }
+
+        return $familles;
+    }
+
+
+    //----------------------> parametrage site vitrine <----------------------//
     /**
      * Index de la partie admin
      * @param CommunicationController $communication

@@ -1,4 +1,4 @@
 admin_tableaudebord:
-    path:     /admin/{structureId}
-    defaults: { _controller: "BalancelleBundle:Admin:tableauDeBord", structureId: null }
-    methods:  GET
+    path:     /tableaudebord/{structureId}/{active}
+    defaults: { _controller: "BalancelleBundle:Admin:tableauDeBord", structureId: null, active: 1}
+    methods:  [GET]
