@@ -78,7 +78,9 @@ class AdminController extends Controller implements MenuInterface
             $famille->permFaite = $repository->recupererLesPermanencesRealisees(
                 $famille
             );
-            $famille->nbPermanenceAFaire = $famille->getNombrePermanence();
+            $famille->nbPermanenceAFaire = $famille->getNombrePermanence() +
+                $famille->getSoldePermanence();
+            //$famille->soldePermanence = $famille->getSoldePermanence();
             $famille->permanenceInscrit = $repository->findByFamille($famille);
             $famille->pourcentagePermanenceFaite = 0;
             $famille->permanenceRestantAfaire = $famille->nbPermanenceAFaire -
@@ -87,6 +89,9 @@ class AdminController extends Controller implements MenuInterface
                 $famille->pourcentagePermanenceFaite = count(
                     $famille->permFaite
                 ) * 100 / $famille->nbPermanenceAFaire;
+                if ($famille->pourcentagePermanenceFaite > 100) {
+                    $famille->pourcentagePermanenceFaite = 100;
+                }
                 $famille->course = $this->entityManager
                     ->getRepository(Course::class)
                     ->recupererLesCoursesDuneFamille($famille);

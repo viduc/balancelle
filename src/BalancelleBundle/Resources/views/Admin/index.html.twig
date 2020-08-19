@@ -31,10 +31,11 @@
                             <tr>
                                 <th>Famille</th>
                                 <th>Active</th>
-                                <th>total</th>
-                                <th>faites</th>
-                                <th>inscrit</th>
-                                <th>réserve</th>
+                                <th>Total</th>
+                                <th>Solde</th>
+                                <th>Faites</th>
+                                <th>Inscrit</th>
+                                <th>Réserve</th>
                                 <th>Progression</th>
                                 <th>Nombre de Courses</th>
                                 <th></th>
@@ -57,10 +58,11 @@
                                             <img src="{{asset('bundles/balancelle/images/off.png')}}" alt="inactif" />
                                         {% endif %}
                                     </td>
-                                    <td>{{ famille.nombrePermanence }}</td>
+                                    <td>{{ famille.nbPermanenceAFaire }}</td>
+                                    <td>{{ famille.soldePermanence }}</td>
                                     <td>{{ famille.permFaite|length }}</td>
                                     <td>{{ famille.permanenceInscrit|length - famille.permFaite|length }}</td>
-                                    <td>{{ famille.nombrePermanence - famille.permFaite|length - (famille.permanenceInscrit|length - famille.permFaite|length) }}</td>
+                                    <td>{{ famille.nbPermanenceAFaire - famille.permFaite|length - (famille.permanenceInscrit|length - famille.permFaite|length) }}</td>
                                     <td>
                                         <div class="progress-perm">
                                             <div id="progessBarPermanence{{ famille.id }}" class="progress-bar-perm"></div>
