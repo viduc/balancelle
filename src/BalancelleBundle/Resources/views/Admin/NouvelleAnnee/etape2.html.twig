@@ -34,7 +34,11 @@
                                             <input type="hidden" name="familleId_{{ famille.id }}" value="{{ famille.id }}">
                                             <th scope="row">{{ famille.nom }}</th>
                                             <td>{{ famille.parent1.nom }} {{ famille.parent1.prenom }}</td>
-                                            <td>{{ famille.parent2.nom }} {{ famille.parent2.prenom }}</td>
+                                            <td>
+                                                {% if famille.parent2 != null %}
+                                                    {{ famille.parent2.nom }} {{ famille.parent2.prenom }}
+                                                {% endif %}
+                                            </td>
                                             <td>
                                                 {% for structure in famille.structures %}
                                                     {{ structure }} -

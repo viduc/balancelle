@@ -164,15 +164,17 @@ class PermanenceRepository extends EntityRepository
         $permanence['faite'] = $this->recupererLesPermanencesRealisees(
             $famille
         );
-        $permanence['aFaire'] = $famille->getNombrePermanence();
+        $permanence['aFaire'] = $famille->getNombrePermanence()+
+            $famille->getSoldePermanence();
+        $permanence['soldePermanence'] = $famille->getSoldePermanence();
         $permanence['inscrit'] = $this->recupererLesPermanencesInscrite($famille);
         $permanence['pourcentage'] = 0;
         if ($permanence['aFaire']) {
             $permanence['pourcentage'] =
                 count($permanence['faite'])*100/$permanence['aFaire'];
-        }
-        if ($permanence['pourcentage']>100) {
-            $permanence['pourcentage'] = 100;
+            if ($permanence['pourcentage']>100) {
+                $permanence['pourcentage'] = 100;
+            }
         }
 
         return $permanence;

@@ -78,6 +78,11 @@
                                 <p class="card-text">
                                     Vous avez effectué {{ famille['permanences'].faite|length }} permanence(s) sur {{ famille['permanences'].aFaire }} à réaliser.
                                 </p>
+                                {% if famille['permanences'].soldePermanence > 0 %}
+                                    <p class="card-text">
+                                        Il vous reste {{ famille['permanences'].soldePermanence }} permanences non réalisée(s) de l'année dernière.
+                                    </p>
+                                {% endif %}
                                 <p class="card-text">
                                     Vous êtes inscrit à {{ famille['permanences'].inscrit|length - famille['permanences'].faite|length }} permanence(s).
                                 </p>
