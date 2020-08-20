@@ -80,8 +80,8 @@ class AdminController extends Controller implements MenuInterface
             );
             $famille->nbPermanenceAFaire = $famille->getNombrePermanence() +
                 $famille->getSoldePermanence();
-            //$famille->soldePermanence = $famille->getSoldePermanence();
-            $famille->permanenceInscrit = $repository->findByFamille($famille);
+            $famille->permanenceInscrit =
+                $repository->recupererLesPermanencesInscrite($famille);
             $famille->pourcentagePermanenceFaite = 0;
             $famille->permanenceRestantAfaire = $famille->nbPermanenceAFaire -
                 count($famille->permFaite);
