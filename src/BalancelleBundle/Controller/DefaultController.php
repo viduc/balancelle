@@ -8,11 +8,13 @@ use BalancelleBundle\Entity\User;
 use Swift_Message;
 use Symfony\Component\HttpFoundation\Request;
 use BalancelleBundle\Form\ContactType;
+use Symfony\Component\Security\Core\Security;
+
 //use InfluxDB;
 
 class DefaultController extends AppController implements FamilleInterface
 {
-    public function indexAction()
+    public function indexAction(Security $security)
     {
         /*$em = $this->getDoctrine()->getManager();
         $famille = $em
@@ -44,9 +46,12 @@ class DefaultController extends AppController implements FamilleInterface
             $this->get('session')->get('familles') !== null) {
             return $this->redirectToRoute('famille_tableauDeBord');
         }
-
-        return $this->render('@Balancelle/Default/index.html.twig', array(
-            'famille' => $this->get('session')->get('famille')
+        if ($security->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('admin_tableaudebord');
+        }
+        return $this->render('@Balancelle/Default/error.html.twig', array(
+            'message' => 'Votre compte ne semble pas encore valide, contactez 
+        la balancelle pour obtenir plus d\'informations'
         ));
     }
 

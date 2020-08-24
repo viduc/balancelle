@@ -3,6 +3,7 @@
 namespace BalancelleBundle\Repository;
 
 use BalancelleBundle\Entity\Calendrier;
+use BalancelleBundle\Entity\Enfant;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -62,5 +63,18 @@ class StructureRepository extends EntityRepository
             ->findBy(['structure' => $structure, 'active' => 1]);
 
         return count($calendriers);
+    }
+
+
+    public function getStructuresDuneFamille($familleId)
+    {
+        return $this
+            ->createQueryBuilder('a')
+            ->from(Enfant::class, 'e')
+            ->where('e.famille = ' . $familleId)
+            ->andWhere('e.structure = a')
+            ->getQuery()
+            ->execute()
+            ;
     }
 }

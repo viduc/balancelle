@@ -2,6 +2,7 @@
 
 namespace BalancelleBundle\Controller;
 
+use BalancelleBundle\Entity\Course;
 use Swift_Message;
 use BalancelleBundle\Entity\Structure;
 use Doctrine\ORM\EntityManagerInterface;
@@ -221,5 +222,36 @@ class CommunicationController extends AppController
         }
 
         return $tabRetour;
+    }
+
+    /**
+     * Envoie un email pour les courses aux parents de la famille concernée
+     * @param Course $course
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function envoyerMailCourse(Course $course)
+    {
+        $mails = $this->em
+            ->getRepository('BalancelleBundle:Famille')
+            ->getParentsEmail(
+                $course->getFamille()
+            );
+        $sujet = 'Vous êtes inscrit aus courses';
+        $email = Swift_Message::newInstance()
+            ->setSubject('[La Balancelle] - ' . $sujet)
+            ->setFrom($course->getStructure()->getEmail())
+            ->setContentType('text/html');
+        $email->setBody(
+            $this->twig->render(
+                '@Balancelle/Communication/email_course.html.twig',
+                array('course' => $course)
+            )
+        );
+        foreach ($mails as $mail) {
+            $email->setTo($mail);
+            $this->mailer->send($email);
+        }
     }
 }

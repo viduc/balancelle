@@ -2,6 +2,7 @@
 
 namespace BalancelleBundle\Repository;
 
+use BalancelleBundle\Entity\Enfant;
 use BalancelleBundle\Entity\Famille;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -26,11 +27,10 @@ class FamilleRepository extends EntityRepository
                 ->createQueryBuilder('a')
                 ->where('a.parent1 = :userId')
                 ->orWhere('a.parent2 = :userId')
-                ->setParameter('userId', "$userId")
+                ->setParameter('userId', (string)$userId)
                 ->andWhere('a.active = true')
                 ->getQuery()
-                ->getOneOrNullResult()
-                ;
+                ->setMaxResults(1)->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             return null;
         }
@@ -70,4 +70,38 @@ class FamilleRepository extends EntityRepository
 
         return $tabRetour;
     }
+
+    /**
+     * Récupère les familles actives
+     * @return int|mixed|string
+     */
+    public function getFamilleActive()
+    {
+        return $this
+            ->createQueryBuilder('a')
+            ->where('a.active = 1')
+            ->getQuery()
+            ->execute()
+            ;
+    }
+
+    /**
+     * Permet de récupérer les familles d'une structure
+     * @param int $structureId - l'id de la structure
+     * @param $active - récupère les familles actives ou non
+     * @return int|mixed|string
+     */
+    public function getFamilleDuneStructure($structureId, $active)
+    {
+        return $this
+            ->createQueryBuilder('a')
+            ->from(Enfant::class, 'e')
+            ->where('e.famille = a')
+            ->andWhere('e.structure =' . $structureId)
+            ->andWhere('a.active =' . $active)
+            ->getQuery()
+            ->execute()
+            ;
+    }
+
 }

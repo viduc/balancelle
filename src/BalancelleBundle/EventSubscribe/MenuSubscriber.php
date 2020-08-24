@@ -3,6 +3,7 @@
 namespace BalancelleBundle\EventSubscribe;
 
 use BalancelleBundle\Controller\MenuInterface;
+use BalancelleBundle\Controller\UserPreferenceController;
 use BalancelleBundle\Entity\Calendrier;
 use BalancelleBundle\Entity\Enfant;
 use BalancelleBundle\Entity\Famille;
@@ -35,7 +36,15 @@ class MenuSubscriber implements EventSubscriberInterface
      */
     private $entityManager;
 
+    /**
+     * @var
+     */
     private $menu;
+
+    /**
+     * @var UserPreferenceController
+     */
+    private $userPreferenceController;
 
     /**
      * FamilleSubscriber constructor.
@@ -46,17 +55,18 @@ class MenuSubscriber implements EventSubscriberInterface
     public function __construct(
         ContainerInterface $container,
         Security $security,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        UserPreferenceController $userPreferenceController
     ) {
         $this->session = $container->get('session');
         $this->security = $security;
         $this->entityManager = $entityManager;
         $this->menus = [];
+        $this->userPreferenceController = $userPreferenceController;
     }
 
     /**
      * @param FilterControllerEvent $event
-     * @throws NonUniqueResultException
      */
     public function onKernelController(FilterControllerEvent $event)
     {
@@ -67,14 +77,21 @@ class MenuSubscriber implements EventSubscriberInterface
          * If it is a class, it comes in array format
          */
         if (!is_array($controller)) {
-
             return;
         }
 
         if (($controller[0] instanceof MenuInterface)
-            && !$this->session->has('menus')) {
+            && (
+                !$this->session->has('menus')
+                || (
+                    $this->session->has('rebootmenu')
+                    && $this->session->get('rebootmenu')
+                )
+            )
+        ) {
             $this->genererMenus();
             $this->session->set('menus', $this->menus);
+            $this->session->set('rebootmenu', false);
         }
     }
 
@@ -99,7 +116,10 @@ class MenuSubscriber implements EventSubscriberInterface
         if ($this->security->isGranted('ROLE_PARENT')) {
             $this->genererMenuParent();
         }
-        $this->menus[] = $this->menuPermanences();
+        $menuPermanences = $this->menuPermanences();
+        if ($menuPermanences !== null) {
+            $this->menus[] = $menuPermanences;
+        }
     }
 
     /**
@@ -107,6 +127,20 @@ class MenuSubscriber implements EventSubscriberInterface
      */
     private function genererMenuAdmin()
     {
+        $admin = new MenuOuvrant('Administration', 'fa fa-desktop');
+        $menu = new Menu(
+            'admin_tableaudebord',
+            'Tableau de bord ',
+            'ti-dashboard'
+        );
+        $admin->addMenu($menu);
+        $menu = new Menu(
+            'admin_initialisernouvelleannee',
+            'Initialiser une nouvelle année ',
+            'ti-control-forward'
+        );
+        $admin->addMenu($menu);
+        $this->menus[] = $admin;
         $this->menus[] = new Menu('user_index', 'Utilisateurs', 'fa fa-user');
         $this->menus[] = new Menu('famille_index', 'Familles', 'fa fa-group');
         $this->menus[] = new Menu(
@@ -119,15 +153,42 @@ class MenuSubscriber implements EventSubscriberInterface
             'Calendriers',
             'fa fa-calendar-check-o'
         );
+
+        $courses = new MenuOuvrant('Courses', 'fa fa-shopping-cart');
+        $menu = new Menu(
+            'magasin_index',
+            'Liste des magasins',
+            'fa fa-university'
+        );
+        $courses->addMenu($menu);
+        $menu = new Menu(
+            'course_index',
+            'Liste des courses',
+            'fa fa-shopping-bag '
+        );
+        $courses->addMenu($menu);
+        $this->menus[] = $courses;
     }
 
     private function genererMenuParent()
     {
-        $this->menus[] = new Menu(
-            'famille_tableauDeBord',
-            'Ma famille',
-            'ti-home'
-        );
+        $familles = $this->session->get('familles');
+        if (count($familles)>0) {
+            $this->menus[] = new Menu(
+                'famille_tableauDeBord',
+                'Ma famille',
+                'ti-home'
+            );
+
+            $pref = $this->userPreferenceController->recupererLesPreferencesUtilisateur();
+            if ($pref->getCovid()) {
+                $this->menus[] = new Menu(
+                    'famille_liste',
+                    'Liste des familles',
+                    'ti-email'
+                );
+            }
+        }
     }
 
     /**
@@ -139,12 +200,6 @@ class MenuSubscriber implements EventSubscriberInterface
         $permanences = new MenuOuvrant('Permanences', 'ti-agenda');
 
         if ($this->security->isGranted('ROLE_ADMIN')) {
-            $menu = new Menu(
-                'admin_permanence_index',
-                'Tableau de bord ',
-                'ti-dashboard'
-            );
-            $permanences->addMenu($menu);
             $structures = $this->entityManager->getRepository(Structure::class)
                 ->getStructuresAvecCalendrier();
             foreach ($structures as $structure) {
@@ -152,11 +207,17 @@ class MenuSubscriber implements EventSubscriberInterface
                     'admin_permanence_structure',
                     'Permanence ' . $structure->getNom(),
                     'ti-layout-list-thumb-alt',
-                    ['structure' => $structure->getNom()]);
+                    ['structure' => $structure->getNom()]
+                );
                 $permanences->addMenu($menu);
             }
         } elseif ($this->security->isGranted('ROLE_PARENT')) {
-            $this->menuPermanenceFamille($permanences);
+            $familles = $this->session->get('familles');
+            if (count($familles)>0) {
+                $this->menuPermanenceFamille($permanences);
+            } else {
+                $permanences = null;
+            }
         }
 
         return $permanences;
@@ -175,7 +236,7 @@ class MenuSubscriber implements EventSubscriberInterface
         $emFamille = $this->entityManager->getRepository(Famille::class);
         $emEnfant = $this->entityManager->getRepository(Enfant::class);
         $emStructure = $this->entityManager->getRepository(Structure::class);
-        if ($familles !== null) {
+        if ($familles !== null && count($familles)>0) {
             foreach ($familles as $famille) {
                 $famille = $emFamille->findOneBy(['id' => $famille->getId()]);
                 foreach ($famille->getEnfants() as $enfant) {
@@ -183,10 +244,9 @@ class MenuSubscriber implements EventSubscriberInterface
                     $structure = $emStructure->findOneBy(
                         ['id' => $enfant->getStructure()->getId()]
                     );
-                    if (
-                        $this->verifieSiStructureAunCalendrier(
-                            $structure
-                        ) &&
+                    if ($this->verifieSiStructureAunCalendrier(
+                        $structure
+                    ) &&
                         !in_array(
                             $structure->getNomCourt(),
                             $menuPerm,
@@ -198,7 +258,8 @@ class MenuSubscriber implements EventSubscriberInterface
                             'permanence_index',
                             'Permanence ' . $structure->getNom(),
                             'ti-layout-list-thumb-alt',
-                            ['structure' => $structure->getNom()]);
+                            ['structure' => $structure->getNom()]
+                        );
                         $permanences->addMenu($menu);
                     }
                 }

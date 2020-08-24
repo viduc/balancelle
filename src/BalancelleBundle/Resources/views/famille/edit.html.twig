@@ -29,6 +29,11 @@
                                         'placeholder': "parent 2"}}) }}
                                     </div>
                                 </div>
+                                <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-1 my-1 mt-4">
+                                    <label for="balancellebundle_famille_annee">Année</label>
+                                    {{ form_widget(form.annee, {'attr': {'class': 'form-control',
+                                        'placeholder': "année"}}) }}<label></label>
+                                </div>
                             </div>
                             <div class="form-row align-items-center" >
                                 <div class="form-group col-xl-4 col-lg-4 col-md-6 col-sm-12 my-1">
@@ -170,7 +175,7 @@
                                 {% if permanences is defined and permanences is not null %}
                                 <!--div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 my-1"-->
                                     <h5 class="title">Permanences</h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">
+                                    <h6 class="card-subtitle mb-2 text-muted" style="width: 100%">
                                         <div class="progress-perm">
                                             <div id="progessBarPermanence0" class="progress-bar-perm"></div>
                                         </div>
@@ -221,7 +226,91 @@
                                             </div>
                                         </div>
                                     {% endif %}
+                                    {% if listePermanenceAnterieure|length %}
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h4 class="header-title">Liste des permanences antérieures</h4>
+                                                <div class="single-table">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-hover text-center">
+                                                            <thead class="text-uppercase">
+                                                            <tr>
+                                                                <th scope="col">Date</th>
+                                                                <th scope="col">Titre</th>
+                                                                <th scope="col">Commentaire</th>
+                                                                <th scope="col">Réalisée</th>
+                                                                <th scope="col">action</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            {% for permanence in listePermanenceAnterieure %}
+                                                                <tr>
+                                                                    <th scope="row">{{ permanence.debut|date('d/m/Y') }}</th>
+                                                                    <td>{{ permanence.titre }}</td>
+                                                                    <td>{{ permanence.commentaire }}</td>
+                                                                    <td><span class="status-p bg-success">réalisée</span></td>
+                                                                    <td>
+                                                                        <a href="{{ path('permanence_inscription', { 'id': permanence.id }) }}">
+                                                                            <i class="ti-eye"></i></a>
+                                                                    </td>
+                                                                </tr>
+                                                            {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
                                 <!--/div-->
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div></br>
+                <div class="col-xl-12 col-lg-12 col-md-12 col-ml-12">
+                    <div class="card card-bordered"  style="background-color: #bbbbbb">
+                        <div class="card-body">
+                            <div class="form-row" >
+                                <h5 class="title">Courses</h5><br>
+                                <p class="card-text" style="width: 100%">
+                                    La famille a effectué {{ familleAdmin.courses|length }} course(s).
+                                </p>
+                                {% if familleAdmin.courses|length %}
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="header-title">Liste des course</h4>
+                                            <div class="single-table">
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover text-center">
+                                                        <thead class="text-uppercase">
+                                                        <tr>
+                                                            <th scope="col">Magasin</th>
+                                                            <th scope="col">Structure</th>
+                                                            <th scope="col">Date de début</th>
+                                                            <th scope="col">Date de fin</th>
+                                                            <th scope="col">Action</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for course in familleAdmin.courses %}
+                                                            <tr>
+                                                                <td>{{ course.magasin.nom }}</td>
+                                                                <td>{{ course.structure.nom }}</td>
+                                                                <th scope="row">{{ course.dateDebut|date('d/m/Y') }}</th>
+                                                                <th scope="row">{{ course.dateFin|date('d/m/Y') }}</th>
+                                                                <td>
+                                                                    <a href="{{ path('course_edit', { 'id': course.id }) }}">
+                                                                        <i class="ti-eye"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 {% endif %}
                             </div>
                         </div>

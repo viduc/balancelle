@@ -28,4 +28,9 @@ class DefaultController extends Controller
             array('revuepresses' => $revuepresses)
         );
     }
+
+    public function inscriptionAction()
+    {
+        return $this->render('@App/Default/inscription.html.twig',array());
+    }
 }

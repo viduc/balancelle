@@ -1,0 +1,4 @@
+admin_tableaudebord:
+    path:     /tableaudebord/{structureId}/{active}
+    defaults: { _controller: "BalancelleBundle:Admin:tableauDeBord", structureId: null, active: 1}
+    methods:  [GET]

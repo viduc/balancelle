@@ -18,6 +18,11 @@ use Doctrine\ORM\Mapping as ORM;
 class User extends BaseUser
 {
     /**
+     * @ORM\OneToOne(targetEntity=Preference::class, cascade={"persist", "remove"})
+     */
+    protected $preference;
+
+    /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -50,6 +55,13 @@ class User extends BaseUser
      * @ORM\Column(name="civilite", type="string", length=10)
      */
     protected $civilite;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="active", type="boolean")
+     */
+    private $active;
 
     /**
      * Set prenom
@@ -148,6 +160,30 @@ class User extends BaseUser
     }
 
     /**
+     * Set active.
+     *
+     * @param bool $active
+     *
+     * @return User
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active.
+     *
+     * @return bool
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
      * Détermine si l'utilisateur a le rôle administrateur
      * @return Boolean
      */
@@ -241,6 +277,7 @@ class User extends BaseUser
 
         return $this;
     }
+
     /**
      * Récupère le role admin
      * @return Boolean
@@ -248,6 +285,24 @@ class User extends BaseUser
     public function getRoleParent()
     {
         return $this->hasRole('ROLE_PARENT');
+    }
+
+    /**
+     * Enregistre les préférences
+     * @param Preference $preference
+     */
+    public function setPreference(Preference $preference)
+    {
+        $this->preference = $preference;
+    }
+
+    /**
+     * Récupère les préférences
+     * @return mixed
+     */
+    public function getPreference()
+    {
+        return $this->preference;
     }
 
     /**

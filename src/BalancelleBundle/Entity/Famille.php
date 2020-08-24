@@ -17,12 +17,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Famille
 {
     /**
-     * @ORM\OneToOne(targetEntity="BalancelleBundle\Entity\User", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="BalancelleBundle\Entity\Annee", inversedBy="familles")
+     */
+    private $annee;
+
+    /**
+     * @ORM\OneToOne(targetEntity="BalancelleBundle\Entity\User", cascade={"persist"}, fetch="EAGER")
      */
     private $parent1;
 
     /**
-     * @ORM\OneToOne(targetEntity="BalancelleBundle\Entity\User", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="BalancelleBundle\Entity\User", cascade={"persist"}, fetch="EAGER")
      * @Assert\Expression("value !== this.getParent1() or value === null",message = "les deux parents doivent être différents")
      */
     private $parent2;
@@ -32,9 +37,15 @@ class Famille
      */
     private $enfants;
 
+    /**
+     * @ORM\OneToMany(targetEntity="BalancelleBundle\Entity\Course", cascade={"persist", "remove"}, mappedBy="famille")
+     */
+    private $courses;
+
     public function __construct()
     {
         $this->enfants = new ArrayCollection();
+        $this->courses = new ArrayCollection();
     }
 
     /**
@@ -81,6 +92,12 @@ class Famille
      */
     private $nombrePermanence;
 
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="solde_permanence", type="integer", nullable=true)
+     */
+    private $soldePermanence;
 
     /**
      * Get id
@@ -189,6 +206,16 @@ class Famille
     }
 
     /**
+     * Get active
+     *
+     * @return bool
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
      * Set parent1
      *
      * @param User $parent1
@@ -271,6 +298,42 @@ class Famille
     }
 
     /**
+     * Add course.
+     *
+     * @param Course $course
+     *
+     * @return Famille
+     */
+    public function addCourse(Course $course)
+    {
+        $this->courses[] = $course;
+
+        return $this;
+    }
+
+    /**
+     * Remove course.
+     *
+     * @param Course $course
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeCourse(Course $course)
+    {
+        return $this->courses->removeElement($course);
+    }
+
+    /**
+     * Get courses.
+     *
+     * @return Collection
+     */
+    public function getCourses()
+    {
+        return $this->courses;
+    }
+
+    /**
      * Set nombrePermanence.
      *
      * @param int $nombrePermanence
@@ -292,5 +355,53 @@ class Famille
     public function getNombrePermanence()
     {
         return $this->nombrePermanence;
+    }
+
+    /**
+     * Set soldePermanence.
+     *
+     * @param int $soldePermanence
+     *
+     * @return Famille
+     */
+    public function setSoldePermanence($soldePermanence)
+    {
+        $this->soldePermanence = $soldePermanence;
+
+        return $this;
+    }
+
+    /**
+     * Get soldePermanence.
+     *
+     * @return int
+     */
+    public function getSoldePermanence()
+    {
+        return $this->soldePermanence;
+    }
+
+    /**
+     * Set annee
+     *
+     * @param Annee $annee
+     *
+     * @return Famille
+     */
+    public function setAnnee(Annee $annee = null)
+    {
+        $this->annee = $annee;
+
+        return $this;
+    }
+
+    /**
+     * Get annee
+     *
+     * @return Annee
+     */
+    public function getAnnee()
+    {
+        return $this->annee;
     }
 }

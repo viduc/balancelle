@@ -1,0 +1,4 @@
+preference_index:
+    path:     /
+    defaults: { _controller: "BalancelleBundle:UserPreference:index" }
+    methods:  [GET, POST]

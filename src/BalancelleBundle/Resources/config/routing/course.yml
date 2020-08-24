@@ -1,0 +1,19 @@
+course_index:
+    path:     /
+    defaults: { _controller: "BalancelleBundle:Course:index" }
+    methods:  [GET]
+
+course_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BalancelleBundle:Course:edit" }
+    methods:  [GET, POST]
+
+course_new:
+    path:     /new
+    defaults: { _controller: "BalancelleBundle:Course:new" }
+    methods:  [GET, POST]
+
+course_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BalancelleBundle:Course:delete" }
+    methods:  DELETE

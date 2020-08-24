@@ -6,3 +6,13 @@ famille_tableauDeBord:
 famille_erreurFamille:
     path:     /erreurFamille/
     defaults: { _controller: "BalancelleBundle:Famille:erreurFamille" }
+
+famille_liste:
+    path:     /listeFamille
+    defaults: { _controller: "BalancelleBundle:Famille:listeDesFamilles" }
+    methods:  [GET]
+
+famille_envoi_mail_covid:
+    path:     /{id}/envoyerMail
+    defaults: { _controller: "BalancelleBundle:Famille:envoyerMail" }
+    methods:  [GET, POST]

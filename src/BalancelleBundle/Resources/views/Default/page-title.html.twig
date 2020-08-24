@@ -185,8 +185,8 @@
                 <img class="avatar user-thumb" src="{{ asset('bundles/balancelle/images/avatar.png') }}"  alt="avatar">
                 <h4 class="user-name dropdown-toggle" data-toggle="dropdown">{{ app.user.Prenom }} {{ app.user.Nom }} <i class="fa fa-angle-down"></i></h4>
                 <div class="dropdown-menu">
-                    <!--a class="dropdown-item" href="#">Message</a>
-                    <a class="dropdown-item" href="#">Paramètres</a-->
+                    <!--a class="dropdown-item" href="#">Message</a>-->
+                    <a class="dropdown-item" href="{{ path('preference_index') }}">Préférences</a>
                     <a class="dropdown-item" href="{{ path('fos_user_change_password') }}">Changer mon mot de passe</a>
                     <a class="dropdown-item" href="{{ path('logout') }}">Déconnexion</a>
                 </div>

@@ -1,0 +1,26 @@
+{% extends '@Balancelle/Admin/NouvelleAnnee/initialiserNouvelleAnnee.html.twig' %}
+{% block body %}
+    {{ parent() }}
+    <div class="main-content-inner">
+        <div class="row">
+            <div class="col-lg-12 mt-5">
+                <div class="card">
+                    {{ form_start(form) }}
+                    <div class="row">
+
+                        <div class="col-xl-5 col-lg-5 col-md-5 col-ml-5" style="text-align: right">
+                            Sélectionner la nouvelle année:
+                        </div>
+                        <div class="col-xl-2 col-lg-2 col-md-2 col-ml-2" style="text-align: center">
+                            {{ form_widget(form.annees) }}
+                        </div>
+                        <div class="col-xl-5 col-lg-5 col-md-5 col-ml-5">
+                            <input type="submit" value="Suivant" class="btn btn-success text-white"/>
+                        </div>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

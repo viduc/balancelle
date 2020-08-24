@@ -30,37 +30,33 @@ balancelle_calendrier:
   resource: "@BalancelleBundle/Resources/config/routing/calendrier.yml"
   prefix:   /calendrier
 
+balancelle_magasin:
+  resource: "@BalancelleBundle/Resources/config/routing/magasin.yml"
+  prefix:   /magasin
+
+balancelle_course:
+  resource: "@BalancelleBundle/Resources/config/routing/course.yml"
+  prefix:   /course
+
+balancelle_admin:
+  resource: "@BalancelleBundle/Resources/config/routing/admin.yml"
+  prefix:   /admin
+
+balancelle_preference:
+  resource: "@BalancelleBundle/Resources/config/routing/preference.yml"
+  prefix:   /preference
+
+balancelle_annee:
+  resource: "@BalancelleBundle/Resources/config/routing/annee.yml"
+  prefix:   /annee
+
+balancelle_nouvelle_annee:
+  resource: "@BalancelleBundle/Resources/config/routing/nouvelleAnnee.yml"
+  prefix:   /nouvelleAnnee
+
 balancelle_homepage:
     path:     /
     defaults: { _controller: BalancelleBundle:Default:index }
-    
-balancelle_admin_index:
-    path:     /admin
-    defaults: { _controller: BalancelleBundle:Admin:index }
-
-balancelle_admin_evenements_liste:
-    path:     /admin/evenementsListe
-    defaults: { _controller: BalancelleBundle:Admin:evenementsListe }
-    
-balancelle_admin_evenements_add:
-    path:     /admin/evenementsAdd
-    defaults: { _controller: BalancelleBundle:Admin:evenementsSave }
-
-balancelle_admin_evenements_modify:
-    path:     /admin/evenementsModify/{idevenement}
-    defaults: { _controller: BalancelleBundle:Admin:evenementsSave }
-    
-balancelle_admin_revuepresse_liste:
-    path:     /admin/revuepresseListe
-    defaults: { _controller: BalancelleBundle:Admin:revuepresseListe }
-    
-balancelle_admin_revuepresse_add:
-    path:     /admin/revuepresseAdd
-    defaults: { _controller: BalancelleBundle:Admin:revuepresseSave }
-
-balancelle_admin_revuepresse_modify:
-    path:     /admin/revuepresseModify/{idrevuepresse}
-    defaults: { _controller: BalancelleBundle:Admin:revuepresseSave }
 
 balancelle_contact:
     path:     /contact

@@ -18,11 +18,6 @@ permanence_echange:
     defaults: { _controller: "BalancelleBundle:Permanence:echange" }
     methods:  [POST]
 
-admin_permanence_index:
-    path:     /admin
-    defaults: { _controller: "BalancelleBundle:Permanence:tableauDeBord" }
-    methods:  GET
-
 admin_permanence_structure:
     path:     /admin/structure/{structure}
     defaults: { _controller: "BalancelleBundle:Permanence:indexAdmin" }

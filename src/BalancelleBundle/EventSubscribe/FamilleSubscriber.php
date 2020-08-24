@@ -64,12 +64,9 @@ class FamilleSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($controller[0] instanceof FamilleInterface) {
-            if (!$this->session->has('familles')) {
-                $this->session->set('familles', $this->getFamilles());
-            }
-            $test = $this->session->get('familles');
-            //var_dump($test[1]->getEnfants());
+        if (($controller[0] instanceof FamilleInterface)
+            && !$this->session->has('familles')) {
+            $this->session->set('familles', $this->getFamilles());
         }
     }
 
@@ -101,7 +98,6 @@ class FamilleSubscriber implements EventSubscriberInterface
     /**
      * Récupère la famille associée à l'utilisateur connecté
      * @return mixed
-     * @throws NonUniqueResultException
      */
     private function getFamilles()
     {
@@ -115,15 +111,4 @@ class FamilleSubscriber implements EventSubscriberInterface
             ->execute()
         ;
     }
-
-
-
-
-   /* private function verifieSiStructureAunCalendrier($structure)
-    {
-        $calendriers = $this->entityManager->getRepository(Calendrier::class)
-            ->findBy(['structure' => $structure, 'active' => 1]);
-
-        return count($calendriers);
-    }*/
 }

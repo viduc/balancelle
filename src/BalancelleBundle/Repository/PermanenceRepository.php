@@ -35,11 +35,32 @@ class PermanenceRepository extends EntityRepository
             ->execute();
     }
 
+    /** Récupère les permanences réalisées des années antérieurs pour une famille
+     * @param Famille $famille
+     * @return mixed
+     */
+    public function recupererLesPermanencesRealiseesAnterieures($famille)
+    {
+        return $this
+            ->createQueryBuilder('p')
+            ->from(Calendrier::class, 'c')
+            ->where('p.famille = :famille')
+            ->andWhere('p.fin < :date')
+            ->andWhere('c.active = 0')
+            ->setParameter('famille', $famille)
+            ->setParameter('date', date('Y-m-d H:i:s'))
+            ->orderBy('p.debut', 'ASC')
+            ->getQuery()
+            ->execute();
+    }
+
     public function recupererLesPermanencesInscrite($famille)
     {
         return $this
             ->createQueryBuilder('p')
+            ->from(Calendrier::class, 'c')
             ->where('p.famille = :famille')
+            ->andWhere('c.active = 1')
             ->setParameter('famille', $famille)
             ->orderBy('p.debut', 'ASC')
             ->getQuery()
@@ -115,7 +136,8 @@ class PermanenceRepository extends EntityRepository
      * @param $fin - la date de fin ($debut + 1 jour)
      * @return array
      */
-    public function recupererToutesLesPermanencesPourRappel($debut, $fin) {
+    public function recupererToutesLesPermanencesPourRappel($debut, $fin)
+    {
         $queryBuilder = $this->createQueryBuilder('p');
         $expr = $queryBuilder->expr();
         $qb = $queryBuilder
@@ -142,15 +164,19 @@ class PermanenceRepository extends EntityRepository
         $permanence['faite'] = $this->recupererLesPermanencesRealisees(
             $famille
         );
-        $permanence['aFaire'] = $famille->getNombrePermanence();
-        $permanence['inscrit'] = $this->recupererLesPermanencesInscrite($famille);
+        $permanence['aFaire'] = $famille->getNombrePermanence()+
+            $famille->getSoldePermanence();
+        $permanence['soldePermanence'] = $famille->getSoldePermanence();
+        $permanence['inscrit'] = $this->recupererLesPermanencesInscrite(
+            $famille
+        );
         $permanence['pourcentage'] = 0;
         if ($permanence['aFaire']) {
             $permanence['pourcentage'] =
                 count($permanence['faite'])*100/$permanence['aFaire'];
-        }
-        if ($permanence['pourcentage']>100) {
-            $permanence['pourcentage'] = 100;
+            if ($permanence['pourcentage']>100) {
+                $permanence['pourcentage'] = 100;
+            }
         }
 
         return $permanence;

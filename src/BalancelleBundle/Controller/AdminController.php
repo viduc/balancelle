@@ -2,18 +2,129 @@
 
 namespace BalancelleBundle\Controller;
 
+use BalancelleBundle\Entity\Course;
+use BalancelleBundle\Entity\Permanence;
 use BalancelleBundle\Entity\Structure;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\File\File;
-use AppBundle\Entity\Evenements;
-use AppBundle\Form\EvenementsType;
-use AppBundle\Entity\Revuepresse;
-use AppBundle\Form\RevuepresseType;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AdminController extends Controller implements MenuInterface
 {
+    public $entityManager;
+    public $session;
+
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        SessionInterface $session
+    ) {
+        $this->entityManager = $entityManager;
+        $this->session = $session;
+    }
+
+    /**
+     * @param $structureId
+     * @param bool $active
+     * @return Response|null
+     */
+    public function tableauDeBordAction($structureId, $active = true)
+    {
+        $checked = '';
+        if ($active) {
+            $checked = 'checked';
+        }
+        if ($structureId === null || $structureId === 'all') {
+            $familles = $this->entityManager->getRepository(
+                'BalancelleBundle:Famille'
+            )->findBy(['active' => 1]);
+            if (!$active) {
+                $familles = $this->entityManager->getRepository(
+                    'BalancelleBundle:Famille'
+                )->findAll();
+            }
+            $structureSelectionnee = 'toutes';
+        } else {
+            $familles = $this->entityManager
+                ->getRepository('BalancelleBundle:Famille')
+                ->getFamilleDuneStructure($structureId, $active);
+            $structureSelectionnee = $structureId;
+        }
+        $familles = $this->calculerLesPermanencesPourLesFamilles($familles);
+        $structures = $this->entityManager->getRepository(
+            'BalancelleBundle:Structure'
+        )->findBy(['active' => 1]);
+        return $this->render(
+            '@Balancelle/Admin/index.html.twig',
+            array(
+                'familles' => $familles,
+                'structures' => $structures,
+                'structureSelectionnee' => $structureSelectionnee,
+                'checked' => $checked
+            )
+        );
+    }
+
+
+    /**
+     * Récupère les informations sur les permanences des familles
+     * @param array $familles
+     * @return array
+     */
+    public function calculerLesPermanencesPourLesFamilles(array $familles)
+    {
+        $repository = $this->entityManager->getRepository(Permanence::class);
+        foreach ($familles as $famille) {
+            $famille->permFaite = $repository->recupererLesPermanencesRealisees(
+                $famille
+            );
+            $famille->nbPermanenceAFaire = $famille->getNombrePermanence() +
+                $famille->getSoldePermanence();
+            $famille->permanenceInscrit =
+                $repository->recupererLesPermanencesInscrite($famille);
+            $famille->pourcentagePermanenceFaite = 0;
+            $famille->permanenceRestantAfaire = $famille->nbPermanenceAFaire -
+                count($famille->permFaite);
+            if ($famille->nbPermanenceAFaire) {
+                $famille->pourcentagePermanenceFaite = count(
+                    $famille->permFaite
+                ) * 100 / $famille->nbPermanenceAFaire;
+                if ($famille->pourcentagePermanenceFaite > 100) {
+                    $famille->pourcentagePermanenceFaite = 100;
+                }
+                $famille->course = $this->entityManager
+                    ->getRepository(Course::class)
+                    ->recupererLesCoursesDuneFamille($famille);
+            }
+        }
+
+        return $familles;
+    }
+
+    /**
+     * Récupère les structures des familles pour affichage
+     * @param $familles
+     * @return mixed
+     */
+    public function recupererLesStructuresDesFamilles($familles)
+    {
+        $repository = $this->entityManager->getRepository(Structure::class);
+        foreach ($familles as $famille) {
+            $getStructures = $repository->getStructuresDuneFamille(
+                $famille->getId()
+            );
+            $structures = [];
+            foreach ($getStructures as $structure) {
+                $structures[] = $structure->getNomCourt();
+            }
+            $famille->structures = $structures;
+        }
+
+        return $familles;
+    }
+
+
+    //----------------------> parametrage site vitrine <----------------------//
     /**
      * Index de la partie admin
      * @param CommunicationController $communication
@@ -68,38 +179,38 @@ class AdminController extends Controller implements MenuInterface
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /* si on a une image de tramnsmise on la récupère */
-     /*       if ($evenement->getImage() !== null) {
-                $file = $evenement->getImage();
-                $fileName = $this->generateUniqueFileName().'.';
-                $fileName.= $file->guessExtension();
-                // moves the file to the directory where images are stored
-                move_uploaded_file(
-                    $file,
-                    './evenements/'.$fileName
-                ) or die('Unable to rename.');
-                $evenement->setImage(new File('./evenements/'.$fileName));
-            } else { //si pas d'image de transmise on enregistre soit la noimage,
-                // soit l'image déjà enregistrée en base si présente
-                $evenement->setImage($image);
-            }
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($evenement);
-            $entityManager->flush();
-                $this->addFlash(
-                    'success',
-                    "L'évènement a été enregistré"
-            );
-        }
-        return $this->render(
-            '@Balancelle/Admin/evenementsAdd.html.twig',
-            array('form' => $form->createView(), 'evenement' => $evenement)
-        );
+    /*       if ($evenement->getImage() !== null) {
+               $file = $evenement->getImage();
+               $fileName = $this->generateUniqueFileName().'.';
+               $fileName.= $file->guessExtension();
+               // moves the file to the directory where images are stored
+               move_uploaded_file(
+                   $file,
+                   './evenements/'.$fileName
+               ) or die('Unable to rename.');
+               $evenement->setImage(new File('./evenements/'.$fileName));
+           } else { //si pas d'image de transmise on enregistre soit la noimage,
+               // soit l'image déjà enregistrée en base si présente
+               $evenement->setImage($image);
+           }
+           $entityManager = $this->getDoctrine()->getManager();
+           $entityManager->persist($evenement);
+           $entityManager->flush();
+               $this->addFlash(
+                   'success',
+                   "L'évènement a été enregistré"
+           );
+       }
+       return $this->render(
+           '@Balancelle/Admin/evenementsAdd.html.twig',
+           array('form' => $form->createView(), 'evenement' => $evenement)
+       );
     }
 
     /**
-     * Gestion de la revue de presse
-     * @return Response
-     */
+    * Gestion de la revue de presse
+    * @return Response
+    */
     /*public function revuepresseListeAction()
     {
         $repository = $this->getDoctrine()->getRepository(Revuepresse::class);
@@ -142,52 +253,52 @@ class AdminController extends Controller implements MenuInterface
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /* si on a une image de tramnsmise on la récupère */
-     /*       if ($revuepresse->getImage() !== null) {
-                $file = $revuepresse->getImage();
-                $fileName = $this->generateUniqueFileName().'.';
-                $fileName.= $file->guessExtension();
-                // moves the file to the directory where images are stored
-                move_uploaded_file(
-                    $file,
-                    './revuepresse/'.$fileName
-                ) or die('Unable to rename.');
-                $revuepresse->setImage(new File('./revuepresse/'.$fileName));
-            } else { //si pas d'image de transmise on enregistre soit la noimage,
-                // soit l'image déjà enregistrée en base si présente
-                $revuepresse->setImage($image);
-            }
-            /* si on a un scan de tramnsmise on la récupère */
-     /*       if ($revuepresse->getScan() !== null) {
-                $file = $revuepresse->getScan();
-                $fileName = $this->generateUniqueFileName().'.';
-                $fileName.= $file->guessExtension();
-                // moves the file to the directory where images are stored
-                move_uploaded_file(
-                    $file,
-                    './revuepresse/scan/'.$fileName
-                ) or die('Unable to rename.');
-                $revuepresse->setScan(new File('./revuepresse/scan/'.$fileName));
-            } else { //si pas d'image de transmise on enregistre soit la noimage,
-                // soit l'image déjà enregistrée en base si présente
-                $revuepresse->setScan($scan);
-            }
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($revuepresse);
-            $entityManager->flush();
-                $this->addFlash(
-                    'success',
-                    'La revue de presse a été enregistré'
-            );
-        }
-        return $this->render(
-            '@Balancelle/Admin/revuepresseAdd.html.twig',
-            array('form' => $form->createView(), 'revuepresse' => $revuepresse)
-        );
+    /*       if ($revuepresse->getImage() !== null) {
+               $file = $revuepresse->getImage();
+               $fileName = $this->generateUniqueFileName().'.';
+               $fileName.= $file->guessExtension();
+               // moves the file to the directory where images are stored
+               move_uploaded_file(
+                   $file,
+                   './revuepresse/'.$fileName
+               ) or die('Unable to rename.');
+               $revuepresse->setImage(new File('./revuepresse/'.$fileName));
+           } else { //si pas d'image de transmise on enregistre soit la noimage,
+               // soit l'image déjà enregistrée en base si présente
+               $revuepresse->setImage($image);
+           }
+           /* si on a un scan de tramnsmise on la récupère */
+    /*       if ($revuepresse->getScan() !== null) {
+               $file = $revuepresse->getScan();
+               $fileName = $this->generateUniqueFileName().'.';
+               $fileName.= $file->guessExtension();
+               // moves the file to the directory where images are stored
+               move_uploaded_file(
+                   $file,
+                   './revuepresse/scan/'.$fileName
+               ) or die('Unable to rename.');
+               $revuepresse->setScan(new File('./revuepresse/scan/'.$fileName));
+           } else { //si pas d'image de transmise on enregistre soit la noimage,
+               // soit l'image déjà enregistrée en base si présente
+               $revuepresse->setScan($scan);
+           }
+           $entityManager = $this->getDoctrine()->getManager();
+           $entityManager->persist($revuepresse);
+           $entityManager->flush();
+               $this->addFlash(
+                   'success',
+                   'La revue de presse a été enregistré'
+           );
+       }
+       return $this->render(
+           '@Balancelle/Admin/revuepresseAdd.html.twig',
+           array('form' => $form->createView(), 'revuepresse' => $revuepresse)
+       );
     }
-    
+
     /**
-     * @return string
-     */
+    * @return string
+    */
     private function generateUniqueFileName()
     {
         // md5() reduces the similarity of the file names generated by
