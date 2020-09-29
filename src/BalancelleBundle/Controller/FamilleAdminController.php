@@ -186,8 +186,7 @@ class FamilleAdminController extends AdminController
         return $this->createFormBuilder()
             ->setAction($this->generateUrl(
                 'famille_delete',
-                array('id' => $famille->getId()
-            )
+                array('id' => $famille->getId())
             ))
             ->setMethod('DELETE')
             ->getForm()
@@ -249,7 +248,7 @@ class FamilleAdminController extends AdminController
         $enfant->setCommentaire("Enfant créer via l'interface famille");
         $enfant->setActive(true);
         $enfant->setStructure(
-            $this->em->getRepository('BalancelleBundle:Structure')->find(
+            $this->entityManager->getRepository('BalancelleBundle:Structure')->find(
                 $request->get('idStructure')
             )
         );
