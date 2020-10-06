@@ -41,6 +41,7 @@ class UserRepository extends EntityRepository
             ->where('e.structure = :structure')
             ->setParameter('structure', $structure)
             ->andWhere('e.famille = f.id')
+            ->andWhere('f.active = 1')
             ->andWhere('f.parent1 = u.id or f.parent2 = u.id')
             ->getQuery()->execute();
     }

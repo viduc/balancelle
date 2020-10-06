@@ -9,6 +9,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use BalancelleBundle\Entity\User;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class CommunicationController extends AppController
 {
@@ -33,16 +36,16 @@ class CommunicationController extends AppController
      * @param String $message - le message au format html
      * @param null|array $fichiers - chemin du fichier pdf (pièce jointe)
      * @return mixed
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function envoyerMailStructure(
         $structure,
         $sujet,
         $message,
-        array $fichiers = null)
-    {
+        array $fichiers = null
+    ) {
         $listeUser = $this->em->getRepository(
             User::class
         )->recupererLesUtilisateursViaStructure($structure);
@@ -70,9 +73,9 @@ class CommunicationController extends AppController
      * @param String|null $from - l'adresse de l'expéditeur
      * @param null $body
      * @return mixed
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function envoyerMail(
         array $listeMail,
@@ -132,7 +135,7 @@ class CommunicationController extends AppController
             $message .= '<a href="'. $url . '">';
             $message .= $permanence->getDebut()->format('d/m/Y H:i:s');
             $message .= '</a> à l\'échange';
-            $this->envoyerMail($to,$sujet,$message);
+            $this->envoyerMail($to, $sujet, $message);
             $message = 'La famille inscrite à la permanence du: ';
             $message .= $permanence->getDebut()->format('d/m/Y H:i:s');
             $message .= ' souhaite proposer sa place suite à une contrainte ';
@@ -143,7 +146,7 @@ class CommunicationController extends AppController
             $message .= 'Nous vous remercions par avance pour votre contribution';
             $message .= ' au bon fonctionnement de la structure et pour votre';
             $message .= ' aide aportée à cette famille';
-            $this->envoyerMailStructure($structure,$sujet,$message);
+            $this->envoyerMailStructure($structure, $sujet, $message);
         } elseif ($action === "accepte") {
             $sujet = 'Echange d\'une permanence';
             $message = 'La permanence du:  <a href="'. $url . '">';
@@ -191,7 +194,6 @@ class CommunicationController extends AppController
 
         $lengthFichiers = count($fichiers);
         for ($i=0; $i<$lengthFichiers; $i++) {
-
             if (isset($fichiers[$i]['file'])) {
                 $file = $fichiers[$i]['file'];
                 $fileExist = file_exists($file->getPathName());
@@ -203,15 +205,14 @@ class CommunicationController extends AppController
                 $fileExist = file_exists($file);
                 $pathName = $file;
                 $mimeType = mime_content_type($file);
-                $explode = (explode('/',$file));
+                $explode = (explode('/', $file));
                 $name = end($explode);
             }
             if (!$fileExist) {
                 $tabRetour[$i]['erreur']['erreurFichierPath'] =
                     'Le fichier n\'existe pas ';
                 $tabRetour[$i]['valide'] = false;
-            }
-            else {
+            } else {
                 $tabRetour[$i]['attachement'] = \Swift_Attachment::fromPath(
                     $pathName,
                     $mimeType
@@ -227,9 +228,9 @@ class CommunicationController extends AppController
     /**
      * Envoie un email pour les courses aux parents de la famille concernée
      * @param Course $course
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function envoyerMailCourse(Course $course)
     {
