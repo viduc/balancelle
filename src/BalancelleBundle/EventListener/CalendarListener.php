@@ -8,11 +8,9 @@
 
 namespace BalancelleBundle\EventListener;
 
-//use BalancelleBundle\Entity\Famille;
 use BalancelleBundle\Entity\Calendrier;
 use BalancelleBundle\Entity\Permanence;
 use BalancelleBundle\Entity\Semaine;
-use BalancelleBundle\Entity\Structure;
 use DateTime;
 use Exception;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -48,12 +46,14 @@ class CalendarListener
     /**
      * @var mixed
      */
-    private $famille;
+    private $familles;
 
     /**
      * @var String
      */
     private $structure;
+
+    private $familleIds;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -64,7 +64,11 @@ class CalendarListener
         $this->router = $router;
         $this->em = $em;
         $this->security = $security;
-        $this->famille = $container->get('session')->get('famille');
+        $this->familles = $container->get('session')->get('familles');
+        $this->familleIds = [];
+        foreach ($this->familles as $famille) {
+            $this->familleIds[] = $famille->getId();
+        }
         $this->structure = $container->get('session')->get('structure');
     }
 
@@ -74,22 +78,18 @@ class CalendarListener
         $endDate = $calendar->getEnd();
         $filters = $calendar->getFilters();
 
-        $structureId = $this->em->getRepository(Structure::class)->findOneBy(
-            ['nom' => $this->structure]
-        );
-
         $permanences = $this->em->getRepository(Permanence::class)
             ->createQueryBuilder('b')
             ->from(Calendrier::class, 'c')
             ->from(Semaine::class, 's')
             ->andWhere('b.debut BETWEEN :startDate and :endDate')
-            ->andWhere('c.structure = :structureId')
+            ->andWhere('c.structure = :structure')
             ->andWhere('s.calendrier = c.id')
             ->andWhere('b.semaine = s.id')
             ->andWhere('c.active = 1')
             ->setParameter('startDate', $startDate->format('Y-m-d H:i:s'))
             ->setParameter('endDate', $endDate->format('Y-m-d H:i:s'))
-            ->setParameter('structureId', $structureId)
+            ->setParameter('structure', $this->structure)
             ->getQuery()->getResult();
 
         $tabPermanencesJour = [];
@@ -108,7 +108,6 @@ class CalendarListener
             } catch (Exception $e) {
             }
         }
-
     }
 
     /**
@@ -117,7 +116,7 @@ class CalendarListener
      * @return Event
      * @throws Exception
      */
-    private function formatPermanence(Permanence $permanence)
+    private function formatPermanence(Permanence $permanence): Event
     {
         $titre = $permanence->getDebut()->format('H:i');
         $titre .= ' ' . $permanence->getTitre();
@@ -127,8 +126,8 @@ class CalendarListener
             $permanence->getFin()
         );
         $permanencePassee = new DateTime() > new DateTime(
-                $permanence->getDebut()->format('Y-m-d')
-            );
+            $permanence->getDebut()->format('Y-m-d')
+        );
 
         $backgroundColor = '#427fb0'; //couleur perm effectuée de la famille
         $borderColor = 'red';
@@ -141,10 +140,9 @@ class CalendarListener
                     $titre .= ' !! ECHANGE !!';
                     $backgroundColor = '#DC143C';
                 }
-            }
-            elseif (// la permanence est attribuée à la famille connectée
-                $this->famille &&
-                ($permanence->getFamille()->getId() === $this->famille->getId())
+            } elseif (// la permanence est attribuée à la famille connectée
+                $this->familles &&
+                in_array($permanence->getFamille()->getId(), $this->familleIds, true)
             ) {
                 if ($permanencePassee) {
                     $backgroundColor = '#ae2305';
@@ -166,9 +164,7 @@ class CalendarListener
                     'permanence_inscription',
                     array('id' => $permanence->getId())
                 );
-            }
-
-            else {
+            } else {
                 $backgroundColor = '#6b70e3';
                 $borderColor = 'yellow';
                 $titre = $permanence->getDebut()->format('H:i');
@@ -213,22 +209,12 @@ class CalendarListener
 
     /**
      * Génère le bouton pour ajouter une permanence à chaque jour des calendriers
-     * @param Array $calendrier
+     * @param $tabPerm
      * @param CalendarEvent $calendar
-     * @throws Exception
      */
     private function genererPermanenceAjouter($tabPerm, $calendar)
     {
         foreach ($tabPerm as $permanence) {
-            $date = explode(
-                '-',
-                $permanence->getDebut()->format('Y-m-d')
-            );
-            //$dtoDate = new DateTime();
-            /*$dtoDate->setISODate(
-                $date[0],
-                $permanence->getSemaine()->getNumero()
-            );*/
             $permanenceEvent = new Event(
                 'Ajouter une permanence',
                 $permanence->getDebut(),
@@ -253,61 +239,4 @@ class CalendarListener
             );
         }
     }
-
-
-
-    /*private function genererPermanenceAjouter(
-        $calendriers,
-        CalendarEvent $calendar
-    ) {
-        foreach ($calendriers as $calendrier) {
-            $semaines = $this->em->getRepository(Semaine::class)
-                                 ->findBy(['calendrier' => $calendrier]);
-            foreach ($semaines as $semaine) {
-                if ($semaine->getDateDebut() !== null) {
-                    $date = explode(
-                        '-',
-                        $semaine->getDateDebut()->format('Y-m-d')
-                    );
-                    for ($i = 0; $i < 5; $i++) {
-                        $dtoDebut = new DateTime();
-                        $dtoFin = new DateTime();
-                        $dtoDebut->setISODate(
-                            $date[0],
-                            $semaine->getNumero()
-                        );
-                        $dtoFin->setISODate(
-                            $date[0],
-                            $semaine->getNumero()
-                        );
-                        $debut = $dtoDebut;
-                        $fin = $dtoFin;
-                        $debut->modify('+' . $i . ' days');
-                        $fin->modify('+' . $i . ' days');
-                        $permanenceEvent = new Event(
-                            'Ajouter une permanence',
-                            $debut,
-                            $fin
-                        );
-                        $permanenceEvent->setOptions(
-                            [
-                                'backgroundColor' => '#dc6c0f',
-                                'borderColor' => '#2748da'
-                            ]
-                        );
-                        $url = $this->router->generate(
-                            'admin_permanence_creer',
-                            array(
-                                'semaineId' => $semaine->getId(),
-                                'date' => $dtoDebut->format('Y-m-d')
-                            )
-                        );
-                        $permanenceEvent->addOption('url', $url);
-                        $calendar->addEvent($permanenceEvent);
-                    }
-                }
-            }
-        }
-
-    }*/
 }

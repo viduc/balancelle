@@ -76,7 +76,7 @@ class PermanenceController extends AppController implements FamilleInterface
         }
         $listeFamilles = $em
             ->getRepository('BalancelleBundle:Famille')
-            ->findBy(['active' => 1],['nom' => 'ASC']);
+            ->findBy(['active' => 1], ['nom' => 'ASC']);
 
         return $this->render(
             '@Balancelle/Permanence/inscription.html.twig',
@@ -207,8 +207,7 @@ class PermanenceController extends AppController implements FamilleInterface
                 null,
                 $url
             );
-        }
-        elseif ($action === 'accept') {
+        } elseif ($action === 'accept') {
             $famille = $em
                 ->getRepository('BalancelleBundle:Famille')
                 ->findByFamille($this->getUser()->getId());
@@ -247,8 +246,8 @@ class PermanenceController extends AppController implements FamilleInterface
             $famille->pourcentagePermanenceFaite = 0;
             if ($famille->nbPermanenceAFaire) {
                 $famille->pourcentagePermanenceFaite = count(
-                        $famille->permFaite
-                    )*100/$famille->nbPermanenceAFaire;
+                    $famille->permFaite
+                )*100/$famille->nbPermanenceAFaire;
             }
         }
         return $this->render(
@@ -262,10 +261,9 @@ class PermanenceController extends AppController implements FamilleInterface
      * @param Structure $structure - la structure visionnée
      * @return Response
      */
-    public function indexAdminAction($structure)
+    public function indexAdminAction(Structure $structure)
     {
         $this->get('session')->set('structure', $structure);
-
         return $this->render(
             '@Balancelle/Permanence/permanence.html.twig',
             array('famille' => null)
@@ -356,10 +354,11 @@ class PermanenceController extends AppController implements FamilleInterface
     ) {
         $em = $this->getDoctrine()->getManager();
 
-        $structure = $em->getRepository(Structure::class)
+        /*$structure = $em->getRepository(Structure::class)
             ->findOneBy(
                 ['nomCourt' => $this->get('session')->get('structure')]
-            );
+            );*/
+        $structure = $this->get('session')->get('structure');
 
         if ($request->get('semaineId')!== null &&
             $request->get('date')!== null) {
@@ -370,11 +369,13 @@ class PermanenceController extends AppController implements FamilleInterface
             $permanence->setDebut(
                 new DateTime(
                     $request->get('date')
-                ));
+                )
+            );
             $permanence->setFin(
                 new DateTime(
                     $request->get('date')
-                ));
+                )
+            );
             $permanence->setSemaine(
                 $em->getRepository(Semaine::class)
                    ->find($request->get('semaineId'))
