@@ -207,7 +207,7 @@ class MenuSubscriber implements EventSubscriberInterface
                     'admin_permanence_structure',
                     'Permanence ' . $structure->getNom(),
                     'ti-layout-list-thumb-alt',
-                    ['structure' => $structure->getNom()]
+                    ['structure' => $structure->getId()]
                 );
                 $permanences->addMenu($menu);
             }
@@ -248,17 +248,17 @@ class MenuSubscriber implements EventSubscriberInterface
                         $structure
                     ) &&
                         !in_array(
-                            $structure->getNomCourt(),
+                            $structure->getId(),
                             $menuPerm,
                             true
                         )
                     ) {
-                        $menuPerm[] = $structure->getNomCourt();
+                        $menuPerm[] = $structure->getId();
                         $menu = new Menu(
                             'permanence_index',
                             'Permanence ' . $structure->getNom(),
                             'ti-layout-list-thumb-alt',
-                            ['structure' => $structure->getNom()]
+                            ['structure' => $structure->getId()]
                         );
                         $permanences->addMenu($menu);
                     }

@@ -71,6 +71,7 @@ class UserController extends AppController //implements FamilleInterface
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setConfirmationToken(md5(uniqid('', true)));
             $user->setEnabled(true);
+            $user->setActive(true);
             $user->setUsername($this->genererLogin($user));
             $user->setPlainPassword(md5(uniqid('', true)));
             $userManager->updateUser($user);
@@ -136,11 +137,9 @@ class UserController extends AppController //implements FamilleInterface
      * @param string $charset
      * @return string|string[]|null
      */
-    private function enleverCaracteresSpeciaux($str, $charset='utf-8')
+    private function enleverCaracteresSpeciaux($str, $charset = 'utf-8')
     {
-
         $str = htmlentities($str, ENT_NOQUOTES, $charset);
-
         $str = preg_replace('#&([A-za-z])(?:acute|cedil|caron|circ|grave|orn|ring|slash|th|tilde|uml);#', '\1', $str);
         $str = preg_replace('#&([A-za-z]{2})(?:lig);#', '\1', $str);
         $str = preg_replace('#&[^;]+;#', '', $str);
