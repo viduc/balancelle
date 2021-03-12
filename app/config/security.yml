@@ -25,12 +25,12 @@ security:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/balancelle/famille, role: ROLE_USER }
-        - { path: ^/balancelle/permanence, role: ROLE_USER }
-        - { path: ^/balancelle/permanence/admin, role: ROLE_ADMIN }
-        - { path: ^/balancelle/user/enregistrement, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/balancelle/contact, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/balancelle/, role: ROLE_USER }
+        - { path: ^/famille, role: ROLE_USER }
+        - { path: ^/permanence, role: ROLE_USER }
+        - { path: ^/permanence/admin, role: ROLE_ADMIN }
+        - { path: ^/user/enregistrement, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/contact, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, role: ROLE_USER }
         #- { path: ^/user/admin, role: ROLE_ADMIN }
         #- { path: ^/user/user, role: ROLE_USER }
 
