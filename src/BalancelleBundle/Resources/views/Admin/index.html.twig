@@ -31,13 +31,10 @@
                             <tr>
                                 <th>Famille</th>
                                 <th>Active</th>
-                                <th>Total</th>
-                                <th>Solde</th>
-                                <th>Faites</th>
-                                <th>Inscrit</th>
-                                <th>Réserve</th>
-                                <th>Progression</th>
-                                <th>Nombre de Courses</th>
+                                <th>Total Permanences à réaliser cette anéée</th>
+                                <th>Permanences réalisées</th>
+                                <th>Permanences a faire</th>
+                                <th>Permanences Inscrites</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -46,9 +43,6 @@
                                 var familles = [];
                             </script>
                             {% for famille in familles %}
-                                <script type="text/javascript">
-                                    familles[{{ famille.id }}] = {{ famille.pourcentagePermanenceFaite }};
-                                </script>
                                 <tr>
                                     <td>{{ famille.nom }}</td>
                                     <td>
@@ -58,17 +52,12 @@
                                             <img src="{{asset('bundles/balancelle/images/off.png')}}" alt="inactif" />
                                         {% endif %}
                                     </td>
-                                    <td>{{ famille.nbPermanenceAFaire }}</td>
-                                    <td>{{ famille.soldePermanence }}</td>
-                                    <td>{{ famille.permFaite|length }}</td>
-                                    <td>{{ famille.permanenceInscrit|length - famille.permFaite|length }}</td>
-                                    <td>{{ famille.nbPermanenceAFaire - famille.permFaite|length - (famille.permanenceInscrit|length - famille.permFaite|length) }}</td>
                                     <td>
-                                        <div class="progress-perm">
-                                            <div id="progessBarPermanence{{ famille.id }}" class="progress-bar-perm"></div>
-                                        </div>
-                                    </td>
-                                    <td>{{ famille.courses|length }}</td>
+                                        <a href="#" title="Nombre de permanences à faire cette année: {{ famille.nombrePermanence }} | Nombre de permanences restantes de l'année dernière: {{ famille.soldePermanence }}">
+                                        {{ famille.nbPermanenceAFaire }}</a></td>
+                                    <td>{{ famille.permFaite|length }}</td>
+                                    <td>{{ famille.nbPermanenceAFaire - famille.permFaite|length - (famille.permanenceInscrit|length - famille.permFaite|length) }}</td>
+                                    <td>{{ famille.permanenceInscrit|length - famille.permFaite|length }}</td>
                                     <td><a href="{{ path('famille_edit', { 'id': famille.id }) }}">Voir</a></td>
                                 </tr>
                             {% endfor %}
@@ -78,7 +67,6 @@
                 </div>
             </div>
         </div>
-
         <!-- pie chart end -->
     </div>
     <script type="text/javascript">
