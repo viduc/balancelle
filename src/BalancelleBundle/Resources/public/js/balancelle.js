@@ -3,7 +3,7 @@
  * @type type
  */
 jQuery(document).ready(function() {
-    $( document ).tooltip();
+    //$(document).tooltip();
     $(".js-datepicker").datepicker({
         format: 'dd/mm/yyyy',
         changeYear: true,
