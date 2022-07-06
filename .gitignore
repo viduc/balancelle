@@ -10,23 +10,23 @@
 /web/revuepresse/scan/*
 !/web/revuepresse/scan/noscan.pdf
 # ================================= partie app =================================
-/app/*
-!/app/config
-/app/config/*
-!/app/config/config.yml
-!/app/config/routing.yml
-!/app/config/security.yml
-!/app/config/services.yml
-!/app/config/parameters.yml.dist
-!/app/AppKernel.php
-!/app/Resources/
-/app/Resources/*
-!/app/Resources/FOSUserBundle
+#/app/*
+#!/app/config
+#/app/config/*
+#!/app/config/config.yml
+#!/app/config/routing.yml
+#!/app/config/security.yml
+#!/app/config/services.yml
+#!/app/config/parameters.yml.dist
+#!/app/AppKernel.php
+#!/app/Resources/
+#/app/Resources/*
+#!/app/Resources/FOSUserBundle
 # ================================= partie bin =================================
-/bin/
+#/bin/
 
 # ================================= partie var =================================
-/var/
+#/var/
 
 # =============================== partie vendor ================================
 /vendor/
@@ -34,3 +34,15 @@
 # =============================== partie fichier ===============================
 composer.lock
 .htaccess
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+#/var/
+###< symfony/framework-bundle ###
+
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
